@@ -1,24 +1,48 @@
 #include "iostream"
 #include <limits>
-
 #include <vector>
 
 
 namespace ft{
 	template <typename T>
+	class VectorIterator;
+	
+	template <typename T>
+	class VectorConstIterator;
+
+	template <typename T>
 	class VectorIterator{
+/*		public:
+                        typedef T value_type;
+                        typedef T& reference;
+                        typedef const T& const_reference;
+                        typedef T* pointer;
+                        typedef const T* const_pointer;
+                        typedef VectorIterator<T> iterator;
+                        typedef VectorIterator<const T> const_iterator;
+//                      typedef reverse_iterator;
+//                      typedef const_reverse_iterator;
+                        typedef ptrdiff_t difference_type;
+                        typedef size_t size_type;*/
 		private:
 			T *ptr;
 		public:
 			VectorIterator() { ptr = 0; }
 			VectorIterator(T *p) : ptr(p) { }
 			~VectorIterator() { }
+
 			VectorIterator(const VectorIterator &i) : ptr(i.ptr) { }
-			VectorIterator	&operator=(const VectorIterator &i){ 
-				ptr = i.ptr;
-				return (*this);
+			VectorIterator(const VectorConstIterator<T> &i) : ptr(i.getPtr()) { }
+			VectorIterator	&operator=(const VectorIterator &i){
+                                ptr = i.ptr;
+                                return (*this);
 			}
-			T &operator*() {return (*ptr); };
+			VectorIterator  &operator=(const VectorConstIterator<T> &i){
+                                ptr = i.getPtr();
+                                return (*this);
+                        }
+
+			T	&operator*() { return (*ptr); }
 			T	*operator++(int){ // i++;
 				T	*tmp = ptr;
 				ptr++;
@@ -37,132 +61,189 @@ namespace ft{
 				ptr--;
 				return (ptr);
 			}
+			T	*getPtr() const { return (ptr); }
 			bool	operator!=(const VectorIterator &p) { return (ptr != p.ptr); }
+			//void	operator=(T *p) { ptr = p; };
+	};
+	
+	template <typename T>
+	class VectorConstIterator{
+		private:
+			T *ptr;
+		public:
+			VectorConstIterator() { ptr = 0; }
+			VectorConstIterator(T *p) : ptr(p) { }
+			~VectorConstIterator() { }
+
+			VectorConstIterator(const VectorConstIterator &i) : ptr(i.ptr) { }
+			VectorConstIterator(const VectorIterator<T> &i) : ptr(i.getPtr()) { }
+			VectorConstIterator	&operator=(const VectorConstIterator &i){ 
+				ptr = i.ptr;
+				return (*this);
+			}
+			VectorConstIterator	&operator=(const VectorIterator<T> &i){
+				ptr = i.getPtr();
+				return (*this);
+			}
+
+			T const	&operator*() const { return (*ptr); };
+			T	*operator++(int){ // i++;
+				T	*tmp = ptr;
+				ptr++;
+				return (tmp);
+			}
+			T	*operator++(){ // ++i;
+				ptr++;
+				return (ptr);
+			}
+			T	*operator--(int){ // i--;
+				T	*tmp = ptr;
+				ptr--;
+				return (tmp);
+			}
+			T	*operator--(){ // --i
+				ptr--;
+				return (ptr);
+			}
+			T       *getPtr() const { return (ptr); }
+			bool	operator!=(const VectorConstIterator &p) { return (ptr != p.ptr); }
 			//void	operator=(T *p) { ptr = p; };
 	};
 
 	template <typename T>
 	class vector{
+		public:
+			typedef T value_type;
+			typedef T& reference;
+			typedef const T& const_reference;
+			typedef T* pointer;
+			typedef const T* const_pointer;
+			typedef VectorIterator<T> iterator;
+			typedef VectorConstIterator<T> const_iterator;
+//			typedef reverse_iterator;
+//			typedef	const_reverse_iterator;
+			typedef ptrdiff_t difference_type;
+			typedef size_t size_type;
 		private:
 			T *ary;
-			unsigned long vsize;
-			unsigned long vcapacity;
+			size_type _size;
+			size_type _capacity;
 		public:
-			typedef VectorIterator<T> iterator;
 			
-			vector() { ary = 0; vsize = 0; vcapacity = 0; }
+			vector() { ary = 0; _size = 0; _capacity = 0; }
 			~vector(){
 				delete[] ary;
 			}
 			vector(const vector &v){
-				if (v.vcapacity == 0)
+				if (v._capacity == 0)
 					ary = 0;
 				else
 				{
-					ary = new T[v.vcapacity];
-					for (unsigned int i = 0; i < v.vsize; i++)
+					ary = new T[v._capacity];
+					for (size_type i = 0; i < v._size; i++)
 						ary[i] = v.ary[i];
 				}
-				vsize = v.vsize;
-				vcapacity = v.vcapacity;
+				_size = v._size;
+				_capacity = v._capacity;
 			}
 			vector	&operator=(const vector &v){
-				if (v.vcapacity == 0)
+				if (v._capacity == 0)
 					ary = 0;
 				else
 				{
 					if (ary != 0)
 						delete[] ary;
-					ary = new T[v.vcapacity];
-					for (unsigned int i = 0; i < v.vsize; i++)
+					ary = new T[v._capacity];
+					for (size_type i = 0; i < v._size; i++)
 						ary[i] = v.ary[i];
 				}
-				vsize = v.vsize;
-				vcapacity = v.vcapacity;
+				_size = v._size;
+				_capacity = v._capacity;
 				return (*this);
 			}
-			T	&operator[](unsigned int n){
+			T	&operator[](size_type n){
 				return (ary[n]);
 			}
-			T const &operator[](unsigned int n) const{
+			T const &operator[](size_type n) const{
 				return (ary[n]);
 			}
 			void	push_back(T const &value){
-				if (vcapacity == 0)
+				if (_capacity == 0)
 				{
 					ary = new T[1];
-					ary[vsize++] = value;
-					vcapacity = 1;
+					ary[_size++] = value;
+					_capacity = 1;
 				}
-				else if (vcapacity <= vsize)
+				else if (_capacity <= _size)
 				{
-					unsigned int c = vcapacity * 2;
+					size_type c = _capacity * 2;
 					T	*temp = new T[c];
-					for (unsigned int i = 0; i < vcapacity; i++)
+					for (size_type i = 0; i < _capacity; i++)
 						temp[i] = ary[i];
-					temp[vsize++] = value;
+					temp[_size++] = value;
 					delete [] ary;
 					ary = temp;
-					vcapacity = c;
+					_capacity = c;
 				}
 				else
-					ary[vsize++] = value;
+					ary[_size++] = value;
 			}
-			unsigned long	size(void) const{
-				return (vsize);
+			size_type	size(void) const{
+				return (_size);
 			}
-			unsigned long	max_size(void) const{
-				return (std::min( (unsigned long)std::numeric_limits<long>::max(),
-							std::numeric_limits<unsigned long>::max() / sizeof(T)));
+			size_type	max_size(void) const{
+				return (std::min( (size_type)std::numeric_limits<difference_type>::max(),
+							std::numeric_limits<size_type>::max() / sizeof(value_type)));
 			}
-			void	resize(unsigned long n, T val = T())
+			void	resize(size_type n, value_type val = value_type())
 			{
-				if (n > vcapacity)
+				if (n > _capacity)
 					reserve(n);
-				for (unsigned long i = vsize; i < n; i++)
+				for (size_type i = _size; i < n; i++)
 					ary[i] = val;
-				vsize = n;
+				_size = n;
 			}
-			unsigned long	capacity(void) const{
-				return (vcapacity);
+			size_type	capacity(void) const{
+				return (_capacity);
 			}
-			void	reserve(unsigned long n)
+			void	reserve(size_type n)
 			{
 				if (n > max_size())
 					throw std::length_error("allocator<T>::allocate(size_t n) 'n' exceeds maximum supported size");
-				if (n > vcapacity)
+				if (n > _capacity)
 				{
 					T	*tmp = new T[n];
-					for(unsigned long i = 0; i < vsize; i++)
+					for(size_type i = 0; i < _size; i++)
 						tmp[i] = ary[i];
-					vcapacity = n;
+					_capacity = n;
 					delete[] ary;
 					ary = tmp;
 				}
 			}
-			bool	empty(void) const { return (vsize == 0); }
+			bool	empty(void) const { return (_size == 0); }
 			void	clear(void){
-	//				vsize = 0;
-	//			for (unsigned long i = 0; i < vsize; i++)
-	//				this->ary[i].T::~T();
-				vsize = 0;
-	//			delete[] ary;
-	//			ary = new T[vcapacity];
+				for (size_type i = 0; i < _size; i++)
+					this->ary[i].value_type::~value_type();
+				_size = 0;
 			}
 			iterator	begin() { return (iterator(ary)); }
-			iterator	end() { return (iterator(&ary[vsize])); }
-			void	pop_back(void) { vsize--; }
-			T	&front() { return (ary[0]); }
-			T const	&front() const { return (ary[0]); }
-			T	&back(){ return (ary[vsize - 1]); }
-			T const &back() const{ return (ary[vsize - 1]); }
-			T	&at(unsigned int n){
-				if (n >= vsize)
+			const_iterator	begin()	const { return (const_iterator(ary)); }
+
+			iterator	end() { return (iterator(&ary[_size])); }
+			void	pop_back(void){
+				this->ary[--_size].value_type::~value_type();
+			}
+			reference	front() { return (ary[0]); }
+			const_reference	front() const { return (ary[0]); }
+			reference	back(){ return (ary[_size - 1]); }
+			const_reference	back() const{ return (ary[_size - 1]); }
+			reference	at(size_type n){
+				if (n >= _size)
 					throw std::out_of_range("vector");
 				return (ary[n]);
 			}
-			T const	&at(unsigned int n) const{
-				if (n >= vsize)
+			const_reference	at(size_type n) const{
+				if (n >= _size)
 					throw std::out_of_range("vector");
 				return (ary[n]);
 			}
@@ -172,11 +253,19 @@ namespace ft{
 int main(void)
 {
 	ft::vector<int> intV;
-	ft::vector<int> intV2;
-	ft::vector<int>::iterator it(intV.begin());
-	ft::vector<int>::iterator it2;
-	ft::vector<int>::iterator it3;
+//	ft::vector<int> intV2;
+//	ft::vector<int>::iterator it(intV.begin());
+//	ft::vector<int>::iterator it2;
+//	ft::vector<int>::iterator it3;
 
+	intV.push_back(3);
+	ft::vector<int>::const_iterator a = intV.begin();
+//	std::cout << *a << std::endl;
+//	*a = 111;
+//	std::cout << *a << std::endl;
+
+	return (0);
+/*
 	std::vector<int> vec;
 	std::vector<int> vec2;
 	std::vector<int>::iterator vit(vec.begin());
@@ -352,5 +441,5 @@ int main(void)
 	std::cout << p.size() << std::endl;
 	std::cout << q.size() << std::endl;
 
-	return (0);
+	return (0);*/
 }
