@@ -10,20 +10,37 @@ namespace ft{
 	template <typename T>
 	class VectorConstIterator;
 
+	template <bool Cond, typename T = void>
+	struct enable_if {};
+
+	template <typename T>
+	struct enable_if<true, T> {
+		typedef T type;
+	};
+
+	template <typename T>
+        struct is_iterator { static const bool value = false; };
+
+	template <typename T>
+    	struct is_iterator<VectorConstIterator<T>> { static const bool value = true; };
+
+	template <typename T>
+        struct is_iterator<VectorIterator<T>> { static const bool value = true; };
+
 	template <typename T>
 	class VectorIterator{
-/*		public:
+		public:
                         typedef T value_type;
                         typedef T& reference;
                         typedef const T& const_reference;
                         typedef T* pointer;
                         typedef const T* const_pointer;
                         typedef VectorIterator<T> iterator;
-                        typedef VectorIterator<const T> const_iterator;
+                        typedef VectorConstIterator<T> const_iterator;
 //                      typedef reverse_iterator;
 //                      typedef const_reverse_iterator;
                         typedef ptrdiff_t difference_type;
-                        typedef size_t size_type;*/
+                        typedef size_t size_type;
 		private:
 			T *ptr;
 		public:
@@ -37,12 +54,9 @@ namespace ft{
                                 ptr = i.ptr;
                                 return (*this);
 			}
-			VectorIterator  &operator=(const VectorConstIterator<T> &i){
-                                ptr = i.getPtr();
-                                return (*this);
-                        }
 
-			T	&operator*() { return (*ptr); }
+			T 	&operator*() const { return (*ptr); }
+
 			T	*operator++(int){ // i++;
 				T	*tmp = ptr;
 				ptr++;
@@ -61,6 +75,12 @@ namespace ft{
 				ptr--;
 				return (ptr);
 			}
+
+			difference_type	operator-(const VectorIterator &i)
+			{
+				return (ptr - i.ptr);
+			}
+
 			T	*getPtr() const { return (ptr); }
 			bool	operator!=(const VectorIterator &p) { return (ptr != p.ptr); }
 			//void	operator=(T *p) { ptr = p; };
@@ -124,16 +144,53 @@ namespace ft{
 //			typedef	const_reverse_iterator;
 			typedef ptrdiff_t difference_type;
 			typedef size_t size_type;
+
+			// error message check plz !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			class	LengthErrorException : public std::exception{
+			public:
+				virtual const char	*what() const throw()
+				{
+					return ("allocator<T>::allocate(size_t n) 'n' exceeds maximum supported size");
+				}
+			};
+			class   OutOfRangeException : public std::exception{
+                        public:
+                                virtual const char      *what() const throw()
+                                {
+                                        return ("vector::_M_range_check");
+                                }
+                        };
 		private:
 			T *ary;
 			size_type _size;
 			size_type _capacity;
 		public:
-			
+			// default constructor
 			vector() { ary = 0; _size = 0; _capacity = 0; }
+			
+			// destructor
 			~vector(){
 				delete[] ary;
 			}
+			// fill constructor
+			vector(size_type n, const value_type &val = value_type()){
+				_capacity = n;
+				_size = n;
+				ary = new T[_capacity];
+				for (size_type i = 0; i < _size; i++)
+					ary[i] = val;	
+			}
+			// range constructor
+			template <typename InputIterator>
+			vector(InputIterator first, InputIterator last, typename ft::enable_if<ft::is_iterator<InputIterator>::value, InputIterator>::type tmp = 0){
+				size_type n = last - first;
+				_capacity = n;
+				_size = n;
+				ary = new T[_capacity];
+				for (size_type i = 0; i < _size; i++)
+                         		ary[i] = *first++;
+			}
+			// copy constructor
 			vector(const vector &v){
 				if (v._capacity == 0)
 					ary = 0;
@@ -146,6 +203,7 @@ namespace ft{
 				_size = v._size;
 				_capacity = v._capacity;
 			}
+			// Assign content
 			vector	&operator=(const vector &v){
 				if (v._capacity == 0)
 					ary = 0;
@@ -161,17 +219,108 @@ namespace ft{
 				_capacity = v._capacity;
 				return (*this);
 			}
+			
+			// Iterators
+			iterator        begin() { return (iterator(ary)); }
+                        const_iterator  begin() const { return (const_iterator(ary)); }
+                        iterator        end() { return (iterator(&ary[_size])); }
+			const_iterator	end() const { return (const_iterator(&ary[_size])); }			
+			// rbegin & rend !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+			// Capacity
+			size_type       size() const{
+                                return (_size);
+                        }
+                        size_type       max_size() const{
+                                return (std::min( (size_type)std::numeric_limits<difference_type>::max(),
+                                                        std::numeric_limits<size_type>::max() / sizeof(value_type)));
+                        }
+                        void    resize(size_type n, value_type val = value_type())
+                        {
+                                if (n > _capacity)
+					reserve(n);
+                                for (size_type i = _size; i < n; i++)
+                                        ary[i] = val;
+                                _size = n;
+                        }
+                        size_type       capacity() const{
+                                return (_capacity);
+                        }
+			bool    empty() const { return (_size == 0); }
+                        void    reserve(size_type n)
+                        {
+                                if (n > max_size())
+					throw LengthErrorException();
+                                if (n > _capacity)
+                                {
+                                        T       *tmp = new T[n];
+                                        for(size_type i = 0; i < _size; i++)
+                                                tmp[i] = ary[i];
+                                        _capacity = n;
+                                        delete[] ary;
+                                        ary = tmp;
+                                }
+                        }	
+			
+			// Element access
 			T	&operator[](size_type n){
 				return (ary[n]);
 			}
 			T const &operator[](size_type n) const{
 				return (ary[n]);
 			}
-			void	push_back(T const &value){
+			reference       at(size_type n){
+                                if (n >= _size)
+					throw OutOfRangeException();
+                                return (ary[n]);
+                        }
+                        const_reference at(size_type n) const{
+                                if (n >= _size)
+					throw OutOfRangeException();
+                                return (ary[n]);
+                        }
+			reference       front() { return (ary[0]); }
+                        const_reference front() const { return (ary[0]); }
+                        reference       back(){ return (ary[_size - 1]); }
+                        const_reference back() const{ return (ary[_size - 1]); }
+
+			// Modifiers
+			// range assign
+			template <typename InputIterator>
+			void	assign(InputIterator first, InputIterator last, typename ft::enable_if<ft::is_iterator<InputIterator>::value, InputIterator>::type tmp = 0){
+				size_type n = last - first;
+				if (_capacity >= n)
+					clear();
+				else
+				{
+					delete[] ary;
+					ary = new T[n];
+					_capacity = n;
+				}
+				for (size_type i = 0; i < n; i++)
+					ary[i] = *first++;
+                                _size = n;
+			}
+			// fill assign
+			void	assign(size_type n, const value_type &val){
+                                if (_capacity >= n)
+                                        clear();
+                                else
+                                {
+                                        delete[] ary;
+                                        ary = new T[n];
+                                        _capacity = n;
+                                }
+                                for (size_type i = 0; i < n; i++)
+                                        ary[i] = val;
+                                _size = n;
+			}
+			void	push_back(const value_type &val){
 				if (_capacity == 0)
 				{
 					ary = new T[1];
-					ary[_size++] = value;
+					ary[_size++] = val;
 					_capacity = 1;
 				}
 				else if (_capacity <= _size)
@@ -180,98 +329,183 @@ namespace ft{
 					T	*temp = new T[c];
 					for (size_type i = 0; i < _capacity; i++)
 						temp[i] = ary[i];
-					temp[_size++] = value;
+					temp[_size++] = val;
 					delete [] ary;
 					ary = temp;
 					_capacity = c;
 				}
 				else
-					ary[_size++] = value;
+					ary[_size++] = val;
 			}
-			size_type	size(void) const{
-				return (_size);
-			}
-			size_type	max_size(void) const{
-				return (std::min( (size_type)std::numeric_limits<difference_type>::max(),
-							std::numeric_limits<size_type>::max() / sizeof(value_type)));
-			}
-			void	resize(size_type n, value_type val = value_type())
-			{
-				if (n > _capacity)
-					reserve(n);
-				for (size_type i = _size; i < n; i++)
-					ary[i] = val;
-				_size = n;
-			}
-			size_type	capacity(void) const{
-				return (_capacity);
-			}
-			void	reserve(size_type n)
-			{
-				if (n > max_size())
-					throw std::length_error("allocator<T>::allocate(size_t n) 'n' exceeds maximum supported size");
-				if (n > _capacity)
-				{
-					T	*tmp = new T[n];
-					for(size_type i = 0; i < _size; i++)
-						tmp[i] = ary[i];
-					_capacity = n;
-					delete[] ary;
-					ary = tmp;
-				}
-			}
-			bool	empty(void) const { return (_size == 0); }
-			void	clear(void){
-				for (size_type i = 0; i < _size; i++)
-					this->ary[i].value_type::~value_type();
-				_size = 0;
-			}
-			iterator	begin() { return (iterator(ary)); }
-			const_iterator	begin()	const { return (const_iterator(ary)); }
-
-			iterator	end() { return (iterator(&ary[_size])); }
-			void	pop_back(void){
+			void	pop_back(){
 				this->ary[--_size].value_type::~value_type();
 			}
-			reference	front() { return (ary[0]); }
-			const_reference	front() const { return (ary[0]); }
-			reference	back(){ return (ary[_size - 1]); }
-			const_reference	back() const{ return (ary[_size - 1]); }
-			reference	at(size_type n){
-				if (n >= _size)
-					throw std::out_of_range("vector");
-				return (ary[n]);
+			// single elemaent insert
+			iterator	insert(iterator position, const value_type &val)
+			{
+				iterator i = this->begin();
+				value_type	temp = val;
+				size_type 	j = 0;
+
+				while (i != position)
+				{
+					i++;
+					j++;
+				}
+				if (_capacity <= _size)
+					reserve(_capacity * 2);
+				position  = &ary[j];
+				if (j != _size)
+					temp = ary[j];
+				ary[j++] = val;
+				for (; j < _size; j++)
+				{
+					value_type n = ary[j];
+					ary[j] = temp;
+					temp = n;
+				}
+				ary[j] = temp;
+				_size++;
+				return (position);
 			}
-			const_reference	at(size_type n) const{
-				if (n >= _size)
-					throw std::out_of_range("vector");
-				return (ary[n]);
+			// fill insert
+			void	insert(iterator position, size_type n, const value_type &val)
+			{
+				
 			}
+			// range insert
+			template<typename InputIterator>
+			void insert (iterator position, InputIterator first, InputIterator last)
+			{
+				
+			}
+			void	swap(vector &v)
+			{
+				size_type c = _capacity;
+				size_type s = _size;
+				T	*tmp = ary;
+
+				_capacity = v._capacity;
+				_size = v._size;
+				ary = v.ary;
+
+				v._capacity = c;
+				v._size = s;
+				v.ary = tmp;
+			}
+			void    clear(){
+                                for (size_type i = 0; i < _size; i++)
+                                        this->ary[i].value_type::~value_type();
+                                _size = 0;
+                        }
 	};
 }
 
 int main(void)
 {
-	ft::vector<int> intV;
-//	ft::vector<int> intV2;
-//	ft::vector<int>::iterator it(intV.begin());
-//	ft::vector<int>::iterator it2;
-//	ft::vector<int>::iterator it3;
-
-	intV.push_back(3);
-	ft::vector<int>::const_iterator a = intV.begin();
-//	std::cout << *a << std::endl;
-//	*a = 111;
-//	std::cout << *a << std::endl;
-
+	main_test();
 	return (0);
-/*
+
+
+	ft::vector<int> intV;
+	ft::vector<int> intV2;
+	ft::vector<int>::iterator it(intV.begin());
+	ft::vector<int>::iterator it2;
+	ft::vector<int>::iterator it3;
+
 	std::vector<int> vec;
 	std::vector<int> vec2;
 	std::vector<int>::iterator vit(vec.begin());
 	std::vector<int>::iterator vit2;
 	std::vector<int>::iterator vit3;
 
+	for (int i = 0; i < 16; i++)
+	{
+		vec.push_back(i + 10);
+		intV.push_back(i + 10);
+	}
+	vit = vec.begin();
+	it = intV.begin();
+	vit--;
+	vit++;
+	it--;
+	it++;
+	std::cout << "capa = " << vec.capacity() << std::endl;
+	std::cout << "vit = " << *vit << std::endl;
+	vit2 = vec.insert(vit, 200);
+	for (int i = 0; i < vec.size(); i++)
+		std::cout << vec[i] << std::endl;
+	std::cout << "it = " << *vit2 << std::endl;
+	std::cout << "capa = " << vec.capacity() << std::endl;
+
+	std::cout << "\n\n" << std::endl;
+
+	std::cout << "capa = " << intV.capacity() << std::endl;
+        std::cout << "vit = " << *it << std::endl;
+        it2 = intV.insert(it, 200);
+	for (int i = 0; i < intV.size(); i++)
+                std::cout << intV[i] << std::endl;
+        std::cout << "it = " << *it2 << std::endl;
+        std::cout << "capa = " << intV.capacity() << std::endl;
+	return (0);
+
+	std::vector<int> d(5, 12);
+	std::vector<int> a(d.begin(), d.end());
+
+//	std::cout << a.capacity() << std::endl;
+//	std::cout << a.size() << std::endl;
+//	for(std::vector<int>::iterator i = a.begin(); i != a.end(); i++)
+//		std::cout << *i << std::endl;
+//	std::cout << "\n\n" << std::endl;
+	
+	std::vector<int> xy;
+	
+
+	for (int i = 0; i < 10; i++)
+		xy.push_back(i + 19);
+	xy.assign(1, 12);
+	for(int i = 0; i < xy.size(); i++)
+		std::cout << xy[i] << std::endl;
+	std::cout << xy.capacity() << std::endl;
+	std::cout << xy.size() << std::endl;
+
+	ft::vector<int> c(17, 12);
+	
+	ft::vector<int> yz;
+	for (int i = 0; i < 10; i++)
+		yz.push_back(i + 19);
+	yz.assign(1, 12);
+	for(int i = 0; i < yz.size(); i++)
+                std::cout << yz[i] << std::endl;
+        std::cout << yz.capacity() << std::endl;
+	std::cout << yz.size() << std::endl;
+	return (0);
+	
+
+	ft::vector<int> b(c.begin(), c.end());
+	
+	std::cout << b.capacity() << std::endl;
+        std::cout << b.size() << std::endl;
+	for(int i = 0; i < c.size(); i++)
+	{
+		std::cout << c[i] << " " <<  b[i] << std::endl;
+	}
+
+        std::cout << b.capacity() << std::endl;
+     	std::cout << b.size() << std::endl;
+     	for(ft::vector<int>::iterator i = b.begin(); i != b.end(); i++)
+                std::cout << *i << std::endl;
+	
+	ft::vector<int>::const_iterator p = b.begin();
+	ft::vector<int>::iterator q = b.begin();
+	std::cout << "q = " << *q << std::endl;
+	std::cout << *p << std::endl;
+	std::cout << *p << std::endl;
+
+/*	
+//	*a = 100;
+
+//	return (0);
 	for (int i = 0; i < 3; i++)
 		vec.push_back(i + 10);
 	vec2 = vec;
@@ -440,6 +674,6 @@ int main(void)
 //	q.clear();
 	std::cout << p.size() << std::endl;
 	std::cout << q.size() << std::endl;
-
-	return (0);*/
+*/
+	return (0);
 }
