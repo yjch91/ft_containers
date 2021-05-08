@@ -1,6 +1,7 @@
 #include "iostream"
 #include <limits>
 #include <vector>
+#include <deque>
 
 
 namespace ft{
@@ -13,19 +14,44 @@ namespace ft{
 	template <bool Cond, typename T = void>
 	struct enable_if {};
 
-	template <typename T>
-	struct enable_if<true, T> {
-		typedef T type;
+	template <>
+	struct enable_if<true> {
+		typedef bool type;
 	};
 
 	template <typename T>
-        struct is_iterator { static const bool value = false; };
+        struct is_integral { static const bool value = true; };
 
-	template <typename T>
-    	struct is_iterator<VectorConstIterator<T>> { static const bool value = true; };
-
-	template <typename T>
-        struct is_iterator<VectorIterator<T>> { static const bool value = true; };
+	template <>
+		struct is_integral<bool> { static const bool value = false; };
+	template <>
+		struct is_integral<char> { static const bool value = false; };
+	template <>
+		struct is_integral<char16_t> { static const bool value = false; };
+	template <>
+		struct is_integral<char32_t> { static const bool value = false; };
+	template <>
+		struct is_integral<wchar_t> { static const bool value = false; };
+	template <>
+		struct is_integral<signed char> { static const bool value = false; };
+	template <>
+		struct is_integral<short int> { static const bool value = false; };
+	template <>
+		struct is_integral<int> { static const bool value = false; };
+	template <>
+		struct is_integral<long int> { static const bool value = false; };
+	template <>
+		struct is_integral<long long int> { static const bool value = false; };
+	template <>
+		struct is_integral<unsigned char> { static const bool value = false; };
+	template <>
+		struct is_integral<unsigned short int> { static const bool value = false; };
+	template <>
+		struct is_integral<unsigned int> { static const bool value = false; };
+	template <>
+		struct is_integral<unsigned long int > { static const bool value = false; };
+	template <>
+		struct is_integral<unsigned long long int > { static const bool value = false; };
 
 	template <typename T>
 	class VectorIterator{
@@ -75,12 +101,17 @@ namespace ft{
 				ptr--;
 				return (ptr);
 			}
+			
+			T	*operator+(difference_type n)
+			{
+				return (ptr + n);
+			}
 
 			difference_type	operator-(const VectorIterator &i)
 			{
 				return (ptr - i.ptr);
 			}
-
+			
 			T	*getPtr() const { return (ptr); }
 			bool	operator!=(const VectorIterator &p) { return (ptr != p.ptr); }
 			//void	operator=(T *p) { ptr = p; };
@@ -88,6 +119,18 @@ namespace ft{
 	
 	template <typename T>
 	class VectorConstIterator{
+		public:
+                        typedef T value_type;
+                        typedef T& reference;
+                        typedef const T& const_reference;
+                        typedef T* pointer;
+                        typedef const T* const_pointer;
+                        typedef VectorIterator<T> iterator;
+                        typedef VectorConstIterator<T> const_iterator;
+//                      typedef reverse_iterator;
+//                      typedef const_reverse_iterator;
+                        typedef ptrdiff_t difference_type;
+                        typedef size_t size_type;
 		private:
 			T *ptr;
 		public:
@@ -101,10 +144,10 @@ namespace ft{
 				ptr = i.ptr;
 				return (*this);
 			}
-			VectorConstIterator	&operator=(const VectorIterator<T> &i){
-				ptr = i.getPtr();
-				return (*this);
-			}
+//			VectorConstIterator	&operator=(const VectorIterator<T> &i){
+//			ptr = i.getPtr();
+//				return (*this);
+//			}
 
 			T const	&operator*() const { return (*ptr); };
 			T	*operator++(int){ // i++;
@@ -125,6 +168,17 @@ namespace ft{
 				ptr--;
 				return (ptr);
 			}
+
+			T	*operator+(difference_type n)
+			{
+				return (ptr + n);
+			}
+
+			difference_type	operator-(const VectorConstIterator &i)
+			{
+				return (ptr - i.ptr);
+			}
+
 			T       *getPtr() const { return (ptr); }
 			bool	operator!=(const VectorConstIterator &p) { return (ptr != p.ptr); }
 			//void	operator=(T *p) { ptr = p; };
@@ -157,7 +211,7 @@ namespace ft{
                         public:
                                 virtual const char      *what() const throw()
                                 {
-                                        return ("vector::_M_range_check");
+                                        return ("vector");
                                 }
                         };
 		private:
@@ -182,7 +236,8 @@ namespace ft{
 			}
 			// range constructor
 			template <typename InputIterator>
-			vector(InputIterator first, InputIterator last, typename ft::enable_if<ft::is_iterator<InputIterator>::value, InputIterator>::type tmp = 0){
+			vector(InputIterator first, InputIterator last, typename ft::enable_if<ft::is_integral<InputIterator>::value>::type tmp = 0){
+				(void)tmp;
 				size_type n = last - first;
 				_capacity = n;
 				_size = n;
@@ -222,8 +277,8 @@ namespace ft{
 			
 			// Iterators
 			iterator        begin() { return (iterator(ary)); }
-                        const_iterator  begin() const { return (const_iterator(ary)); }
-                        iterator        end() { return (iterator(&ary[_size])); }
+            const_iterator  begin() const { return (const_iterator(ary)); }
+            iterator        end() { return (iterator(&ary[_size])); }
 			const_iterator	end() const { return (const_iterator(&ary[_size])); }			
 			// rbegin & rend !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -288,7 +343,8 @@ namespace ft{
 			// Modifiers
 			// range assign
 			template <typename InputIterator>
-			void	assign(InputIterator first, InputIterator last, typename ft::enable_if<ft::is_iterator<InputIterator>::value, InputIterator>::type tmp = 0){
+			void	assign(InputIterator first, InputIterator last, typename ft::enable_if<ft::is_integral<InputIterator>::value>::type tmp = 0){
+				(void)tmp;
 				size_type n = last - first;
 				if (_capacity >= n)
 					clear();
@@ -343,41 +399,125 @@ namespace ft{
 			// single elemaent insert
 			iterator	insert(iterator position, const value_type &val)
 			{
-				iterator i = this->begin();
-				value_type	temp = val;
+				iterator i = begin();
+				T	*temp = 0;
 				size_type 	j = 0;
+				size_type	count = 0;
 
 				while (i != position)
 				{
 					i++;
 					j++;
+					if (j > _size)
+						break ;
 				}
-				if (_capacity <= _size)
-					reserve(_capacity * 2);
-				position  = &ary[j];
-				if (j != _size)
-					temp = ary[j];
-				ary[j++] = val;
-				for (; j < _size; j++)
-				{
-					value_type n = ary[j];
-					ary[j] = temp;
-					temp = n;
-				}
-				ary[j] = temp;
+				if (_capacity < _size + 1)
+					_capacity *= 2;
+				temp = new T[_capacity];
+				for (i = begin(); i != position; i++)
+					temp[count++] = *i;
+				temp[count++] = val;
+				for (i = position; i != end(); i++)
+					temp[count++] = *i;
+				delete[] ary;
+				ary = temp;
+				position = &ary[j];
 				_size++;
 				return (position);
 			}
 			// fill insert
 			void	insert(iterator position, size_type n, const value_type &val)
 			{
+				iterator i = begin();
+				T	*temp = 0;
+				size_type	count = 0;
 				
+				if (n == 0)
+					return ;
+				if (_capacity < _size + n)
+				{
+					if (_capacity * 2 >= _size + n)
+						_capacity *= 2;
+					else
+						_capacity = _size + n;
+				}
+				temp = new T[_capacity];
+
+				for (i = begin(); i != position; i++)
+					temp[count++] = *i;
+				for (size_type p = 0; p < n; p++)
+					temp[count++] = val;
+				for (i = position; i != end(); i++)
+					temp[count++] = *i;
+				delete[] ary;
+				ary = temp;
+				_size += n;
 			}
 			// range insert
 			template<typename InputIterator>
-			void insert (iterator position, InputIterator first, InputIterator last)
+			void insert (iterator position, InputIterator first, InputIterator last, typename ft::enable_if<ft::is_integral<InputIterator>::value>::type tmp = 0)
 			{
-				
+				(void)tmp;
+				iterator i = begin();
+				T	*temp = 0;
+				size_type	count = 0;
+				size_type	n = last - first;
+
+				if (n == 0)
+					return ;
+				if (_capacity < _size + n)
+				{
+					if (_capacity * 2 >= _size + n)
+						_capacity *= 2;
+					else
+						_capacity = _size + n;
+				}
+				temp = new T[_capacity];
+
+				for (i = begin(); i != position; i++)
+					temp[count++] = *i;
+				for (; first != last; first++)
+					temp[count++] = *first;
+				for (i = position; i != end(); i++)
+					temp[count++] = *i;
+				delete[] ary;
+				ary = temp;
+				_size += n;
+			}
+			iterator	erase(iterator position)
+			{
+				iterator	i;
+				iterator	j;
+
+				i = position;
+				j = i + 1;
+				while (j != end())
+				{
+					*i++ = *j++;
+				}
+				_size--;
+				return (position);
+			}
+			iterator	erase(iterator first, iterator last)
+			{
+				iterator	i;
+				iterator	j;
+				size_type	n = 0;
+
+				i = first;
+				while (i != last)
+				{
+					i++;
+					n++;
+				}
+				i = first;
+				j = i + n;
+				while (j != end())
+				{
+					*i++ = *j++;
+				}
+				_size -= n;
+				return (first);
 			}
 			void	swap(vector &v)
 			{
@@ -394,18 +534,15 @@ namespace ft{
 				v.ary = tmp;
 			}
 			void    clear(){
-                                for (size_type i = 0; i < _size; i++)
-                                        this->ary[i].value_type::~value_type();
-                                _size = 0;
-                        }
+				for (size_type i = 0; i < _size; i++)
+					this->ary[i].value_type::~value_type();
+				_size = 0;
+			}
 	};
 }
 
 int main(void)
 {
-	main_test();
-	return (0);
-
 
 	ft::vector<int> intV;
 	ft::vector<int> intV2;
@@ -419,35 +556,57 @@ int main(void)
 	std::vector<int>::iterator vit2;
 	std::vector<int>::iterator vit3;
 
+	std::deque<int> dq;
+
 	for (int i = 0; i < 16; i++)
 	{
-		vec.push_back(i + 10);
 		intV.push_back(i + 10);
+//		vec2.push_back(i + 10);
+		vec.push_back(i + 10);
+//		dq.push_back(i + 100);
 	}
+	
 	vit = vec.begin();
 	it = intV.begin();
+	for (int i = 0; i < 10; i++)
+	{
+		vit++;
+		it++;
+	}
+
+
+	std::cout << *vit << " before " << *it << std::endl;
+	for (int i = 0; i < (int)vec.size(); i++)
+		std::cout << vec[i] << " " << intV[i] << std::endl;
+	vec.erase(vit, vec.end());
+	intV.erase(it, intV.end());
+	std::cout << *vit << " return " << *it << std::endl;
+	for (int i = 0; i < (int)intV.size(); i++)
+		std::cout << vec[i] << " " << intV[i] << std::endl;
+
 	vit--;
 	vit++;
 	it--;
 	it++;
 	std::cout << "capa = " << vec.capacity() << std::endl;
 	std::cout << "vit = " << *vit << std::endl;
-	vit2 = vec.insert(vit, 200);
-	for (int i = 0; i < vec.size(); i++)
+	vec.insert(vit, dq.begin(), dq.end());
+	for (int i = 0; i < (int)vec.size(); i++)
 		std::cout << vec[i] << std::endl;
-	std::cout << "it = " << *vit2 << std::endl;
+	//std::cout << "it = " << *vit2 << std::endl;
+	//std::cout << " test " << *vit3 << std::endl;
 	std::cout << "capa = " << vec.capacity() << std::endl;
 
 	std::cout << "\n\n" << std::endl;
 
 	std::cout << "capa = " << intV.capacity() << std::endl;
-        std::cout << "vit = " << *it << std::endl;
-        it2 = intV.insert(it, 200);
-	for (int i = 0; i < intV.size(); i++)
-                std::cout << intV[i] << std::endl;
-        std::cout << "it = " << *it2 << std::endl;
-        std::cout << "capa = " << intV.capacity() << std::endl;
-	return (0);
+    std::cout << "vit = " << *it << std::endl;
+    intV.insert(it, dq.begin(), dq.end());
+	for (int i = 0; i < (int)intV.size(); i++)
+    	std::cout << intV[i] << std::endl;
+    //std::cout << "it = " << *it2 << std::endl;
+	//std::cout << " test " << *it3 << std::endl;
+    std::cout << "capa = " << intV.capacity() << std::endl;
 
 	std::vector<int> d(5, 12);
 	std::vector<int> a(d.begin(), d.end());
@@ -464,7 +623,7 @@ int main(void)
 	for (int i = 0; i < 10; i++)
 		xy.push_back(i + 19);
 	xy.assign(1, 12);
-	for(int i = 0; i < xy.size(); i++)
+	for(int i = 0; i < (int)xy.size(); i++)
 		std::cout << xy[i] << std::endl;
 	std::cout << xy.capacity() << std::endl;
 	std::cout << xy.size() << std::endl;
@@ -475,18 +634,17 @@ int main(void)
 	for (int i = 0; i < 10; i++)
 		yz.push_back(i + 19);
 	yz.assign(1, 12);
-	for(int i = 0; i < yz.size(); i++)
+	for(int i = 0; i < (int)yz.size(); i++)
                 std::cout << yz[i] << std::endl;
         std::cout << yz.capacity() << std::endl;
 	std::cout << yz.size() << std::endl;
-	return (0);
 	
 
 	ft::vector<int> b(c.begin(), c.end());
 	
 	std::cout << b.capacity() << std::endl;
         std::cout << b.size() << std::endl;
-	for(int i = 0; i < c.size(); i++)
+	for(int i = 0; i < (int)c.size(); i++)
 	{
 		std::cout << c[i] << " " <<  b[i] << std::endl;
 	}
@@ -496,13 +654,13 @@ int main(void)
      	for(ft::vector<int>::iterator i = b.begin(); i != b.end(); i++)
                 std::cout << *i << std::endl;
 	
-	ft::vector<int>::const_iterator p = b.begin();
-	ft::vector<int>::iterator q = b.begin();
-	std::cout << "q = " << *q << std::endl;
-	std::cout << *p << std::endl;
-	std::cout << *p << std::endl;
+//	ft::vector<int>::const_iterator p = b.begin();
+//	ft::vector<int>::iterator q = b.begin();
+//	std::cout << "q = " << *q << std::endl;
+//	std::cout << *p << std::endl;
+//	std::cout << *p << std::endl;
 
-/*	
+	
 //	*a = 100;
 
 //	return (0);
@@ -674,6 +832,6 @@ int main(void)
 //	q.clear();
 	std::cout << p.size() << std::endl;
 	std::cout << q.size() << std::endl;
-*/
+
 	return (0);
 }
