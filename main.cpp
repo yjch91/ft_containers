@@ -71,52 +71,124 @@ namespace ft{
 			T *ptr;
 		public:
 			VectorIterator() { ptr = 0; }
-			VectorIterator(T *p) : ptr(p) { }
+			VectorIterator(T *p) { ptr = p; }
 			~VectorIterator() { }
 
 			VectorIterator(const VectorIterator &i) : ptr(i.ptr) { }
-			VectorIterator(const VectorConstIterator<T> &i) : ptr(i.getPtr()) { }
-			VectorIterator	&operator=(const VectorIterator &i){
+
+			VectorIterator	&operator=(const VectorIterator<T> &i){
                                 ptr = i.ptr;
                                 return (*this);
 			}
 
+			T	*getPtr() const { return (ptr); }
+			
+			bool	operator==(const VectorIterator &p) { return (ptr == p.ptr); }
+			bool	operator==(const VectorConstIterator<T> &p) { return ( ptr == p.getPtr()); }
+			bool	operator!=(const VectorIterator &p) { return (ptr != p.ptr); }
+			bool	operator!=(const VectorConstIterator<T> &p) { return ( ptr != p.getPtr()); }
+
 			T 	&operator*() const { return (*ptr); }
 
-			T	*operator++(int){ // i++;
-				T	*tmp = ptr;
-				ptr++;
-				return (tmp);
-			}
-			T	*operator++(){ // ++i;
-				ptr++;
-				return (ptr);
-			}
-			T	*operator--(int){ // i--;
-				T	*tmp = ptr;
-				ptr--;
-				return (tmp);
-			}
-			T	*operator--(){ // --i
-				ptr--;
-				return (ptr);
-			}
-			
-			T	*operator+(difference_type n)
+			T	*operator->() const
 			{
-				return (ptr + n);
+				return (&(operator*()));
 			}
 
-			difference_type	operator-(const VectorIterator &i)
+			VectorIterator	operator++(int){ // i++;
+				VectorIterator<T> tmp = *this;
+				ptr++;
+				return (tmp);
+			}
+			VectorIterator	operator++(){ // ++i;
+				ptr++;
+				return (*this);
+			}
+			VectorIterator	operator--(int){ // i--;
+				VectorIterator<T> tmp = *this;
+				ptr--;
+				return (tmp);
+			}
+			VectorIterator	operator--(){ // --i
+				ptr--;
+				return (*this);
+			}
+			
+			VectorIterator operator+(difference_type n) const
+			{
+				VectorIterator<T> tmp(ptr + n);
+				return (tmp);
+			}
+
+			VectorIterator	operator-(difference_type n) const
+                        {
+				VectorIterator<T> tmp(ptr - n);
+                                return (tmp);
+                        }
+
+			difference_type	operator-(const VectorIterator &i) const
 			{
 				return (ptr - i.ptr);
 			}
+
+			difference_type operator-(const VectorConstIterator<T> &i) const
+			{
+				return (ptr - i.getPtr());
+			}
+
+			VectorIterator	&operator+=(difference_type n)
+			{
+				ptr += n;
+				return (*this);
+			}
+
+			VectorIterator  &operator-=(difference_type n)
+                        {
+                                ptr -= n;
+                                return (*this);
+                        }
 			
-			T	*getPtr() const { return (ptr); }
-			bool	operator!=(const VectorIterator &p) { return (ptr != p.ptr); }
-			//void	operator=(T *p) { ptr = p; };
+			bool operator<(const VectorIterator &i)
+			{                
+		                return (ptr < i.ptr);
+			}
+			bool operator<(const VectorConstIterator<T> &i)
+			{
+				return (ptr < i.getPtr());
+			}
+
+			bool operator<=(const VectorIterator &i)
+			{
+				return (ptr <= i.ptr);
+			}
+			bool operator<=(const VectorConstIterator<T> &i)
+			{
+				return (ptr <= i.getPtr());
+			}
+			
+			bool operator>(const VectorIterator &i)
+			{
+				return (ptr > i.ptr);
+			}
+			bool operator>(const VectorConstIterator<T> &i)
+			{
+				return (ptr > i.getPtr());
+			}
+
+			bool operator>=(const VectorIterator &i)
+			{
+				return (ptr >= i.ptr);
+			}
+			bool operator>=(const VectorConstIterator<T> &i)
+			{
+				return (ptr >= i.getPtr());
+			}
+			
+			T	&operator[](size_type n){
+				return (ptr[n]);
+			}
 	};
-	
+
 	template <typename T>
 	class VectorConstIterator{
 		public:
@@ -140,48 +212,123 @@ namespace ft{
 
 			VectorConstIterator(const VectorConstIterator &i) : ptr(i.ptr) { }
 			VectorConstIterator(const VectorIterator<T> &i) : ptr(i.getPtr()) { }
-			VectorConstIterator	&operator=(const VectorConstIterator &i){ 
+			
+			VectorConstIterator	&operator=(const VectorConstIterator<T> &i){ 
 				ptr = i.ptr;
 				return (*this);
 			}
-//			VectorConstIterator	&operator=(const VectorIterator<T> &i){
-//			ptr = i.getPtr();
-//				return (*this);
-//			}
 
-			T const	&operator*() const { return (*ptr); };
-			T	*operator++(int){ // i++;
-				T	*tmp = ptr;
-				ptr++;
-				return (tmp);
-			}
-			T	*operator++(){ // ++i;
-				ptr++;
-				return (ptr);
-			}
-			T	*operator--(int){ // i--;
-				T	*tmp = ptr;
-				ptr--;
-				return (tmp);
-			}
-			T	*operator--(){ // --i
-				ptr--;
-				return (ptr);
+			VectorConstIterator	&operator=(const VectorIterator<T> &i){
+				ptr = i.getPtr();
+				return (*this);
 			}
 
-			T	*operator+(difference_type n)
+			T	*getPtr() const { return (ptr); }; 
+
+			bool    operator==(const VectorConstIterator &p) { return (ptr == p.ptr); }
+			bool    operator==(const VectorIterator<T> &p) { return ( ptr == p.getPtr()); }
+			bool    operator!=(const VectorConstIterator &p) { return (ptr != p.ptr); }
+			bool    operator!=(const VectorIterator<T> &p) { return ( ptr != p.getPtr()); }			
+
+			T const	&operator*() const { return (*ptr); }
+
+			T const	*operator->() const
 			{
-				return (ptr + n);
+				return (&(operator*()));
 			}
 
-			difference_type	operator-(const VectorConstIterator &i)
+			VectorConstIterator	operator++(int){ // i++;
+				VectorConstIterator<T> tmp = *this;
+				ptr++;
+				return (tmp);
+			}
+			VectorConstIterator	operator++(){ // ++i;
+				ptr++;
+				return (*this);
+			}
+			VectorConstIterator	operator--(int){ // i--;
+				VectorConstIterator<T> tmp = *this;
+				ptr--;
+				return (tmp);
+			}
+			VectorConstIterator	operator--(){ // --i
+				ptr--;
+				return (*this);
+			}
+
+			VectorConstIterator operator+(difference_type n) const
+			{
+				VectorIterator<T> tmp(ptr + n);
+				return (tmp);
+			}
+
+			VectorConstIterator  operator-(difference_type n) const
+			{
+				VectorIterator<T> tmp(ptr - n);
+				return (tmp);
+			}
+
+			difference_type operator-(const VectorConstIterator &i) const
 			{
 				return (ptr - i.ptr);
 			}
 
-			T       *getPtr() const { return (ptr); }
-			bool	operator!=(const VectorConstIterator &p) { return (ptr != p.ptr); }
-			//void	operator=(T *p) { ptr = p; };
+			difference_type operator-(const VectorIterator<T> &i) const
+			{
+                                return (ptr - i.getPtr());
+			}
+
+			VectorConstIterator  &operator+=(difference_type n)
+			{
+				ptr += n;
+				return (*this);
+			}
+
+			VectorConstIterator  &operator-=(difference_type n)
+			{
+				ptr -= n;
+				return (*this);
+			}
+
+			bool operator<(const VectorConstIterator &i)
+			{
+				return (ptr < i.ptr);
+			}
+			bool operator<(const VectorIterator<T> &i)
+			{
+				return (ptr < i.getPtr());
+			}
+
+			bool operator<=(const VectorConstIterator &i)
+			{
+				return (ptr <= i.ptr);
+			}
+			bool operator<=(const VectorIterator<T> &i)
+			{
+				return (ptr <= i.getPtr());
+			}
+
+			bool operator>(const VectorConstIterator &i)
+			{
+				return (ptr > i.ptr);
+			}
+			bool operator>(const VectorIterator<T> &i)
+			{
+				return (ptr > i.getPtr());
+			}
+
+			bool operator>=(const VectorConstIterator &i)
+			{
+				return (ptr >= i.ptr);
+			}
+			bool operator>=(const VectorIterator<T> &i)
+			{
+				return (ptr >= i.getPtr());
+			}
+			
+			T const &operator[](size_type n) const{
+				return (ptr[n]);
+			}
 	};
 
 	template <typename T>
@@ -246,39 +393,39 @@ namespace ft{
                          		ary[i] = *first++;
 			}
 			// copy constructor
-			vector(const vector &v){
-				if (v._capacity == 0)
+			vector(const vector &x){
+				if (x._capacity == 0)
 					ary = 0;
 				else
 				{
-					ary = new T[v._capacity];
-					for (size_type i = 0; i < v._size; i++)
-						ary[i] = v.ary[i];
+					ary = new T[x._capacity];
+					for (size_type i = 0; i < x._size; i++)
+						ary[i] = x.ary[i];
 				}
-				_size = v._size;
-				_capacity = v._capacity;
+				_size = x._size;
+				_capacity = x._capacity;
 			}
 			// Assign content
-			vector	&operator=(const vector &v){
-				if (v._capacity == 0)
+			vector	&operator=(const vector &x){
+				if (x._capacity == 0)
 					ary = 0;
 				else
 				{
 					if (ary != 0)
 						delete[] ary;
-					ary = new T[v._capacity];
-					for (size_type i = 0; i < v._size; i++)
-						ary[i] = v.ary[i];
+					ary = new T[x._capacity];
+					for (size_type i = 0; i < x._size; i++)
+						ary[i] = x.ary[i];
 				}
-				_size = v._size;
-				_capacity = v._capacity;
+				_size = x._size;
+				_capacity = x._capacity;
 				return (*this);
 			}
 			
 			// Iterators
 			iterator        begin() { return (iterator(ary)); }
-            const_iterator  begin() const { return (const_iterator(ary)); }
-            iterator        end() { return (iterator(&ary[_size])); }
+			const_iterator  begin() const { return (const_iterator(ary)); } 
+			iterator        end() { return (iterator(&ary[_size])); }
 			const_iterator	end() const { return (const_iterator(&ary[_size])); }			
 			// rbegin & rend !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -396,7 +543,7 @@ namespace ft{
 			void	pop_back(){
 				this->ary[--_size].value_type::~value_type();
 			}
-			// single elemaent insert
+			// single element insert
 			iterator	insert(iterator position, const value_type &val)
 			{
 				iterator i = begin();
@@ -539,6 +686,70 @@ namespace ft{
 				_size = 0;
 			}
 	};
+	
+	// Non-member function overloads
+	template <typename T>
+        bool operator==(const vector<T>& lhs, const vector<T>& rhs)
+	{
+		size_t	n = lhs.size();
+		
+		if (lhs.size() != rhs.size())
+			return (false);
+		for (size_t i = 0; i < n; i++)
+		{
+			if (lhs[i] != rhs[i])
+				return (false);
+		}
+		return (true);
+	}
+	
+	template <typename T>
+	bool operator!= (const vector<T>& lhs, const vector<T>& rhs)
+	{
+		return (!(lhs == rhs));
+	}
+	
+	template <typename T>
+	bool operator<(const vector<T>& lhs, const vector<T>& rhs)
+	{
+		size_t	n = std::min(lhs.size(), rhs.size());
+
+		for (size_t i = 0; i < n; i++)
+		{
+			if (lhs[i] < rhs[i])
+				return (true);
+			else if (lhs[i] > rhs[i])
+				return (false);
+		}
+		if (rhs.size() > n)
+			return (true);
+		return (false);
+	}
+	
+	template <typename T>
+        bool operator<=(const vector<T>& lhs, const vector<T>& rhs)
+        {
+		return (!(rhs < lhs));
+        }
+
+	template <typename T>
+        bool operator>(const vector<T>& lhs, const vector<T>& rhs)
+        {
+		return (rhs < lhs);
+        }
+
+	template <typename T>
+        bool operator>=(const vector<T>& lhs, const vector<T>& rhs)
+        {
+		return (!(lhs < rhs));
+        }	
+
+	template <typename T>
+	void swap(vector<T>& x, vector<T>& y)
+	{
+		x.swap(y);
+	}
+
 }
 
 int main(void)
@@ -557,6 +768,139 @@ int main(void)
 	std::vector<int>::iterator vit3;
 
 	std::deque<int> dq;
+
+	ft::vector<int> foo (3,200);   // three ints with a value of 100
+        ft::vector<int> bar (3,100);   // two ints with a value of 200
+
+	if (foo==bar) std::cout << "foo and bar are equal\n";
+  	if (foo!=bar) std::cout << "foo and bar are not equal\n";
+  	if (foo< bar) std::cout << "foo is less than bar\n";
+  	if (foo> bar) std::cout << "foo is greater than bar\n";
+  	if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
+	if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
+
+	ft::swap(foo, bar);
+	for (int i = 0; i < 3; i++)
+	{
+		std::cout << "foo = " << foo[i] << "     ";
+		std::cout << "bar = " << bar[i] << std::endl;
+	}
+
+	for (int i = 0; i < 10; i++)
+	{
+		vec.push_back(i * 11);
+		intV.push_back(i * 11);
+	}
+
+	ft::vector<int>::iterator vv;
+	ft::vector<int>::const_iterator vvv;
+
+	std::vector<int>::iterator xx;
+	std::vector<int>::const_iterator xxx;
+	
+	xx = vec.begin();
+	xxx = vec.end();
+	if (xxx != xx)
+		std::cout << "ok" << std::endl;
+
+	vv = intV.begin();
+	vvv = intV.end();
+
+	ft::vector<int>::const_iterator t1;
+
+	if (vvv != vv)
+		std::cout << "okok" << std::endl;
+	else if (vvv == vv)
+		std::cout << "koko" << std::endl;
+
+	vv = intV.end();
+	xx = vec.end();
+
+	ft::vector<int>::iterator yy = intV.begin();
+	std::vector<int>::iterator zz = vec.begin();
+	yy = vv - 3;
+	zz = xx - 3;
+	vv--;
+	xx--;
+	int	*pp = new int;
+	*pp = 111;
+
+	std::vector<int> qq;
+	ft::vector<int> qqq;
+	qq.push_back(1);
+	qqq.push_back(1);
+
+	ft::vector<int>::iterator tt1 = intV.begin();
+	ft::vector<int>::iterator tt2 = intV.begin();
+	tt2 = tt1;
+
+	std::vector<int>::iterator aa1;
+	std::vector<int>::iterator aa2;
+
+	aa2 = vec.begin();
+	aa2[5] = 555;
+	std::cout << aa2[5] << std::endl;
+
+	tt2 = intV.begin();
+	tt2[5] = 555;
+	std::cout << tt2[5] << std::endl;
+
+	for (int i = 0; i < 10; i++)
+		std::cout << vec[i] << " " << intV[i] << std::endl;
+
+//	vvv = tt1;
+//	tt2 = vv;
+//	tt2 = tt1;
+//	tt2 = vvv;
+//	tt1 = vvv;
+
+//	xxx = aa1;
+//	aa2 = xx;
+//	aa2 = aa1;
+//	aa2 = xxx;
+//	aa1 = xxx;
+
+
+//	vv += 1;
+//	xx += 1;	
+
+	if (vvv <= yy)
+		std::cout << "uppppppppp\n";
+	else
+		std::cout << "downnnnnnnnnn\n";
+
+//	int nn = vv - vvv;
+//	int mm = xx - xxx;
+
+//	std::cout << nn << " vs " << mm << std::endl;
+
+//	vv = vvv;
+
+/*	vv++;
+	vvv++;
+
+	if (vv == vvv)
+		std::cout << "equal" << std::endl;
+	else if (vv != vvv)
+		std::cout << "no equal" << std::endl;
+*/
+	std::cout << *xx << std::endl;
+
+        return (0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	for (int i = 0; i < 16; i++)
 	{
