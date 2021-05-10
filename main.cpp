@@ -752,8 +752,24 @@ namespace ft{
 
 }
 
+class	test{
+	public:
+		int x;
+		test(int a = 0) { x = a; }
+		~test() { }
+};
+
+
+
+
 int main(void)
 {
+	ft::vector<test> a22;
+	test ww(111);
+
+	a22.push_back(ww);
+
+	std::cout << a22.begin()->x << std::endl;
 
 	ft::vector<int> intV;
 	ft::vector<int> intV2;
