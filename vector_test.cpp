@@ -317,6 +317,26 @@ void	capacity_test()
 	std::cout << "vec_ft  capacity() : " << vec_ft.capacity() << std::endl;
 	std::cout << "\n";
 	std::cout << "[reserve test]\n";
+	
+	std::cout << "reserve(-1)\n";
+	try
+	{
+		vec_std.reserve(-1);
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
+
+	try
+	{
+		vec_ft.reserve(-1);
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
+
 	std::cout << "reserve(0)\n";
 	vec_std.reserve(0);
 	vec_ft.reserve(0);
