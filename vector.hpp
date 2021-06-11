@@ -30,7 +30,7 @@ namespace ft{
                 return (*this);
 			}
 
-			explicit VectorIterator(T *p) : ptr(p) { }
+			explicit VectorIterator(T *p) : ptr(p) { }	// int p = 10; vector.erase(&p);
 
 			T	*getPtr() const { return (ptr); }
 						
@@ -44,7 +44,7 @@ namespace ft{
 
 			T 	&operator*() { return (*ptr); }
 
-			T	*operator->() { return (&(operator*())); }
+			T	*operator->() { return (ptr); }
 
 			VectorIterator	operator++(int){	// i++;
 				VectorIterator<T> temp = *this;
@@ -151,7 +151,8 @@ namespace ft{
 			bool operator!=(const VectorReverseIterator<diffT> &src) { return (ptr != const_cast<T*>(src.getPtr())); }
 
 			T &operator*() { return (*ptr); }
-			T *operator->() { return (&(operator*())); }
+
+			T *operator->() { return (ptr); }
 
 			VectorReverseIterator	operator++(int){ // i++;
 				VectorReverseIterator<T> temp = *this;
