@@ -441,7 +441,6 @@ namespace ft{
 				else
 				{
 					reserve(n);
-					_capacity = n;
 				}
 				for (size_type i = 0; i < n; i++)
 					ary[i] = *first++;
@@ -458,7 +457,6 @@ namespace ft{
                 else
                 {
 					reserve(n);
-                    _capacity = n;
                 }
                 for (size_type i = 0; i < n; i++)
                     ary[i] = val;
@@ -648,18 +646,18 @@ namespace ft{
 				return (first);
 			}
 
-			void	swap(vector &v){
+			void	swap(vector &x){
 				size_type c = _capacity;
 				size_type s = _size;
 				T	*temp = ary;
 
-				_capacity = v._capacity;
-				_size = v._size;
-				ary = v.ary;
+				_capacity = x._capacity;
+				_size = x._size;
+				ary = x.ary;
 
-				v._capacity = c;
-				v._size = s;
-				v.ary = temp;
+				x._capacity = c;
+				x._size = s;
+				x.ary = temp;
 			}
 
 			void    clear(){
