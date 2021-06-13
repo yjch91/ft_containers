@@ -283,6 +283,8 @@ namespace ft{
                         return ("munmap_chunk(): invalid pointer"); // check plz!!!!!!!!!!!!!!
                     }
             };
+            // lst lst2 있을 때 둘다 push_back하고 lst 지우는거 테스트해보고 lst2는 push_back 안하고 테스트해서
+            // mummap_chunk랑 free 다른데 mac에서도 다른지 확인
         private:
             ft::Node<T> *node;
             size_type _size;
@@ -474,7 +476,7 @@ namespace ft{
             void    pop_front(){
                 ft::Node<T> *temp = node->next;
 
-                if (_size == 0)
+                if (temp == node)
                     throw PopException();       // check plz!!!!!!!!!!!!!!!!
                 node->next->next->prev = node;
                 node->next = node->next->next;
@@ -496,7 +498,7 @@ namespace ft{
             void    pop_back(){
                 ft::Node<T> *temp = node->prev;
 
-                if (_size == 0)
+                if (temp == node)
                     throw PopException();       // check plz!!!!!!!!!!!!!!!!
                 node->prev->prev->next = node;
                 node->prev = node->prev->prev;
@@ -842,10 +844,10 @@ void    insert_test()
 
 void    range_erase_test()
 {
-    ft::list<int> lst, lst2, lst3;
-    ft::list<int>::iterator a, b, c, d;
+    std::list<int> lst, lst2, lst3;
+    std::list<int>::iterator a, b, c, d;
 
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < 2; i++)
         lst.push_back(i + 1);
 
 
@@ -858,12 +860,12 @@ void    range_erase_test()
     lst2.push_back(6666);
     lst2.push_back(7777);
 
-    c = lst2.begin();
-    for (int i = 0; i < 21; i++)
+    c = lst.begin();
+    for (int i = 0; i < 1; i++)
         c++;
 
     
-    b = lst.erase(lst2.begin(), c);
+    //b = lst.erase(lst.begin(), c);
     // c = lst2.begin();
     // c++;
     // c++;
@@ -872,8 +874,12 @@ void    range_erase_test()
     std::cout << "lst size = " << lst.size() << std::endl;
     // std::cout << "lst2 size = " << lst2.size() << std::endl;
     
+   lst.pop_back();
+   lst.pop_back();
+   lst.pop_back();
 
-   lst.resize(-123, 2222);
+
+  // lst.resize(-123, 2222);
 //    lst2.resize(0, 11100);
 
     std::cout << "lst size = " << lst.size() << std::endl;
@@ -1063,11 +1069,46 @@ int main(void)
     // ft::list<int> ss;
     //insert_test();
     //push_front_test();
-    range_erase_test();
+    //range_erase_test();
     //swap_test();
 
     //clear_test();
     
+    ft::list<int> lst;
+    ft::list<int> lst2;
+    ft::list<int>::iterator a, b, c, d;
+
+    for (int i = 0; i < 2; i++)
+       lst.push_back(i + 1);
+
+
+    // for (int i = 0; i < 120; i++)
+    //     lst2.push_back(1111);
+    // lst2.push_back(2222);
+    // lst2.push_back(3333);
+    // lst2.push_back(4444);
+    // lst2.push_back(5555);
+    // lst2.push_back(6666);
+    // lst2.push_back(7777);
+
+    c = lst.begin();
+    for (int i = 0; i < 1; i++)
+        c++;
+
+    
+    //b = lst.erase(lst.begin(), c);
+    // c = lst2.begin();
+    // c++;
+    // c++;
+    //b = lst.erase(c, lst2.end());
+
+    std::cout << "lst size = " << lst.size() << std::endl;
+
+    lst.erase(lst.end(), lst.begin());
+//    lst.pop_front();
+//    lst.pop_front();
+//    lst.pop_front();
+
     return (0);
 
 
@@ -1150,34 +1191,34 @@ int main(void)
     // std::cout << *aa++ << std::endl;
 
 
-    ft::list<int> lst(4, 99);
-    ft::list<int> lst2(lst.begin(), ++lst.begin());
+//     ft::list<int> lst(4, 99);
+//     ft::list<int> lst2(lst.begin(), ++lst.begin());
 
-    for (int i = 0; i < 4; i++)
-    {
-        lst2.push_back(i);
-    }
+//     for (int i = 0; i < 4; i++)
+//     {
+//         lst2.push_back(i);
+//     }
 //    ft::list<int>::iterator it = lst2.begin();
 //    ft::list<int>::const_iterator it2(it);
 
 //     it2 = it;
 //     std::cout << *it << " vs " << *it2 << std::endl;
 
-    // std::list<test> ttt;
-    // test date(111);
+//     std::list<test> ttt;
+//     test date(111);
 
-    // ttt.push_back(date);
-    // std::list<test>::iterator ci = ttt.begin();
+//     ttt.push_back(date);
+//     std::list<test>::iterator ci = ttt.begin();
 
-    // std::cout << "test " << ci->x << std::endl;
+//     std::cout << "test " << ci->x << std::endl;
 
 //    if (it == it2)
 //        std::cout << "ok" << std::endl;
 
 
-    ft::list<int> lst3;
+//     ft::list<int> lst3;
 
-    lst3 = lst;
+//     lst3 = lst;
 
     // lst.print();
     // lst2.print();
