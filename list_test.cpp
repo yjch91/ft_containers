@@ -8,7 +8,6 @@ static void	constructor_test()
     ft::list<int>   default_ft;
     ft::list<int>::iterator i_ft;
     
-
 	for (int i = 0; i < 10; i++)
 	{
 		default_std.push_back((i + 1) * 11);
@@ -148,7 +147,6 @@ static void	iterators_test()
 
 	rit_std = lst_std.rend();
 	std::list<int>::const_reverse_iterator crit_std2(lst_std.end());
-	//crit_std = lst_std.end();
   	std::cout << "reverse_iterator base test :";
   	for (it_std = rit_std.base(); it_std != crit_std2.base(); ++it_std)
     	std::cout << " " << *it_std;
@@ -207,7 +205,7 @@ static void	iterators_test()
     	std::cout << " " << *it_ft;
   	std::cout << "\n\n";
 
-	//operator-> test
+	// operator-> test
 	std::cout << "\033[32m[operator-> test]\033[0m\n";
 	std::list<test> test_std;
 	ft::list<test> test_ft;
@@ -1139,6 +1137,7 @@ static void	other_test()
         std::cout << " " << *it_ft;
     std::cout << "\n\n";
 
+    std::cout << "\033[32mstd relational operators test\033[0m\n";
 	if (lst_std == lst_std3)
 		std::cout << "lst_std == lst_std3\n";
 	else
@@ -1160,6 +1159,31 @@ static void	other_test()
 		std::cout << "lst_std2 < lst_std3\n";
 	else if (lst_std3 <= lst_std2)
 		std::cout << "lst_std3 <= lst_std2\n";
+    
+    std::cout << "\n";
+
+    std::cout << "\033[32mft relational operators test\033[0m\n";
+    if (lst_ft == lst_ft3)
+		std::cout << "lst_ft == lst_ft3\n";
+	else
+		std::cout << "lst_ft != lst_ft3\n";
+
+	if (lst_ft2 != lst_ft3)
+		std::cout << "lst_ft2 != lst_ft3\n";
+	else
+		std::cout << "lst_ft2 == lst_ft3\n";
+
+	std::cout << "\n";
+
+	if (lst_ft > lst_ft3)
+		std::cout << "lst_ft > lst_ft3\n";
+	else if (lst_ft3 >= lst_ft)
+		std::cout << "lst_ft3 >= lst_ft\n";
+
+	if (lst_ft2 < lst_ft3)
+		std::cout << "lst_ft2 < lst_ft3\n";
+	else if (lst_ft3 <= lst_ft2)
+		std::cout << "lst_ft3 <= lst_ft2\n";
 }
 
 void list_test()

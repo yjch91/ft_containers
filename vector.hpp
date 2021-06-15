@@ -30,7 +30,7 @@ namespace ft{
                 return (*this);
 			}
 
-			explicit VectorIterator(T *p) : ptr(p) { }	// int p = 10; vector.erase(&p);
+			explicit VectorIterator(T *p) : ptr(p) { }	// explicit ex) int p = 10; vector.erase(&p);
 
 			T	*getPtr() const { return (ptr); }
 						
@@ -716,6 +716,7 @@ namespace ft{
 
 	template <typename T, typename Alloc>
 	void swap(vector<T, Alloc> &x, vector<T, Alloc> &y) { x.swap(y); }
+
 }
 
 #endif

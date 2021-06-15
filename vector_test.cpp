@@ -168,7 +168,6 @@ static void	iterators_test()
 
 	rit_std = vec_std.rend();
 	std::vector<int>::const_reverse_iterator crit_std2(vec_std.end());
-	//crit_std = vec_std.end();
   	std::cout << "reverse_iterator base test :";
   	for (it_std = rit_std.base(); it_std != crit_std2.base(); ++it_std)
     	std::cout << " " << *it_std;
@@ -256,7 +255,7 @@ static void	iterators_test()
     	std::cout << " " << *it_ft;
   	std::cout << "\n\n";
 
-	//operator-> test
+	// operator-> test
 	std::cout << "\033[32m[operator-> test]\033[0m\n";
 	std::vector<test> test_std;
 	ft::vector<test> test_ft;
@@ -415,7 +414,7 @@ static void	element_access_test()
 	}
 	catch(const std::exception& e)
 	{
-		std::cerr << e.what() << '\n';	// error message check!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		std::cerr << e.what() << '\n';
 	}
 	std::cout << "\n";
 }
@@ -652,6 +651,7 @@ static void	other_test()
 		std::cout << " " << vec_ft2[i];
 	std::cout << "\n\n";
 
+	std::cout << "\033[32mstd relational operators test\033[0m\n";
 	if (vec_std == vec_std3)
 		std::cout << "vec_std == vec_std3\n";
 	else
@@ -673,6 +673,31 @@ static void	other_test()
 		std::cout << "vec_std2 < vec_std3\n";
 	else if (vec_std3 <= vec_std2)
 		std::cout << "vec_std3 <= vec_std2\n";
+
+	std::cout << "\n";
+
+	std::cout << "\033[32mft relational operators test\033[0m\n";
+	if (vec_ft == vec_ft3)
+		std::cout << "vec_ft == vec_ft3\n";
+	else
+		std::cout << "vec_ft != vec_ft3\n";
+
+	if (vec_ft2 != vec_ft3)
+		std::cout << "vec_ft2 != vec_ft3\n";
+	else
+		std::cout << "vec_ft2 == vec_ft3\n";
+
+	std::cout << "\n";
+
+	if (vec_ft > vec_ft3)
+		std::cout << "vec_ft > vec_ft3\n";
+	else if (vec_ft3 >= vec_ft)
+		std::cout << "vec_ft3 >= vec_ft\n";
+
+	if (vec_ft2 < vec_ft3)
+		std::cout << "vec_ft2 < vec_ft3\n";
+	else if (vec_ft3 <= vec_ft2)
+		std::cout << "vec_ft3 <= vec_ft2\n";
 }
 
 void vector_test()

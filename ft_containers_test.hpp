@@ -5,9 +5,13 @@
 #include <iostream>
 #include <cmath>
 #include <vector> 
-#include "vector.hpp"
 #include <list>
+#include <stack>
+#include <queue>
+#include "vector.hpp"
 #include "list.hpp"
+#include "stack.hpp"
+#include "queue.hpp"
 
 // operator-> test class
 class   test{
@@ -19,5 +23,7 @@ class   test{
 
 void vector_test();
 void list_test();
+void stack_test();
+void queue_test();
 
 #endif

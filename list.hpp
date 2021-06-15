@@ -395,21 +395,7 @@ namespace ft{
                 ft::Node<T> *temp = 0;
 
                 if (node != node->next)
-                {
-                    // ft::Node<T> *end_node = node;
-
-                    // temp = node->next;
-                    // while (temp != end_node)
-                    // {
-                    //     node = temp->next;
-                    //     delete temp;
-                    //     temp = node;
-                    // }
-                    // node->prev = node;
-                    // node->next = node;
-                    // _size = 0;
                     clear();
-                }
                 temp = x.node->next;
                 while (temp != x.node)
                 {
@@ -454,18 +440,6 @@ namespace ft{
             template <typename InputIterator>
             void assign (InputIterator first, InputIterator last,
                             typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type type = 0){
-                // ft::Node<T> *end_node = node;
-                // ft::Node<T> *temp = node->next;
-
-                // while (temp != end_node)
-                // {
-                //     node = temp->next;
-                //     delete temp;
-                //     temp = node;
-                // }
-                // node->prev = node;
-                // node->next = node;
-                // _size = 0;
                 (void)type;
                 clear();
                 while (first != last)
@@ -474,18 +448,6 @@ namespace ft{
 
             // fill assign
             void assign (size_type n, const value_type &val){
-                // ft::Node<T> *end_node = node;
-                // ft::Node<T> *temp = node->next;
-
-                // while (temp != end_node)
-                // {
-                //     node = temp->next;
-                //     delete temp;
-                //     temp = node;
-                // }
-                // node->prev = node;
-                // node->next = node;
-                // _size = 0;
                 clear();
                 for (size_type i = 0; i < n; i++)
                     push_back(val);
@@ -506,7 +468,7 @@ namespace ft{
                 ft::Node<T> *temp = node->next;
 
                 if (temp == node)
-                    throw PopException();       // check plz!!!!!!!!!!!!!!!!
+                    throw PopException();
                 node->next->next->prev = node;
                 node->next = node->next->next;
                 delete temp;
@@ -528,7 +490,7 @@ namespace ft{
                 ft::Node<T> *temp = node->prev;
 
                 if (temp == node)
-                    throw PopException();       // check plz!!!!!!!!!!!!!!!!
+                    throw PopException();
                 node->prev->prev->next = node;
                 node->prev = node->prev->prev;
                 delete temp;
@@ -632,7 +594,7 @@ namespace ft{
                 ft::Node<T> *ret = pos->next;
 
                 if (pos->is_node == true)
-                    throw EraseException();     // check plz!!!!!!!!!!!!!!!!!!!
+                    throw EraseException();
                 pos->prev->next = pos->next;
                 pos->next->prev = pos->prev;
                 delete pos;
@@ -652,7 +614,7 @@ namespace ft{
                 while (temp != right)
                 {
                     if (temp->is_node == true)
-                        throw EraseException();     // check plz!!!!!!!!!!!!!!!!!!!
+                        throw EraseException();
                     left = left->next;
                     delete temp;
                     temp = left;
@@ -688,10 +650,6 @@ namespace ft{
                         count++;
                         temp = temp->next;
                     }
-                    // std::cout << "_size = " << _size << std::endl;
-                    // std::cout << "n = " << n << std::endl;
-                    // std::cout << "count = " << count << std::endl;
-                    // std::cout << "\n\n";
                     if (_size - n <= count && n > count)
                     {
                         count = _size - n;
