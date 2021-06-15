@@ -1,1994 +1,1184 @@
-#include <iostream>
-#include <limits>
-#include <list>
-#include "utils.hpp"
-#include <cmath>
+#include "ft_containers_test.hpp"
 
-namespace ft{
+static void	constructor_test()
+{
+	std::cout << "\033[32m[		constructor_test		]\033[0m\n";
+	std::list<int>  default_std;
+	std::list<int>::iterator    i_std;
+    ft::list<int>   default_ft;
+    ft::list<int>::iterator i_ft;
+    
 
-    template <typename T>
-    struct Node
+	for (int i = 0; i < 10; i++)
+	{
+		default_std.push_back((i + 1) * 11);
+		default_ft.push_back((i + 1) * 11);
+	}
+	std::cout << "default std :";
+	for (i_std = default_std.begin(); i_std != default_std.end(); i_std++)
+		std::cout << " " << *i_std;
+	std::cout << "\n";
+
+	std::cout << "default ft  :";
+	for (i_ft = default_ft.begin(); i_ft != default_ft.end(); i_ft++)
+		std::cout << " " << *i_ft;
+	std::cout << "\n\n";
+
+	std::list<int> fill_std1(5);
+	std::list<int> fill_std2(10, 42);
+	ft::list<int> fill_ft1(5);
+	ft::list<int> fill_ft2(10, 42);
+
+	std::cout << "fill std1 :";
+	for (i_std = fill_std1.begin(); i_std != fill_std1.end(); i_std++)
+		std::cout << " " << *i_std;
+	std::cout << "\n";
+	std::cout << "fill ft1  :";
+	for (i_ft = fill_ft1.begin(); i_ft != fill_ft1.end(); i_ft++)
+		std::cout << " " << *i_ft;
+	std::cout << "\n\n";
+	std::cout << "fill std2 :";
+	for (i_std = fill_std2.begin(); i_std != fill_std2.end(); i_std++)
+		std::cout << " " << *i_std;
+	std::cout << "\n";
+	std::cout << "fill ft2  :";
+	for (i_ft = fill_ft2.begin(); i_ft != fill_ft2.end(); i_ft++)
+		std::cout << " " << *i_ft;
+	std::cout << "\n\n";
+
+    std::list<int>::iterator    std_b, std_e;
+    ft::list<int>::iterator    ft_b, ft_e;
+    std_b = default_std.begin();
+    std_e = default_std.end();
+    ft_b = default_ft.begin();
+    ft_e = default_ft.end();
+
+	std::list<int> range_std(++std_b, --std_e);
+	ft::list<int> range_ft(++ft_b, --ft_e);
+
+	std::cout << "range std :";
+	for (i_std = range_std.begin(); i_std != range_std.end(); i_std++)
+		std::cout << " " << *i_std;
+	std::cout << "\n";
+	std::cout << "range ft  :";
+	for (i_ft = range_ft.begin(); i_ft != range_ft.end(); i_ft++)
+		std::cout << " " << *i_ft;
+	std::cout << "\n\n";
+
+	std::list<int> copy_std(range_std);
+	ft::list<int> copy_ft(range_ft);
+
+	std::cout << "copy std :";
+	for (i_std = copy_std.begin(); i_std != copy_std.end(); i_std++)
+		std::cout << " " << *i_std;
+	std::cout << "\n";
+	std::cout << "copy ft  :";
+	for (i_ft = copy_ft.begin(); i_ft != copy_ft.end(); i_ft++)
+		std::cout << " " << *i_ft;
+	std::cout << "\n\n";
+
+	default_std = copy_std;
+	default_ft = copy_ft;
+	std::cout << "assign(operator=) std :";
+	for (i_std = default_std.begin(); i_std != default_std.end(); i_std++)
+		std::cout << " " << *i_std;
+	std::cout << "\n";
+	std::cout << "assign(operator=) ft  :";
+	for (i_ft = default_ft.begin(); i_ft != default_ft.end(); i_ft++)
+		std::cout << " " << *i_ft;
+	std::cout << "\n\n";
+}
+
+static void	iterators_test()
+{
+	std::cout << "\033[32m[		iterators_test			]\033[0m\n";
+	std::list<int>  lst_std;
+	ft::list<int>   lst_ft;
+
+	for (int i = 0; i < 20; i++)
+	{
+		lst_std.push_back((i + 1) * 11);
+		lst_ft.push_back((i + 1) * 11);
+	}
+
+	// std test
+	std::cout << "\033[32m[std test]\033[0m\n";
+	std::cout << "lst_std :";
+	std::list<int>::iterator    it_std;
+	for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+		std::cout << " " << *it_std;
+	std::cout << "\n\n";
+
+	it_std = lst_std.begin();
+	std::cout << "it_std : " << *it_std << std::endl;
+	std::cout << "++it_std : " << *(++it_std) << std::endl;
+	std::cout << "it_std++ : " << *(it_std++) << std::endl;
+	std::cout << "it_std-- : " << *(it_std--) << std::endl;
+	std::cout << "--it_std : " << *(--it_std) << std::endl;
+	
+	std::cout << "\n";
+	std::list<int>::iterator copy_it_std(it_std);
+	std::cout << "copy_it_std : " << *copy_it_std << std::endl;
+
+	std::cout << "\n";
+	if (copy_it_std == it_std)
+		std::cout << "copy_it_std == it_std" << std::endl;
+	if (copy_it_std != it_std)
+		std::cout << "copy_it_std != it_std" << std::endl;
+
+	std::list<int>::const_iterator cit_std = lst_std.end();
+	
+	if (cit_std == it_std)
+		std::cout << "cit_std == it_std" << std::endl;
+	if (it_std != cit_std)
+		std::cout << "it_std != cit_std" << std::endl;
+
+	std::cout << "\nlst_std begin() -> end() test :";
+	for (it_std = lst_std.begin(); it_std != cit_std; it_std++)
+		std::cout << " " << *it_std;
+	std::cout << "\n";
+
+	std::list<int>::reverse_iterator rit_std(lst_std.rbegin());
+	std::list<int>::const_reverse_iterator crit_std(lst_std.rend());
+
+	std::cout << "lst_std rbegin() -> rend() test :";
+	for (rit_std = lst_std.rbegin(); rit_std != crit_std; rit_std++)
+		std::cout << " " << *rit_std;
+	std::cout << "\n";
+
+	rit_std = lst_std.rend();
+	std::list<int>::const_reverse_iterator crit_std2(lst_std.end());
+	//crit_std = lst_std.end();
+  	std::cout << "reverse_iterator base test :";
+  	for (it_std = rit_std.base(); it_std != crit_std2.base(); ++it_std)
+    	std::cout << " " << *it_std;
+  	std::cout << "\n\n";
+
+
+	// ft test
+	std::cout << "\033[32m[ft test]\033[0m\n";
+	std::cout << "lst_ft :";
+	ft::list<int>::iterator it_ft;
+	for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+		std::cout << " " << *it_ft;
+	std::cout << "\n\n";
+
+	it_ft = lst_ft.begin();
+	std::cout << "it_ft : " << *it_ft << std::endl;
+	std::cout << "++it_ft : " << *(++it_ft) << std::endl;
+	std::cout << "it_ft++ : " << *(it_ft++) << std::endl;
+	std::cout << "it_ft-- : " << *(it_ft--) << std::endl;
+	std::cout << "--it_ft : " << *(--it_ft) << std::endl;
+	
+	std::cout << "\n";
+	ft::list<int>::iterator copy_it_ft(it_ft);
+	std::cout << "copy_it_ft : " << *copy_it_ft << std::endl;
+
+	std::cout << "\n";
+	if (copy_it_ft == it_ft)
+		std::cout << "copy_it_ft == it_ft" << std::endl;
+	if (copy_it_ft != it_ft)
+		std::cout << "copy_it_ft != it_ft" << std::endl;
+
+	ft::list<int>::const_iterator cit_ft = lst_ft.end();
+	
+	if (cit_ft == it_ft)
+		std::cout << "cit_ft == it_ft" << std::endl;
+	if (it_ft != cit_ft)
+		std::cout << "it_ft != cit_ft" << std::endl;
+
+	std::cout << "\nlst_ft begin() -> end() test :";
+	for (it_ft = lst_ft.begin(); it_ft != cit_ft; it_ft++)
+		std::cout << " " << *it_ft;
+	std::cout << "\n";
+
+	ft::list<int>::reverse_iterator rit_ft(lst_ft.rbegin());
+	ft::list<int>::const_reverse_iterator crit_ft(lst_ft.rend());
+
+	std::cout << "lst_ft rbegin() -> rend() test :";
+	for (rit_ft = lst_ft.rbegin(); rit_ft != crit_ft; rit_ft++)
+		std::cout << " " << *rit_ft;
+	std::cout << "\n";
+
+	rit_ft = lst_ft.rend();
+	ft::list<int>::const_reverse_iterator crit_ft2(lst_ft.end());
+  	std::cout << "reverse_iterator base test :";
+  	for (it_ft = rit_ft.base(); it_ft != crit_ft2.base(); ++it_ft)
+    	std::cout << " " << *it_ft;
+  	std::cout << "\n\n";
+
+	//operator-> test
+	std::cout << "\033[32m[operator-> test]\033[0m\n";
+	std::list<test> test_std;
+	ft::list<test> test_ft;
+	test t(42);
+
+	test_std.push_back(t);
+	test_ft.push_back(t);
+
+	std::cout << "test_std : " << test_std.begin()->num << std::endl;
+	std::cout << "test_ft  : " << test_ft.begin()->num << std::endl;
+	std::cout << "\n";
+}
+
+static void	capacity_test()
+{
+	std::cout << "\033[32m[		capacity_test			]\033[0m\n";
+	std::list<int> lst_std;
+	std::list<std::string> lst_std2;
+	ft::list<int>	lst_ft;
+	ft::list<std::string> lst_ft2;
+
+	if (lst_std.empty())
+		std::cout << "lst_std is empty\n";
+	if (lst_ft.empty())
+		std::cout << "lst_ft  is empty\n";
+	std::cout << "\n";
+	for (int i = 0; i < 15; i++)
+	{
+		lst_std.push_back((i + 1) * 11);
+		lst_ft.push_back((i + 1) * 11);
+	}
+	std::cout << "lst_std :";
+	for (std::list<int>::iterator i = lst_std.begin(); i != lst_std.end(); i++)
+		std::cout << " " << *i;
+	std::cout << "\n";
+	std::cout << "lst_std size() : " << lst_std.size() << std::endl;
+	std::cout << "lst_ft  :";
+	for (ft::list<int>::iterator i = lst_ft.begin(); i != lst_ft.end(); i++)
+		std::cout << " " << *i;
+	std::cout << "\n";
+	std::cout << "lst_ft  size() : " << lst_ft.size() << std::endl;
+	std::cout << "\n";
+	std::cout << "lst_std max_size() : " << lst_std.max_size() << std::endl;
+	std::cout << "lst_ft  max_size() : " << lst_ft.max_size() << std::endl;
+	std::cout << "\n";
+	std::cout << "lst_std2 max_size() : " << lst_std2.max_size() << std::endl;
+	std::cout << "lst_ft2  max_size() : " << lst_ft2.max_size() << std::endl;
+	std::cout << "\n";
+}
+
+static void	element_access_test()
+{
+	std::cout << "\033[32m[		element_access_test		]\033[0m\n";
+	std::list<int>  lst_std;
+	ft::list<int>   lst_ft;
+
+	for (int i = 0; i < 12; i++)
+	{
+		lst_std.push_back(i + 1);
+		lst_ft.push_back(i + 1);
+	}
+	std::cout << "lst_std :";
+	for (std::list<int>::iterator i = lst_std.begin(); i != lst_std.end(); i++)
+		std::cout << " " << *i;
+	std::cout << "\n";
+	std::cout << "lst_ft  :";
+	for (ft::list<int>::iterator i = lst_ft.begin(); i != lst_ft.end(); i++)
+		std::cout << " " << *i;
+	std::cout << "\n\n";
+	std::cout << "lst_std.front() = " << lst_std.front() << std::endl;
+	std::cout << "lst_ft.front() = " <<  lst_ft.front() << std::endl;
+	std::cout << "lst_std.back() = " << lst_std.back() << std::endl;
+	std::cout << "lst_ft.back() = " <<  lst_ft.back() << std::endl;
+    std::cout << "\n";
+}
+
+static void assign_test()
+{
+    std::cout << "\033[32m[	       	assign_test	        	]\033[0m\n";
+    std::list<int>   first_std;
+    std::list<int>   second_std;
+    std::list<int>::iterator it_std;
+    ft::list<int>   first_ft;
+    ft::list<int>   second_ft;
+    ft::list<int>::iterator it_ft;
+
+    first_ft.assign(7, 42);
+    first_std.assign(7, 42);
+
+    std::cout << "\033[32mfirst.assign(7, 42)\033[0m\n";
+    std::cout << "first_std :";
+    it_std = first_std.begin();
+    while (it_std != first_std.end())
+        std::cout << " " << *it_std++;
+    std::cout << "      size = " << first_std.size() << "\n";
+    std::cout << "first_ft  :";
+    it_ft = first_ft.begin();
+    while (it_ft != first_ft.end())
+        std::cout << " " << *it_ft++;
+    std::cout << "      size = " << first_ft.size() << "\n\n";
+
+    second_std.assign(first_std.begin(),first_std.end());
+    second_ft.assign(first_ft.begin(),first_ft.end());
+
+    std::cout << "\033[32msecond.assign(first.begin(), first.end())\033[0m\n";
+    std::cout << "second_std :";
+    it_std = second_std.begin();
+    while (it_std != second_std.end())
+        std::cout << " " << *it_std++;
+    std::cout << "      size = " << second_std.size() << "\n";
+    std::cout << "second_ft  :";
+    it_ft = second_ft.begin();
+    while (it_ft != second_ft.end())
+        std::cout << " " << *it_ft++;
+    std::cout << "      size = " << second_ft.size() << "\n\n";
+
+    int myints[] = {112, 114, 119};
+
+    first_std.assign(myints, myints + 3);
+    first_ft.assign(myints, myints + 3);
+
+    std::cout << "\033[32mfirst.assign(myints, myints + 3)\033[0m\n";
+    std::cout << "myints = {112, 114, 119}\n\n";
+    std::cout << "first_std :";
+    it_std = first_std.begin();
+    while (it_std != first_std.end())
+        std::cout << " " << *it_std++;
+    std::cout << "      size = " << first_std.size() << "\n";
+    std::cout << "first_ft  :";
+    it_ft = first_ft.begin();
+    while (it_ft != first_ft.end())
+        std::cout << " " << *it_ft++;
+    std::cout << "      size = " << first_ft.size() << "\n\n";
+}
+
+static void    push_pop_test()
+{
+    std::cout << "\033[32m[	       	push_pop_test	        	]\033[0m\n";
+    std::list<int>  lst_std;
+    std::list<int>::iterator it_std;
+    ft::list<int>   lst_ft;
+    ft::list<int>::iterator it_ft;
+
+    for(int i = 0; i < 5; i++)
     {
-        T   val;
-        bool is_node;
-        Node    *prev;
-        Node    *next;
+        lst_std.push_back(i);
+        lst_ft.push_back(i);
+    }
+    std::cout << "lst_std :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_ft  :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n\n";
 
-        Node() { is_node = false; }
-    };
+    lst_std.push_front(7);
+    lst_std.push_front(77);
+    lst_std.push_front(777);
+    lst_ft.push_front(7);
+    lst_ft.push_front(77);
+    lst_ft.push_front(777);
+
+    std::cout << "\033[32mlst.push_front(7) lst.push_front(77) lst.push_front(777)\033[0m\n";
+    std::cout << "lst_std :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_ft  :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n\n";
+
+    lst_std.push_back(100);
+    lst_std.push_back(200);
+    lst_std.push_back(300);
+    lst_ft.push_back(100);
+    lst_ft.push_back(200);
+    lst_ft.push_back(300);
+
+    std::cout << "\033[32mlst.push_back(100) lst.push_back(200) lst.push_back(300)\033[0m\n";
+    std::cout << "lst_std :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_ft  :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n\n";
+
+    lst_std.pop_front();
+    lst_std.pop_front();
+    lst_ft.pop_front();
+    lst_ft.pop_front();
+
+    std::cout << "\033[32mlst.pop_front() lst.pop_front()\033[0m\n";
+    std::cout << "lst_std :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_ft  :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n\n";
     
-    template <typename T>
-    class ListConstIterator;
-
-    // class list_iterator
-    template <typename T>
-    class ListIterator{
-        private:
-            ft::Node<T> *ptr;
-        public:
-            ListIterator() { ptr = 0; }
-
-            ~ListIterator() { }
-
-            ListIterator(const ListIterator &src) : ptr(src.ptr) { }
-
-            ListIterator    &operator=(const ListIterator &src){
-                ptr = src.ptr;
-                return (*this);
-            }
-
-            explicit ListIterator(ft::Node<T> *p) : ptr(p) { }
-
-            ft::Node<T> *getPtr() const { return (ptr); }
-
-            bool    operator==(const ListIterator &src) { return (ptr == src.ptr); }
-            bool    operator==(const ListConstIterator<T> &src) { return (ptr == src.getPtr()); }
-
-            bool    operator!=(const ListIterator &src) { return (ptr != src.ptr); }
-            bool    operator!=(const ListConstIterator<T> &src) { return (ptr != src.getPtr()); }
-
-            T   &operator*() { return (ptr->val); }
-
-            T   *operator->() { return (&ptr->val); }
-
-            ListIterator	operator++(int){	// i++;
-                ListIterator<T> temp = *this;
-                ptr = ptr->next;
-                return (temp);
-            }
-
-            ListIterator	operator++(){		// ++i;
-				ptr = ptr->next;
-				return (*this);
-			}
-
-			ListIterator	operator--(int){	// i--;
-				ListIterator<T> temp = *this;
-				ptr = ptr->prev;
-				return (temp);
-			}
-
-			ListIterator	operator--(){		// --i;
-				ptr = ptr->prev;
-				return (*this);
-			}
-    };
-
-    // class list_const_iterator
-    template <typename T>
-    class ListConstIterator{
-        private:
-            ft::Node<T> *ptr;
-        public:
-            ListConstIterator() { ptr = 0; }
-
-            ~ListConstIterator() { }
-
-            ListConstIterator(const ListConstIterator &src) : ptr(src.ptr) { }
-
-            ListConstIterator(const ListIterator<T> &src) : ptr(src.getPtr()) { }
-
-            ListConstIterator    &operator=(const ListConstIterator &src){
-                ptr = src.ptr;
-                return (*this);
-            }
-
-            ListConstIterator    &operator=(const ListIterator<T> &src){
-                ptr = src.getPtr();
-                return (*this);
-            }
-
-            explicit ListConstIterator(ft::Node<T> *p) : ptr(p) { }
-
-            ft::Node<T> *getPtr() const { return (ptr); }
-
-            bool    operator==(const ListConstIterator &src) { return (ptr == src.ptr); }
-            bool    operator==(const ListIterator<T> &src) { return (ptr == src.getPtr()); }
-
-            bool    operator!=(const ListConstIterator &src) { return (ptr != src.ptr); }
-            bool    operator!=(const ListIterator<T> &src) { return (ptr != src.getPtr()); }
-
-            const T &operator*() { return (ptr->val); }
-
-            const T *operator->() { return (&ptr->val); }
-
-            ListConstIterator	operator++(int){	// i++;
-                ListConstIterator<T> temp = *this;
-                ptr = ptr->next;
-                return (temp);
-            }
-
-			ListConstIterator	operator++(){		// ++i;
-				ptr = ptr->next;
-				return (*this);
-			}
-
-			ListConstIterator	operator--(int){	// i--;
-				ListIterator<T> temp = *this;
-				ptr = ptr->prev;
-				return (temp);
-			}
-
-			ListConstIterator	operator--(){		// --i;
-				ptr = ptr->prev;
-				return (*this);
-			}
-    };
-
-    template <typename T>
-    class ListReverseConstIterator;
-
-    // class list_reverse_iterator
-    template <typename T>
-    class ListReverseIterator{
-        private:
-            ft::Node<T> *ptr;
-        public:
-            ListReverseIterator() { ptr = 0; }
-
-            ~ListReverseIterator() { }
-
-            explicit ListReverseIterator(ListIterator<T> it){
-				ptr = it.getPtr();
-				ptr = ptr->prev;
-			}
-
-            ListReverseIterator(const ListReverseIterator &src) : ptr(src.ptr) { }
-
-            ListReverseIterator    &operator=(const ListReverseIterator &src){
-                ptr = src.ptr;
-                return (*this);
-            }
-
-            explicit ListReverseIterator(ft::Node<T> *p) : ptr(p) { }
-
-            ft::Node<T> *getPtr() const { return (ptr); }
-
-            ListIterator<T>	base() { return (ListIterator<T>(ptr->next)); }
-
-            bool    operator==(const ListReverseIterator &src) { return (ptr == src.ptr); }
-            bool    operator==(const ListReverseConstIterator<T> &src) { return (ptr == src.getPtr()); }
-
-            bool    operator!=(const ListReverseIterator &src) { return (ptr != src.ptr); }
-            bool    operator!=(const ListReverseConstIterator<T> &src) { return (ptr != src.getPtr()); }
-
-            T   &operator*() { return (ptr->val); }
-
-            T   *operator->() { return (&ptr->val); }
-
-            ListReverseIterator	operator++(int){	// i++;
-                ListReverseIterator<T> temp = *this;
-                ptr = ptr->prev;
-                return (temp);
-            }
-
-			ListReverseIterator	operator++(){		// ++i;
-				ptr = ptr->prev;
-				return (*this);
-			}
-
-			ListReverseIterator	operator--(int){	// i--;
-				ListReverseIterator<T> temp = *this;
-				ptr = ptr->next;
-				return (temp);
-			}
-
-			ListReverseIterator	operator--(){		// --i;
-				ptr = ptr->next;
-				return (*this);
-			}
-    };
-
-    // class list_reverse_const_iterator
-    template <typename T>
-    class ListReverseConstIterator{
-        private:
-            ft::Node<T> *ptr;
-        public:
-            ListReverseConstIterator() { ptr = 0; }
-
-            ~ListReverseConstIterator() { }
-
-            explicit ListReverseConstIterator(ListConstIterator<T> it){
-				ptr = it.getPtr();
-				ptr = ptr->prev;
-			}
-
-            ListReverseConstIterator(const ListReverseConstIterator &src) : ptr(src.ptr) { }
-
-            ListReverseConstIterator(const ListReverseIterator<T> &src) : ptr(src.getPtr()) { }
-
-            ListReverseConstIterator    &operator=(const ListReverseConstIterator &src){
-                ptr = src.ptr;
-                return (*this);
-            }
-
-            ListReverseConstIterator    &operator=(const ListReverseIterator<T> &src){
-                ptr = src.getPtr();
-                return (*this);
-            }
-
-            explicit ListReverseConstIterator(ft::Node<T> *p) : ptr(p) { }
-
-            ft::Node<T> *getPtr() const { return (ptr); }
-
-            ListConstIterator<T>	base() { return (ListConstIterator<T>(ptr->next)); }
-
-            bool    operator==(const ListReverseConstIterator &src) { return (ptr == src.ptr); }
-            bool    operator==(const ListReverseIterator<T> &src) { return (ptr == src.getPtr()); }
-
-            bool    operator!=(const ListReverseConstIterator &src) { return (ptr != src.ptr); }
-            bool    operator!=(const ListReverseIterator<T> &src) { return (ptr != src.getPtr()); }
-
-            const T &operator*() { return (ptr->val); }
-
-            const T *operator->() { return (&ptr->val); }
-
-            ListReverseConstIterator	operator++(int){	// i++;
-                ListReverseConstIterator<T> temp = *this;
-                ptr = ptr->prev;
-                return (temp);
-            }
-
-			ListReverseConstIterator	operator++(){		// ++i;
-				ptr = ptr->prev;
-				return (*this);
-			}
-
-			ListReverseConstIterator	operator--(int){	// i--;
-				ListReverseConstIterator<T> temp = *this;
-				ptr = ptr->next;
-				return (temp);
-			}
-
-			ListReverseConstIterator	operator--(){		// --i;
-				ptr = ptr->next;
-				return (*this);
-			}
-    };
-
-    template <typename T, typename Alloc = std::allocator<T> >
-    class list{
-        public:
-            typedef T value_type;
-            typedef std::allocator<T> allocator_type;
-            typedef T& reference;
-            typedef const T& const_reference;
-            typedef T* pointer;
-            typedef const T* const_pointer;
-            typedef ListIterator<T> iterator;
-            typedef ListConstIterator<T> const_iterator;
-            typedef ListReverseIterator<T> reverse_iterator;
-            typedef ListReverseConstIterator<T> const_reverse_iterator;
-            typedef std::ptrdiff_t difference_type;
-            typedef size_t size_type;
-
-            class   PopException : public std::exception{
-                public:
-                    virtual const char  *what() const throw(){
-                        return ("free(): invalid pointer"); // check plz!!!!!!!!!!!!!!
-                    }
-            };
-
-            class   EraseException : public std::exception{
-                public:
-                    virtual const char  *what() const throw(){
-                        return ("munmap_chunk(): invalid pointer"); // check plz!!!!!!!!!!!!!!
-                    }
-            };
-            // lst lst2 있을 때 둘다 push_back하고 lst 지우는거 테스트해보고 lst2는 push_back 안하고 테스트해서
-            // mummap_chunk랑 free 다른데 mac에서도 다른지 확인
-        private:
-            ft::Node<T> *node;
-            size_type _size;
-
-            void    nodeChange(ft::Node<T> *left, ft::Node<T> *right){
-                ft::Node<T> *prev_backup = left->prev;
-
-                left->prev = right;
-
-                left->next = right->next;
-                right->next->prev = left;
-                                    
-                right->prev = prev_backup;
-                prev_backup->next = right;
-                                    
-                right->next = left;
-            }
-        public:
-            // default constructor
-            explicit list(const allocator_type &alloc = allocator_type()){
-                (void)alloc;
-                node = new ft::Node<T>;
-                node->val = value_type();
-                node->is_node = true;
-                node->prev = node;
-                node->next = node;
-                _size = 0;
-            }
-
-            // destructor
-            ~list(){
-                ft::Node<T> *end_node = node;
-                ft::Node<T> *temp = node->next;
-
-                while (temp != end_node)
-                {
-                    node = temp->next;
-                    delete temp;
-                    temp = node;
-                }
-                delete temp;
-            }
-
-            // fill constructor
-            explicit list(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()){
-                (void)alloc;
-                node = new ft::Node<T>;
-                node->val = value_type();
-                node->is_node = true;
-                node->prev = node;
-                node->next = node;
-                _size = 0;
-                for (size_type i = 0; i < n; i++)
-                    push_back(val);
-            }
-
-            // range constructor
-            template <class InputIterator>
-            list(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type(),
-                            typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type type = 0){
-                (void)alloc;
-                (void)type;
-                node = new ft::Node<T>;
-                node->val = value_type();
-                node->is_node = true;
-                node->prev = node;
-                node->next = node;
-                _size = 0;
-                while (first != last)
-                    push_back(*first++);
-            }
-
-            // copy constructor
-            list(const list &x){
-                ft::Node<T> *temp = 0;
-
-                node = new ft::Node<T>;
-                node->val = value_type();
-                node->is_node = true;
-                node->prev = node;
-                node->next = node;
-                _size = 0;
-                temp = x.node->next;
-                while (temp != x.node)
-                {
-                    push_back(temp->val);
-                    temp = temp->next;
-                }
-            }
-
-            // Assign content
-            list    &operator=(const list &x){
-                ft::Node<T> *temp = 0;
-
-                if (node != node->next)
-                {
-                    // ft::Node<T> *end_node = node;
-
-                    // temp = node->next;
-                    // while (temp != end_node)
-                    // {
-                    //     node = temp->next;
-                    //     delete temp;
-                    //     temp = node;
-                    // }
-                    // node->prev = node;
-                    // node->next = node;
-                    // _size = 0;
-                    clear();
-                }
-                temp = x.node->next;
-                while (temp != x.node)
-                {
-                    push_back(temp->val);
-                    temp = temp->next;
-                }
-                return (*this);
-            }
-
-            // [Iterators]
-            iterator    begin() { return (iterator(node->next)); }
-            const_iterator  begin() const { return (const_iterator(node->next)); }
-
-            iterator    end() { return (iterator(node)); }
-            const_iterator  end() const { return (const_iterator(node)); }
-
-            reverse_iterator rbegin() { return (reverse_iterator(node->prev)); }
-            const_reverse_iterator rbegin() const { return (const_reverse_iterator(node->prev)); }
-
-            reverse_iterator rend() { return (reverse_iterator(node)); }
-            const_reverse_iterator rend() const { return (const_reverse_iterator(node)); }
-
-            // [Capacity]
-            bool    empty() const { return (_size == 0); }
-
-            size_type   size() const { return (_size); }
-
-            size_type	max_size() const{
-                return (std::min((size_type)std::numeric_limits<difference_type>::max(),
-                            std::numeric_limits<size_type>::max() / sizeof(ft::Node<T>)));
-            }
-
-            // [Element access]
-            reference   front() { return (node->next->val); }
-            const_reference front() const { return (node->next->val); }
-
-            reference back() { return (node->prev->val); }
-            const_reference back() const { return (node->prev->val); }
-
-            // [Modifiers]
-            // range assign
-            template <typename InputIterator>
-            void assign (InputIterator first, InputIterator last,
-                            typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type type = 0){
-                // ft::Node<T> *end_node = node;
-                // ft::Node<T> *temp = node->next;
-
-                // while (temp != end_node)
-                // {
-                //     node = temp->next;
-                //     delete temp;
-                //     temp = node;
-                // }
-                // node->prev = node;
-                // node->next = node;
-                // _size = 0;
-                (void)type;
-                clear();
-                while (first != last)
-                    push_back(*first++);
-            }
-
-            // fill assign
-            void assign (size_type n, const value_type &val){
-                // ft::Node<T> *end_node = node;
-                // ft::Node<T> *temp = node->next;
-
-                // while (temp != end_node)
-                // {
-                //     node = temp->next;
-                //     delete temp;
-                //     temp = node;
-                // }
-                // node->prev = node;
-                // node->next = node;
-                // _size = 0;
-                clear();
-                for (size_type i = 0; i < n; i++)
-                    push_back(val);
-            }
-
-            void    push_front(const value_type &val){
-                ft::Node<T> *new_node = new ft::Node<T>;
-
-                new_node->val = val;
-                node->next->prev = new_node;
-                new_node->next = node->next;
-                node->next = new_node;
-                new_node->prev = node;
-                _size++;
-            }
-
-            void    pop_front(){
-                ft::Node<T> *temp = node->next;
-
-                if (temp == node)
-                    throw PopException();       // check plz!!!!!!!!!!!!!!!!
-                node->next->next->prev = node;
-                node->next = node->next->next;
-                delete temp;
-                _size--;
-            }
-
-            void    push_back(const value_type &val){
-                ft::Node<T> *new_node = new ft::Node<T>;
-
-                new_node->val = val;
-                node->prev->next = new_node;
-                new_node->prev = node->prev;
-                node->prev = new_node;
-                new_node->next = node;
-                _size++;
-            }
-
-            void    pop_back(){
-                ft::Node<T> *temp = node->prev;
-
-                if (temp == node)
-                    throw PopException();       // check plz!!!!!!!!!!!!!!!!
-                node->prev->prev->next = node;
-                node->prev = node->prev->prev;
-                delete temp;
-                _size--;
-            }
-
-            // single element insert
-            iterator insert (iterator position, const value_type &val){
-                ft::Node<T> *new_node = new ft::Node<T>;
-                ft::Node<T> *pos = position.getPtr();
-
-                new_node->val = val;
-                pos->prev->next = new_node;
-                new_node->prev = pos->prev;
-                new_node->next = pos;
-                pos->prev = new_node;
-                _size++;
-                return (iterator(new_node));
-            }
-
-            // fill insert
-            void insert (iterator position, size_type n, const value_type &val){
-                ft::Node<T> *left_node = 0;
-                ft::Node<T> *right_node = 0;
-                ft::Node<T> *pos = position.getPtr();
-
-                for (size_type i = 0; i < n; i++)
-                {
-                    if (i == 0)
-                    {
-                        left_node = new ft::Node<T>;
-                        left_node->val = val;
-                        left_node->prev = 0;
-                        left_node->next = 0;
-                        right_node = left_node;
-                    }
-                    else{
-                        ft::Node<T> *new_node = new ft::Node<T>;
-
-                        new_node->val = val;
-                        right_node->next = new_node;
-                        new_node->prev = right_node;
-                        new_node->next = 0;
-                        right_node = new_node;
-                    }
-                }
-                if (left_node != 0 && right_node != 0)
-                {
-                    pos->prev->next = left_node;
-                    left_node->prev = pos->prev;
-                    right_node->next = pos;
-                    pos->prev = right_node;
-                }
-                _size += n;
-            }
-
-            // range insert
-            template <class InputIterator>
-            void insert (iterator position, InputIterator first, InputIterator last,
-                            typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type type = 0){
-                ft::Node<T> *left_node = 0;
-                ft::Node<T> *right_node = 0;
-                ft::Node<T> *pos = position.getPtr();
-                size_type   n = 0;
-
-                (void)type;
-                for (InputIterator i = first; i != last; i++)
-                {
-                    if (i == first)
-                    {
-                        left_node = new ft::Node<T>;
-                        left_node->val = *i;
-                        left_node->prev = 0;
-                        left_node->next = 0;
-                        right_node = left_node;
-                    }
-                    else{
-                        ft::Node<T> *new_node = new ft::Node<T>;
-
-                        new_node->val = *i;
-                        right_node->next = new_node;
-                        new_node->prev = right_node;
-                        new_node->next = 0;
-                        right_node = new_node;
-                    }
-                    n++;
-                }
-                if (left_node != 0 && right_node != 0)
-                {
-                    pos->prev->next = left_node;
-                    left_node->prev = pos->prev;
-                    right_node->next = pos;
-                    pos->prev = right_node;
-                }
-                _size += n;
-            }
-
-            iterator    erase(iterator position)
-            {
-                ft::Node<T> *pos = position.getPtr();
-                ft::Node<T> *ret = pos->next;
-
-                if (pos->is_node == true)
-                    throw EraseException();     // check plz!!!!!!!!!!!!!!!!!!!
-                pos->prev->next = pos->next;
-                pos->next->prev = pos->prev;
-                delete pos;
-                _size--;
-                return (iterator(ret));
-            }
-
-            iterator    erase(iterator first, iterator last)
-            {
-                ft::Node<T> *left = first.getPtr();
-                ft::Node<T> *right = last.getPtr();
-                ft::Node<T> *temp = 0;
-   
-                left->prev->next = right;
-                right->prev = left->prev;
-                temp = left;
-                while (temp != right)
-                {
-                    if (temp->is_node == true)
-                        throw EraseException();     // check plz!!!!!!!!!!!!!!!!!!!
-                    left = left->next;
-                    delete temp;
-                    temp = left;
-                    _size--;
-                }
-                return (iterator(right));
-            }
-
-            void    swap(list &x){
-                size_type s = _size;
-                ft::Node<T> *n = node;
-
-                _size = x._size;
-                node = x.node;
-
-                x._size = s;
-                x.node = n;
-            }
-
-            void    resize(size_type n, value_type val = value_type())
-            {
-                if (_size < n)
-                {
-                    while (_size < n)
-                        push_back(val);
-                }
-                else if (_size > n)
-                {
-                    size_type count = 0;
-                    ft::Node<T> *temp = node->next;
-                    while (temp != node)
-                    {
-                        count++;
-                        temp = temp->next;
-                    }
-                    // std::cout << "_size = " << _size << std::endl;
-                    // std::cout << "n = " << n << std::endl;
-                    // std::cout << "count = " << count << std::endl;
-                    // std::cout << "\n\n";
-                    if (_size - n <= count && n > count)
-                    {
-                        count = _size - n;
-                        while (count--)
-                            pop_back();
-                    }
-                    else
-                    {
-                        if (n > static_cast<size_type>(std::numeric_limits<difference_type>::max()))
-                            count = (_size - n) % (count + 1);
-                        else
-                            count = count - (n % (count + 1));
-                        while (count--)
-                            pop_back();
-                    }
-                }
-            }
-
-            void    clear(){
-                ft::Node<T> *end_node = node;
-                ft::Node<T> *temp = node->next;
-
-                while (temp != end_node)
-                {
-                    node = temp->next;
-                    delete temp;
-                    temp = node;
-                }
-                node->prev = node;
-                node->next = node;
-                _size = 0;
-            }
-
-            // [Operations]
-            // entire list splice
-            void    splice(iterator position, list &x){
-                ft::Node<T> *left_node = x.node->next;
-                ft::Node<T> *right_node = x.node->prev;
-                ft::Node<T> *pos = position.getPtr();
-                
-                if (left_node == right_node && left_node == x.node)
-                    return ;
-
-                x.node->prev = x.node;
-                x.node->next = x.node;
-                
-                pos->prev->next = left_node;
-                left_node->prev = pos->prev;
-                pos->prev = right_node;
-                right_node->next = pos;
-                _size += x._size;
-                x._size = 0;
-            }            
-
-            // single element splice
-            void    splice(iterator position, list &x, iterator i){
-                ft::Node<T> *pos = position.getPtr();
-                ft::Node<T> *i_pos = i.getPtr();
-
-                i_pos->prev->next = i_pos->next;
-                i_pos->next->prev = i_pos->prev;
-
-                pos->prev->next = i_pos;
-                i_pos->prev = pos->prev;
-                pos->prev = i_pos;
-                i_pos->next = pos;
-                
-                _size++;
-                x._size--;
-            }
-
-            // element range splice
-            void    splice(iterator position, list &x, iterator first, iterator last){
-                ft::Node<T> *left_node = first.getPtr();
-                ft::Node<T> *right_node = last.getPtr()->prev;
-                ft::Node<T> *pos = position.getPtr();
-                size_type   n = 0;
-                
-                if (first == last)
-                    return ;
-
-                for (; first != last; first++)
-                    n++;
-
-                left_node->prev->next = right_node->next;
-                right_node->next->prev = left_node->prev;
-                
-                pos->prev->next = left_node;
-                left_node->prev = pos->prev;
-                pos->prev = right_node;
-                right_node->next = pos;
-                _size += n;
-                x._size -= n;
-            }
-
-            void    remove(const value_type &val){
-                iterator    i = begin();
-
-                while (i != end())
-                {
-                    if (*i == val)
-                        i = erase(i);
-                    else
-                        i++;
-                }
-            }
-
-            template <typename Predicate>
-            void    remove_if(Predicate pred){
-                iterator    i = begin();
-
-                while (i != end())
-                {
-                    if (pred(*i) == true)
-                        i = erase(i);
-                    else
-                        i++;
-                }
-            }
-
-            void    unique(){
-                iterator    i = begin();
-
-                i++;
-                while (i != end())
-                {
-                    iterator    j = i;
-
-                    j--;
-                    if (*j == *i)
-                        i = erase(i);
-                    else
-                        i++;
-                }
-            }
-
-            template <class BinaryPredicate>
-            void unique(BinaryPredicate binary_pred){
-                iterator    i = begin();
-
-                i++;
-                while (i != end())
-                {
-                    iterator    j = i;
-
-                    j--;
-                    if (binary_pred(*j, *i) == true)
-                        i = erase(i);
-                    else
-                        i++;
-                }
-            }
-
-            void    merge(list &x){
-                iterator    i;
-                
-                if (&x == this)
-                    return ;
-                i = begin();
-                while (i != end())
-                {
-                    iterator    j = x.begin();
-
-                    while (j != x.end())
-                    {
-                        if (*i > *j)
-                        {
-                            iterator    k = j;
-
-                            k++;
-                            splice(i, x, j);
-                            j = k;
-                        }
-                        else if(*i < *j)
-                            break ;
-                        else
-                            j++;
-                    }
-                    i++;
-                }
-                splice(end(), x);
-            }
-
-            template <typename Compare>
-            void    merge(list &x, Compare comp){
-                iterator    i;
-                
-                if (&x == this)
-                    return ;
-                i = begin();
-                while (i != end())
-                {
-                    iterator    j = x.begin();
-
-                    while (j != x.end())
-                    {
-                        if (comp(*j, *i) == true)
-                        {
-                            iterator    k = j;
-
-                            k++;
-                            splice(i, x, j);
-                            j = k;
-                        }
-                        else if(*i < *j)
-                            break ;
-                        else
-                            j++;
-                    }
-                    i++;
-                }
-                splice(end(), x);
-            }
-
-            void    sort(){
-                iterator    i;
-                iterator    j;
-                size_type   n = 0;
-
-                i = end();
-                i--;
-                if (i.getPtr()->prev == i.getPtr()->next)
-                    return ;
-                while (i != end())
-                {
-                    j = begin();
-                    while (j != i)
-                    {
-                        iterator    j_next = j;
-
-                        j_next++;
-                        if (*j > *j_next)
-                        {
-                            nodeChange(j.getPtr(), j_next.getPtr());
-                            if (j_next == i)
-                                i = j;
-                            j = j_next;
-                        }
-                        j++;
-                    }
-                    i--;
-                    n++;
-                }
-                _size = n;
-            }
-
-            template <typename Compare>
-            void    sort(Compare comp){
-                iterator    i;
-                iterator    j;
-                size_type   n = 0;
-
-                i = end();
-                i--;
-                if (i.getPtr()->prev == i.getPtr()->next)
-                    return ;
-                while (i != end())
-                {
-                    j = begin();
-                    while (j != i)
-                    {
-                        iterator    j_next = j;
-
-                        j_next++;
-                        if (comp(*j_next, *j) == true)
-                        {
-                            nodeChange(j.getPtr(), j_next.getPtr());
-                            if (j_next == i)
-                                i = j;
-                            j = j_next;
-                        }
-                        j++;
-                    }
-                    i--;
-                    n++;
-                }
-                _size = n;
-            }
-
-            void    reverse(){
-                iterator    i = begin();
-                ft::Node<T> *p = 0;
-                ft::Node<T> *temp = 0;
-
-                while (i != end())
-                {
-                    p = i.getPtr();
-                    i++;
-                    temp = p->next;
-                    p->next = p->prev;
-                    p->prev = temp;
-                }
-                p = i.getPtr();
-                temp = p->next;
-                p->next = p->prev;
-                p->prev = temp;
-            }
-            
-            void    print()
-            {
-                Node<T> *end_node = node;
-                Node<T> *temp = node->next;
-                
-                while (temp != end_node)
-                {
-                    std::cout << "val = " << temp->val << std::endl;
-                    temp = temp->next;
-                }
-                std::cout << "end_node : " << end_node->val << std::endl;
-            }
-    };
-
-    // [Non-member function overloads]
-	template <typename T, typename Alloc>
-    bool operator==(const list<T, Alloc> &lhs, const list<T, Alloc> &rhs)
-	{
-        typename ft::list<T>::const_iterator left = lhs.begin();
-        typename ft::list<T>::const_iterator right = rhs.begin();
-
-		if (lhs.size() != rhs.size())
-		    return (false);
-        while (left != lhs.end() && right != rhs.end())
-        {
-            if (*left != *right)
-                return (false);
-            left++;
-            right++;
-        }
-        if (left != lhs.end() || right != rhs.end())
-            return (false);
-		return (true);
-	}
-	
-	template <typename T, typename Alloc>
-	bool operator!=(const list<T, Alloc> &lhs, const list<T, Alloc> &rhs) { return (!(lhs == rhs)); }
-	
-	template <typename T, typename Alloc>
-	bool operator<(const list<T, Alloc> &lhs, const list<T, Alloc> &rhs)
-	{
-        typename ft::list<T>::const_iterator left = lhs.begin();
-        typename ft::list<T>::const_iterator right = rhs.begin();
-
-        while (left != lhs.end() && right != rhs.end())
-        {
-            if (*left < *right)
-                return (true);
-            else if (*left > *right)
-                return (false);
-            left++;
-            right++;
-        }
-        if (right != rhs.end())
-            return (true);
-		return (false);
-	}
-	
-	template <typename T, typename Alloc>
-    bool operator<=(const list<T, Alloc> &lhs, const list<T, Alloc> &rhs) { return (!(rhs < lhs)); }
-
-	template <typename T, typename Alloc>
-    bool operator>(const list<T, Alloc> &lhs, const list<T, Alloc> &rhs) { return (rhs < lhs); }
-
-	template <typename T, typename Alloc>
-    bool operator>=(const list<T, Alloc> &lhs, const list<T, Alloc> &rhs) { return (!(lhs < rhs)); }
-
-	template <typename T, typename Alloc>
-	void swap(list<T, Alloc> &x, list<T, Alloc> &y) { x.swap(y); }
-
+    lst_std.pop_back();
+    lst_std.pop_back();
+    lst_std.pop_back();
+    lst_ft.pop_back();
+    lst_ft.pop_back();
+    lst_ft.pop_back();
+
+    std::cout << "\033[32mlst.pop_back() lst.pop_back() lst.pop_back()\033[0m\n";
+    std::cout << "lst_std :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_ft  :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n\n";
 }
 
-
-
-class	test{
-	public:
-		int x;
-		test(int a = 0) { x = a; }
-		~test() { }
-};
-
-#include "vector.hpp"
-#include <vector>
-
-void assign_test()
+static void    insert_erase_clear_test()
 {
-  ft::list<int> first;
-  ft::list<int> second;
+    std::cout << "\033[32m[             insert_erase_clear_test	   	]\033[0m\n";
+    std::list<int>  lst_std;
+    std::list<int>::iterator it_std;
+    ft::list<int>   lst_ft;
+    ft::list<int>::iterator it_ft;
 
-  second.push_back(111);
-  second.push_back(1111);
-  second.push_back(11111);
+    lst_std.insert(lst_std.begin(), 42);
+    lst_ft.insert(lst_ft.begin(), 42);
 
+    std::cout << "\033[32mlst.insert(lst.begin(), 42)\033[0m\n";
+    std::cout << "lst_std :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_ft  :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n\n";
 
-  first.assign(7,100);                      // 7 ints with value 100
+    lst_std.insert(lst_std.begin(), 5, 7);
+    lst_ft.insert(lst_ft.begin(), 5, 7);
 
-  second.assign (first.begin(),first.end()); // a copy of first
+    std::cout << "\033[32mlst.insert(lst.begin(), 5, 7)\033[0m\n";
+    std::cout << "lst_std :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_ft  :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n\n";
 
-    ft::list<int>::iterator it = second.begin();
-    while (it != second.end())
-        std::cout << *it++ << std::endl;
+    it_std = lst_std.end();
+    it_std--;
+    it_ft = lst_ft.end();
+    it_ft--;
+    lst_std.erase(it_std);
+    lst_ft.erase(it_ft);
 
-  int myints[]={1776,7,4};
-  first.assign (myints,myints+3);            // assigning from array
+    std::cout << "\033[32mlst.erase(lst.end() - 1)\033[0m\n";
+    std::cout << "lst_std :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_ft  :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n\n";
 
-  std::cout << "Size of first: " << int (first.size()) << '\n';
-  std::cout << "Size of second: " << int (second.size()) << '\n';
-
-}
-
-void    push_front_test()
-{
-     ft::list<int> mylist;         // two ints with a value of 100
-mylist.push_front (100);
-    mylist.push_front (100);
-  mylist.push_front (200);
-  mylist.push_front (300);
-
-    // mylist.pop_back();
-    // mylist.pop_back();
-    // mylist.pop_back();
-    // mylist.pop_back();
-    // mylist.pop_back();
-
-    mylist.pop_front();
-    mylist.pop_front();
-    mylist.pop_front();
-    mylist.pop_front();
-     //mylist.pop_front();
-    //  mylist.pop_front();
-    // mylist.pop_front();
-    // mylist.pop_front();
-    // mylist.pop_front();
-
-    //exit(0);
-    //mylist.pop_front();
-    // mylist.pop_front();
-    // mylist.pop_front();
-//    mylist.pop_front();
-
-
-    //exit(1);
-    // mylist.pop_front();
-
-  std::cout << "mylist contains:";
-  for (ft::list<int>::iterator it=mylist.begin(); it!=mylist.end(); ++it)
-   std::cout << ' ' << *it;
-
-  std::cout << '\n';
-
-}
-
-void    insert_test()
-{
-    std::list<int> lst, lst2, lst3;
-    std::list<int>::iterator a, b, c, d;
-    std::vector<int> vec;
-
-    for (int i = 1; i < 11; i++)
-        vec.push_back(i * 100);
-
-    lst.push_back(1);
-    lst.push_back(2);
-    lst.push_back(3);
-
-    lst2.push_back(1111);
-    lst2.push_back(2222);
-    lst2.push_back(3333);
-
-    a = lst.end();
-    d = lst2.end();
-    d++;
-    // a++;
-    // a++;
-
-    b = lst.insert(d, 99);
-    std::cout << "b = " << *b << std::endl;
-    lst3.assign(5, 10);
-    lst3 = lst2;
-    a = lst2.begin();
-    d = lst.begin();
-    //ft::list<int>::iterator xy(e);
-    //d++;
-    //d++;
-    b = lst2.erase(d);
-    std::cout << "b = " << *b << std::endl;
-    std::cout << "lst size = " << lst.size() << std::endl;
-    std::cout << "lst2 size = " << lst2.size() << std::endl;
-
-    //lst2.insert(d, vec.begin() + 3, vec.begin() + 6);
-    //lst2.insert(a, 7, 11);
-
-    //std::cout << "lst size = " << lst.size() << std::endl;
-    //std::cout << "lst2 size = " << lst2.size() << std::endl;
-
-    for (c = lst.begin(); c != lst.end(); c++)
-        std::cout << *c << std::endl;
-    std::cout << "\n\n";
-    for (c = lst2.begin(); c != lst2.end(); c++)
-        std::cout << *c << std::endl;
-}
-
-void    range_erase_test()
-{
-    std::list<int> lst, lst2, lst3;
-    std::list<int>::iterator a, b, c, d;
-
-    for (int i = 0; i < 2; i++)
-        lst.push_back(i + 1);
-
-
-    for (int i = 0; i < 120; i++)
-        lst2.push_back(1111);
-    lst2.push_back(2222);
-    lst2.push_back(3333);
-    lst2.push_back(4444);
-    lst2.push_back(5555);
-    lst2.push_back(6666);
-    lst2.push_back(7777);
-
-    c = lst.begin();
-    for (int i = 0; i < 1; i++)
-        c++;
-
-    
-    //b = lst.erase(lst.begin(), c);
-    // c = lst2.begin();
-    // c++;
-    // c++;
-    //b = lst.erase(c, lst2.end());
-
-    std::cout << "lst size = " << lst.size() << std::endl;
-    // std::cout << "lst2 size = " << lst2.size() << std::endl;
-    
-   lst.pop_back();
-   lst.pop_back();
-   lst.pop_back();
-
-
-  // lst.resize(-123, 2222);
-//    lst2.resize(0, 11100);
-
-    std::cout << "lst size = " << lst.size() << std::endl;
-    // std::cout << "lst2 size = " << lst2.size() << std::endl;
-
-    for (c = lst.begin(); c != lst.end(); c++)
-        std::cout << *c << std::endl;
-    std::cout << "\n\n";
-    // for (c = lst2.begin(); c != lst2.end(); c++)
-    //     std::cout << *c << std::endl;
-}
-
-void    swap_test()
-{
-    std::list<int> first (3,100);   // three ints with a value of 100
-    std::list<int> second (5,200);  // five ints with a value of 200
-    std::list<int>::iterator it;
-
-    std::cout << "first size = " << first.size() << std::endl;
-    std::cout << "second size = " << second.size() << std::endl;
-    std::cout << "first contains:";
-    for (it=first.begin(); it!=first.end(); it++)
-        std::cout << ' ' << *it;
+    std::list<int>  temp;
+    for (int i = 1; i <= 10; i++)
+        temp.push_front(i * -1);
+    std::cout << "temp :";
+    for (it_std = temp.begin(); it_std != temp.end(); it_std++)
+        std::cout << " " << *it_std;
     std::cout << "\n";
 
-    std::cout << "second contains:";
-    for (it=second.begin(); it!=second.end(); it++)
-        std::cout << ' ' << *it;
-    std::cout << "\n";
+    lst_std.insert(lst_std.end(), temp.begin(), temp.end());
+    lst_ft.insert(lst_ft.end(), temp.begin(), temp.end());
 
-    first.swap(second);
+    std::cout << "\033[32mlst.insert(lst.end(), temp.begin(), temp.end())\033[0m\n";
+    std::cout << "lst_std :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_ft  :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n\n";
 
-    std::cout << "first contains:";
-    for (it=first.begin(); it!=first.end(); it++)
-        std::cout << ' ' << *it;
-    std::cout << "\n";
-
-    std::cout << "second contains:";
-    for (it=second.begin(); it!=second.end(); it++)
-        std::cout << ' ' << *it;
-    std::cout << "\n";
-    
-    std::cout << "first size = " << first.size() << std::endl;
-    std::cout << "second size = " << second.size() << std::endl;
-}
-
-void    range_erase_test1()
-{
-    ft::list<int> lst;
-    ft::list<int>::iterator a, b, c, d;
-
-    lst.push_back(19);
-    lst.push_back(119);
-    lst.push_back(119);
-
-    lst.push_back(119);
-
-
-
-    b = lst.begin();
-
-   // lst.pop_front();
-    std::cout << *b << std::endl;
-    //lst.pop_front();
-
-   //lst.pop_front();
-
-    for (c = lst.begin(); c != lst.end(); c++)
-        std::cout << *c << std::endl;
-    std::cout << "\n\n";
-
-//    b = lst.begin();
-    // std::cout << "b = " << *b << std::endl;
-    // b = lst.erase(lst.begin());
-    // b = lst.begin();
-        std::cout << "b = " << *b << std::endl;
-
-        //lst.erase(b);
-    lst.resize(0, 119);
-
-
-
-    std::cout << "size = " << lst.size() << std::endl;
-    std::cout << "b = " << *b << std::endl;
-
-   
-}
-
-void    range_erase_test3()
-{
-    ft::list<int> lst, lst2, lst3;
-    ft::list<int>::iterator a, b, c, d;
-
-    lst.push_back(19);
-    lst.push_back(29);
-    lst.push_back(39);
-    lst.push_back(49);
-
-
-    lst2.push_back(1111);
-    lst2.push_back(2222);
-    lst2.push_back(3333);
-    lst2.push_back(4444);
-    lst2.push_back(5555);
-    lst2.push_back(6666);
-    lst2.push_back(7777);
-
-    c = lst2.begin();
-    c++;
-    c++;
-    c++;
-    c++;
-    c++;
-    b = lst.erase(lst2.begin(), c);
-    // c = lst2.begin();
-    // c++;
-    // c++;
-    //b = lst.erase(c, lst2.end());
-
-    std::cout << "lst size = " << lst.size() << std::endl;
-    std::cout << "lst2 size = " << lst2.size() << std::endl;
-    
-    // 323 - 1
-
-    // 6 - 3
-    // 5 - 4
-    // 4 - 0
-    // 3 - 1
-    // 2 - 2
-    // 1 - 3
-    // 0 - 4
-    // -1 - 0
-    // -2 - 1
-    // -3 - 2
-    // -4 - 3
-    // -5 - 4
-    // -6 - 4   0
-    // -7 - 0   1
-    // -8 - 1   2
-    // -9 - 2   3
-    // -10 - 3  4
-    // -11 - 4  0
-
-
-
-   lst.resize(323, 2222);
-   lst2.resize(0, 11100);
-
-    std::cout << "lst size = " << lst.size() << std::endl;
-    std::cout << "lst2 size = " << lst2.size() << std::endl;
-
-    for (c = lst.begin(); c != lst.end(); c++)
-        std::cout << *c << std::endl;
-    std::cout << "\n\n";
-    for (c = lst2.begin(); c != lst2.end(); c++)
-        std::cout << *c << std::endl;
-}
-
-void clear_test()
-{
-  ft::list<int> mylist;
-  ft::list<int>::iterator it;
-
-  mylist.push_back (100);
-  mylist.push_back (200);
-  mylist.push_back (300);
-
-  std::cout << "mylist contains:";
-  for (it=mylist.begin(); it!=mylist.end(); ++it)
-    std::cout << ' ' << *it;
-  std::cout << '\n';
-
-  mylist.clear();
-
-  mylist.push_back (1101);
-  mylist.push_back (2202);
-
-  std::cout << "mylist contains:";
-  for (it=mylist.begin(); it!=mylist.end(); ++it)
-    std::cout << ' ' << *it;
-  std::cout << '\n';
-}
-
-void    splice_test()
-{
-    ft::list<int> lst, lst2, lst3;
-    ft::list<int>::iterator a, b, c, d;
-
+    it_std = lst_std.begin();
     for (int i = 0; i < 6; i++)
-        lst.push_back(i + 10);
+        it_std++;
+    it_ft = lst_ft.begin();
+    for (int i = 0; i < 6; i++)
+        it_ft++;
+    lst_std.erase(it_std, lst_std.end());
+    lst_ft.erase(it_ft, lst_ft.end());
 
-    for (int i = 0; i < 4; i++)
-        lst2.push_back(i + 1000);
+    std::cout << "\033[32mlst.erase(lst.begin() + 6, lst.end())\033[0m\n";
+    std::cout << "lst_std :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_ft  :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n\n";
 
+    lst_std.clear();
+    lst_ft.clear();
+
+    std::cout << "\033[32mlst.clear()\033[0m\n";
+    std::cout << "lst_std :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_ft  :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n\n";
+}
+
+static void    swap_test()
+{
+    std::cout << "\033[32m[	       	swap_test	        	]\033[0m\n";
+    std::list<int> first_std(3, 42);
+    std::list<int> second_std(5, 99);
+    std::list<int>::iterator it_std;
+    ft::list<int> first_ft(3, 42);
+    ft::list<int> second_ft(5, 99);
+    ft::list<int>::iterator it_ft;
+
+    std::cout << "first_std  :";
+    for (it_std = first_std.begin(); it_std != first_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << first_std.size() << "\n";
+
+    std::cout << "second_std :";
+    for (it_std = second_std.begin(); it_std != second_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << second_std.size() << "\n\n";
+
+    std::cout << "first_ft   :";
+    for (it_ft = first_ft.begin(); it_ft != first_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << first_ft.size() << "\n";
+
+    std::cout << "second_ft  :";
+    for (it_ft = second_ft.begin(); it_ft != second_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << second_ft.size() << "\n\n";
+
+    first_std.swap(second_std);
+    first_ft.swap(second_ft);
+
+    std::cout << "\033[32mfirst.swap(second)\033[0m\n";
+    std::cout << "first_std  :";
+    for (it_std = first_std.begin(); it_std != first_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << first_std.size() << "\n";
+
+    std::cout << "second_std :";
+    for (it_std = second_std.begin(); it_std != second_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << second_std.size() << "\n\n";
+
+    std::cout << "first_ft   :";
+    for (it_ft = first_ft.begin(); it_ft != first_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << first_ft.size() << "\n";
+
+    std::cout << "second_ft  :";
+    for (it_ft = second_ft.begin(); it_ft != second_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << second_ft.size() << "\n\n";
+}
+
+static void    resize_test()
+{
+    std::cout << "\033[32m[	       	resize_test	        	]\033[0m\n";
+    std::list<int>  lst_std;
+    std::list<int>::iterator    it_std;
+    ft::list<int>  lst_ft;
+    ft::list<int>::iterator    it_ft;
+
+    for (int i = 1; i < 10; ++i)
+    {
+        lst_std.push_back(i);
+        lst_ft.push_back(i);
+    }
+
+    std::cout << "lst_std :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_ft  :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n\n";
+
+    lst_std.resize(5);
+    lst_std.resize(8,100);
+    lst_std.resize(12);
+
+    lst_ft.resize(5);
+    lst_ft.resize(8,100);
+    lst_ft.resize(12);
+
+    std::cout << "\033[32mlst.resize(5) lst.resize(8, 100) lst.resize(12) \033[0m\n";
+    std::cout << "lst_std :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_ft  :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n\n";
+
+}
+
+static void    splice_test()
+{
+    std::cout << "\033[32m[	       	splice_test	        	]\033[0m\n";
+    std::list<int>  lst_std, lst_std2;
+    std::list<int>::iterator    it_std, it_std2;
+    ft::list<int>   lst_ft, lst_ft2;
+    ft::list<int>::iterator it_ft, it_ft2;
+
+    for (int i = 1; i <= 4; ++i)
+    {
+        lst_std.push_back(i);
+        lst_ft.push_back(i);
+    }
+
+    for (int i = 1; i <= 3; ++i)
+    {
+        lst_std2.push_back(i * 10);
+        lst_ft2.push_back(i * 10);
+    }
+
+    std::cout << "lst_std  :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_std2 :";
+    for (it_std = lst_std2.begin(); it_std != lst_std2.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std2.size() << "\n\n";
+    std::cout << "lst_ft   :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n";
+    std::cout << "lst_ft2  :";
+    for (it_ft = lst_ft2.begin(); it_ft != lst_ft2.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft2.size() << "\n\n";
+
+    it_std = lst_std.begin();
+    it_std++;
+    it_std2 = it_std;
+    lst_std.splice(it_std, lst_std2);
+    it_ft = lst_ft.begin();
+    it_ft++;
+    it_ft2 = it_ft;
+    lst_ft.splice(it_ft, lst_ft2);
+
+    std::cout << "\033[32mlst.splice(lst.begin() + 1, lst2)\033[0m\n";
+    std::cout << "lst_std  :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_std2 :";
+    for (it_std = lst_std2.begin(); it_std != lst_std2.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std2.size() << "\n\n";
+    std::cout << "lst_ft   :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n";
+    std::cout << "lst_ft2  :";
+    for (it_ft = lst_ft2.begin(); it_ft != lst_ft2.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft2.size() << "\n\n";
+
+    lst_std2.splice(lst_std2.begin(), lst_std, it_std2);
+    lst_ft2.splice(lst_ft2.begin(), lst_ft, it_ft2);
+
+    std::cout << "\033[32mlst2.splice(lst2.begin(), lst, it2)\033[0m\n";
+    std::cout << "lst_std  :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_std2 :";
+    for (it_std = lst_std2.begin(); it_std != lst_std2.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std2.size() << "\n\n";
+    std::cout << "lst_ft   :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n";
+    std::cout << "lst_ft2  :";
+    for (it_ft = lst_ft2.begin(); it_ft != lst_ft2.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft2.size() << "\n\n";
+
+    it_std = lst_std.begin();
     for (int i = 0; i < 3; i++)
-        lst3.push_back(0);
+        it_std++;
+    it_ft = lst_ft.begin();
+    for (int i = 0; i < 3; i++)
+        it_ft++;
 
-    lst2.erase(lst3.begin(), lst3.end());
+    lst_std.splice(lst_std.begin(), lst_std, it_std, lst_std.end());
+    lst_ft.splice(lst_ft.begin(), lst_ft, it_ft, lst_ft.end());
 
-    std::cout << "lst size = " << lst.size() << std::endl;
-    std::cout << "lst2 size = " << lst2.size() << std::endl;
-
-    // for (c = lst.begin(); c != lst.end(); c++)
-    //     std::cout << *c << " ptr = " << c.getPtr() << std::endl;
-    // for (c = lst2.begin(); c != lst2.end(); c++)
-    //     std::cout << *c << " ptr = " << c.getPtr() << std::endl;
-    // std::cout << "\n\n";
-
-    //lst2.splice(lst.begin(), lst2);
-    c = lst2.begin();
-    c++;
-    c++;
-    // lst.splice(lst.begin(), lst2, c, lst2.end());
-    lst.splice(lst.begin(), lst2);
-
-    std::cout << "lst size = " << lst.size() << std::endl;
-    std::cout << "lst2 size = " << lst2.size() << std::endl;
-    
-    // std::cout << lst.end().getPtr() << std::endl;
-
-    // std::cout << c.getPtr() << std::endl;
-    // c++;
-    // std::cout << c.getPtr() << std::endl;
-    // c++;
-    // std::cout << c.getPtr() << std::endl;
-    // c++;
-    // std::cout << c.getPtr() << std::endl;
-    // c++;
-    // std::cout << c.getPtr() << std::endl;
-    // c++;
-    // std::cout << c.getPtr() << std::endl;
-    // c++;
-    // std::cout << c.getPtr() << std::endl;
-    // c++;
-    // std::cout << c.getPtr() << std::endl;
-    // c++;
-    // std::cout << c.getPtr() << std::endl;
-    // c++;
-    // std::cout << c.getPtr() << std::endl;
-    // c++;
-    // std::cout << c.getPtr() << std::endl;
-    // c++;
-    for (c = lst.begin(); c != lst.end(); c++)
-        std::cout << *c << std::endl;
-    std::cout << "\n\n";
-    for (c = lst2.begin(); c != lst2.end(); c++)
-        std::cout << *c << std::endl;
+    std::cout << "\033[32mlst.splice(lst.begin(), lst, lst.begin() + 3, lst.end())\033[0m\n";
+    std::cout << "lst_std  :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_std2 :";
+    for (it_std = lst_std2.begin(); it_std != lst_std2.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std2.size() << "\n\n";
+    std::cout << "lst_ft   :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n";
+    std::cout << "lst_ft2  :";
+    for (it_ft = lst_ft2.begin(); it_ft != lst_ft2.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft2.size() << "\n\n";
 }
 
-void    remove_test()
-{
-    std::list<int> lst, lst2, lst3;
-    std::list<int>::iterator a, b, c, d;
+bool    single_digit(const int &value) { return (value < 10); }
 
-    for (int i = 0; i < 6; i++)
-        lst.push_back(i + 10);
-
-    // for (int i = 0; i < 4; i++)
-        // lst2.push_back(i + 1000);
-
-    lst2.push_back(1);
-    lst2.push_back(4);
-    lst2.push_back(1);
-    lst2.push_back(1);
-    lst2.push_back(1);
-    lst2.push_back(1);
-    lst2.push_back(1);
-    lst2.push_back(4);
-
-
-
-    for (int i = 0; i < 10; i++)
-        lst3.push_back(0);
-
-    lst2.erase(lst3.begin(), lst3.end());
-
-    std::cout << "lst size = " << lst.size() << std::endl;
-    std::cout << "lst2 size = " << lst2.size() << std::endl;
-
-    for (c = lst.begin(); c != lst.end(); c++)
-        std::cout << *c << std::endl;
-    std::cout << "\n\n";
-    for (c = lst2.begin(); c != lst2.end(); c++)
-        std::cout << *c << std::endl;
-    std::cout << "\n\n";
-
-    lst2.remove(4);
-
-    std::cout << "lst size = " << lst.size() << std::endl;
-    std::cout << "lst2 size = " << lst2.size() << std::endl;
-    
-
-    for (c = lst.begin(); c != lst.end(); c++)
-        std::cout << *c << std::endl;
-    std::cout << "\n\n";
-    for (c = lst2.begin(); c != lst2.end(); c++)
-        std::cout << *c << std::endl;
-}
-
-// a predicate implemented as a function:
-bool single_digit (const int& value) { return (value<10); }
-
-// a predicate implemented as a class:
-struct is_odd {
-  bool operator() (const int& value) { return (value%2)==1; }
+struct is_odd{
+    bool operator()(const int &value) { return (value % 2) == 1; }
 };
 
-void    remove_if_test()
+static void    remove_test()
 {
-  int myints[]= {15,36,7,17,20,39,4,1};
-  ft::list<int> mylist (myints,myints+8);   // 15 36 7 17 20 39 4 1
+    std::cout << "\033[32m[	       	remove_test	        	]\033[0m\n";
+    int myints[] = { 15, 42, 36, 7, 17, 20, 39, 4, 1 };
+    std::list<int>  lst_std(myints, myints + 9);
+    std::list<int>::iterator    it_std;
+    ft::list<int>   lst_ft(myints, myints + 9);
+    ft::list<int>::iterator it_ft;
 
-  mylist.remove_if (single_digit);           // 15 36 17 20 39
+    std::cout << "lst_std  :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_ft   :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n\n";
 
-  mylist.remove_if (is_odd());               // 36 20
+    lst_std.remove(42);
+    lst_ft.remove(42);
 
-  std::cout << "mylist contains:";
-  for (ft::list<int>::iterator it=mylist.begin(); it!=mylist.end(); ++it)
-    std::cout << ' ' << *it;
-  std::cout << '\n';
+    std::cout << "\033[32mlst.remove(42)\033[0m\n";
+    std::cout << "lst_std  :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_ft   :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n\n";
+
+    lst_std.remove_if(single_digit);
+    lst_ft.remove_if(single_digit);
+
+    std::cout << "\033[32mlst.remove_if(single_digit)\033[0m\n";
+    std::cout << "lst_std  :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_ft   :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n\n";
+
+    lst_std.remove_if(is_odd());
+    lst_ft.remove_if(is_odd());
+
+    std::cout << "\033[32mlst.remove_if(is_odd())\033[0m\n";
+    std::cout << "lst_std  :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_ft   :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n\n";
 }
 
-// a binary predicate implemented as a function:
-bool same_integral_part (double first, double second)
-{ return ( int(first) == int(second) ); }
+bool    same_integral_part (double first, double second) { return (int(first) == int(second)); }
 
-// a binary predicate implemented as a class:
-struct is_near {
-  bool operator() (double first, double second)
-  { return (fabs(first-second)<5.0); }
+struct is_near{
+    bool operator()(double first, double second) { return (fabs(first-second) < 5.0); }
 };
 
-void    unique_test()
+static void    unique_test()
 {
-    ft::list<int> lst;//, lst2;
-    ft::list<int>::iterator c;
+    std::cout << "\033[32m[	       	unique_test	        	]\033[0m\n";
+    double mydoubles[] = {12.15, 2.72, 73.0, 12.77, 3.14, 12.77, 73.35, 72.25, 15.3, 72.25};
+    std::list<double>  lst_std(mydoubles, mydoubles + 10);
+    std::list<double>::iterator    it_std;
+    ft::list<double>   lst_ft(mydoubles, mydoubles + 10);
+    ft::list<double>::iterator it_ft;
 
-    lst.push_back(3);
-    lst.push_back(2);
-    lst.push_back(1);
-    // for (int i = 0; i < 5; i++)
-    //     lst2.push_back(123);
+    lst_std.sort();
+    lst_ft.sort();
 
-    // lst.erase(lst2.begin(), lst2.end());
-    lst.push_back(3);
-    lst.push_back(2);
-    lst.push_back(2);
-    lst.push_back(2);
-    lst.push_back(1);
-    lst.push_back(1);
-    lst.push_back(2);
-    lst.push_back(1);
-    // lst.push_back(1);
-    // lst.push_back(2);
-    // lst.push_back(3);
-    // lst.push_back(4);
-    // lst.push_back(5);
-    // lst.push_back(4);
-    // lst.push_back(3);
-    // lst.push_back(2);
-    // lst.push_back(1);
+    std::cout << "lst_std  :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_ft   :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n\n";
 
-    std::cout << "lst size = " << lst.size() << std::endl;
-    for (c = lst.begin(); c != lst.end(); c++)
-        std::cout << *c << "ptr = " << c.getPtr() << std::endl;
-    std::cout << std::endl;
+    lst_std.unique();
+    lst_ft.unique();
 
-    //lst.unique();
-    // lst.unique(is_near());
-    lst.unique(same_integral_part);
+    std::cout << "\033[32mlst.unique()\033[0m\n";
+    std::cout << "lst_std  :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_ft   :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n\n";
 
-    std::cout << "lst size = " << lst.size() << std::endl;
-    for (c = lst.begin(); c != lst.end(); c++)
-        std::cout << *c << "ptr = " << c.getPtr() << std::endl;
+    lst_std.unique(same_integral_part);
+    lst_ft.unique(same_integral_part);
+
+    std::cout << "\033[32mlst.unique(same_integral_part)\033[0m\n";
+    std::cout << "lst_std  :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_ft   :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n\n";
+
+    lst_std.unique(is_near());
+    lst_ft.unique(is_near());
+
+    std::cout << "\033[32mlst.unique(is_near())\033[0m\n";
+    std::cout << "lst_std  :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_ft   :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n\n";
 }
 
-void    reverse_test()
+bool    mycomparison(double first, double second) { return (int(first) < int(second)); }
+
+static void    merge_test()
 {
-    ft::list<int> lst, lst2;
-    ft::list<int>::iterator c;
+    std::cout << "\033[32m[	       	merge_test	        	]\033[0m\n";
+    std::list<double>  lst_std, lst_std2;
+    std::list<double>::iterator    it_std;
+    ft::list<double>   lst_ft, lst_ft2;
+    ft::list<double>::iterator it_ft;
 
-    for (int i = 0; i < 6; i++)
-        lst.push_back(i + 11);
-    for (int i = 0; i < 5; i++)
-        lst2.push_back(0);
+    lst_std.push_back(2.2);
+    lst_std.push_back(2.9);
+    lst_std.push_back(3.1);
 
-    lst.erase(lst2.begin(), lst2.end());
+    lst_ft.push_back(2.2);
+    lst_ft.push_back(2.9);
+    lst_ft.push_back(3.1);
 
-    std::cout << "lst size = " << lst.size() << std::endl;
-    for (c = lst.begin(); c != lst.end(); c++)
-        std::cout << *c << " ";
-    std::cout << std::endl;
+    lst_std2.push_back(1.4);
+    lst_std2.push_back(3.7);
+    lst_std2.push_back(7.1);
 
-    lst.reverse();
+    lst_ft2.push_back(1.4);
+    lst_ft2.push_back(3.7);
+    lst_ft2.push_back(7.1);
 
-    std::cout << "lst size = " << lst.size() << std::endl;
-    for (c = lst.begin(); c != lst.end(); c++)
-        std::cout << *c << " ";
-    std::cout << std::endl;
+    std::cout << "lst_std  :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_std2 :";
+    for (it_std = lst_std2.begin(); it_std != lst_std2.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std2.size() << "\n\n";
+    std::cout << "lst_ft   :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n";
+    std::cout << "lst_ft2  :";
+    for (it_ft = lst_ft2.begin(); it_ft != lst_ft2.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft2.size() << "\n\n";
 
+    lst_std.merge(lst_std2);
+    lst_ft.merge(lst_ft2);
+
+    std::cout << "\033[32mlst.merge(lst2)\033[0m\n";
+    std::cout << "lst_std  :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_std2 :";
+    for (it_std = lst_std2.begin(); it_std != lst_std2.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std2.size() << "\n\n";
+    std::cout << "lst_ft   :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n";
+    std::cout << "lst_ft2  :";
+    for (it_ft = lst_ft2.begin(); it_ft != lst_ft2.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft2.size() << "\n\n";
+
+    lst_std2.push_back(2.1);
+    lst_std2.push_back(4.2);
+
+    lst_ft2.push_back(2.1);
+    lst_ft2.push_back(4.2);
+
+    lst_std.merge(lst_std2, mycomparison);
+    lst_ft.merge(lst_ft2, mycomparison);
+
+    std::cout << "\033[32mlst2.push_back(2.1) lst2.push_back(4.2) lst.merge(lst2, mycomparison)\033[0m\n";
+    std::cout << "lst_std  :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std.size() << "\n";
+    std::cout << "lst_std2 :";
+    for (it_std = lst_std2.begin(); it_std != lst_std2.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "      size = " << lst_std2.size() << "\n\n";
+    std::cout << "lst_ft   :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft.size() << "\n";
+    std::cout << "lst_ft2  :";
+    for (it_ft = lst_ft2.begin(); it_ft != lst_ft2.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "      size = " << lst_ft2.size() << "\n\n";
 }
 
-void    sort_test()
+bool    compare_nocase(const std::string &first, const std::string &second)
 {
-    ft::list<int> lst;
-    ft::list<int>::iterator c;
-
-    // for (int i = 0; i < 20; i++)
-    //     lst.push_back(i % 8);
-    
-    lst.push_back(25);
-    lst.push_back(14);
-    // lst.push_back(36);
-    // lst.push_back(8);
-    // lst.push_back(10);
-    // lst.push_back(12);
-
-    std::cout << "lst size = " << lst.size() << std::endl;
-    for (c = lst.begin(); c != lst.end(); c++)
-        std::cout << *c << " ";
-    std::cout << std::endl;
-
-    lst.sort(same_integral_part);
-
-    std::cout << "lst size = " << lst.size() << std::endl;
-    for (c = lst.begin(); c != lst.end(); c++)
-        std::cout << *c << " ";
-    std::cout << std::endl;
-
-}
-
-// comparison, not case sensitive.
-bool compare_nocase (const std::string& first, const std::string& second)
-{
-  unsigned int i=0;
-  while ( (i<first.length()) && (i<second.length()) )
+  unsigned int i = 0;
+  while ((i < first.length()) && (i < second.length()))
   {
-    if (tolower(first[i])<tolower(second[i])) return true;
-    else if (tolower(first[i])>tolower(second[i])) return false;
+    if (tolower(first[i]) < tolower(second[i]))
+        return true;
+    else if(tolower(first[i]) > tolower(second[i]))
+        return false;
     ++i;
   }
-  return ( first.length() < second.length() );
+  return (first.length() < second.length());
 }
 
-void    sort_test2()
+static void    sort_test()
 {
-  ft::list<std::string> mylist;
-  ft::list<std::string>::iterator it;
-  mylist.push_back ("one");
-  mylist.push_back ("two");
-  mylist.push_back ("Three");
+    std::cout << "\033[32m[	       	sort_test	        	]\033[0m\n";
+    std::list<std::string>  lst_std;
+    std::list<std::string>::iterator    it_std;
+    ft::list<std::string>   lst_ft;
+    ft::list<std::string>::iterator it_ft;
 
-  mylist.sort();
+    lst_std.push_back("one");
+    lst_std.push_back("two");
+    lst_std.push_back("Three");
 
-  std::cout << "mylist contains:";
-  for (it=mylist.begin(); it!=mylist.end(); ++it)
-    std::cout << ' ' << *it;
-  std::cout << '\n';
+    lst_ft.push_back("one");
+    lst_ft.push_back("two");
+    lst_ft.push_back("Three");
 
-  mylist.sort(compare_nocase);
+    std::cout << "lst_std  :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "\n";
+    std::cout << "lst_ft   :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "\n\n";
 
-  std::cout << "mylist contains:";
-  for (it=mylist.begin(); it!=mylist.end(); ++it)
-    std::cout << ' ' << *it;
-  std::cout << '\n';
+    lst_std.sort();
+    lst_ft.sort();
+
+    std::cout << "\033[32mlst.sort()\033[0m\n";
+    std::cout << "lst_std  :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "\n";
+    std::cout << "lst_ft   :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "\n\n";
+
+    lst_std.sort(compare_nocase);
+    lst_ft.sort(compare_nocase);
+
+    std::cout << "\033[32mlst.sort(compare_nocase)\033[0m\n";
+    std::cout << "lst_std  :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "\n";
+    std::cout << "lst_ft   :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "\n\n";
 }
 
-void    merge_test()
+static void    reverse_test()
 {
-    ft::list<int> lst, lst2, lst3;
-    ft::list<int>::iterator c;
+    std::cout << "\033[32m[	       	reverse_test	        	]\033[0m\n";
+    std::list<int>  lst_std;
+    std::list<int>::iterator    it_std;
+    ft::list<int>   lst_ft;
+    ft::list<int>::iterator it_ft;
 
-    for (int i = 0; i < 0; i++)
-        lst.push_back(i * 2);
-    
-    lst2.push_back(3);
-    for (int i = 0 ; i < 5; i++)
-        lst2.push_back(i * 2 + 1);
+    for (int i = 0; i < 9; i++)
+    {
+        lst_std.push_back(i + 1);
+        lst_ft.push_back(i + 1);
+    }
 
-    for (int i = 0; i < 20; i++)
-        lst3.push_back(3);
+    std::cout << "lst_std  :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "\n";
+    std::cout << "lst_ft   :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "\n\n";
 
-    lst.erase(lst3.begin(), lst3.end());
-    for (int i = 0; i < 10; i++)
-        lst2.push_back(100 + i);
-    // lst2.push_back(-20);
-    // lst2.push_back(11);
-    // lst2.push_back(33);
-    // lst2.push_back(52);
-    // lst2.push_back(6);
-    // lst2.push_back(17);
-    // lst2.push_back(8);
+    lst_std.reverse();
+    lst_ft.reverse();
 
-    lst.sort();
-    lst2.sort();
-    std::cout << "lst size = " << lst.size() << std::endl;
-    for (c = lst.begin(); c != lst.end(); c++)
-        std::cout << *c << " ";
-    std::cout << std::endl;
-    std::cout << "lst2 size = " << lst2.size() << std::endl;
-    for (c = lst2.begin(); c != lst2.end(); c++)
-        std::cout << *c << " ";
-    std::cout << std::endl;
-    std::cout << std::endl;
-
-   
-    // lst2.sort();
-
-    lst.merge(lst2);
-
-    std::cout << "lst size = " << lst.size() << std::endl;
-    for (c = lst.begin(); c != lst.end(); c++)
-        std::cout << *c << " ";
-    std::cout << std::endl;
-    std::cout << "lst2 size = " << lst2.size() << std::endl;
-    for (c = lst2.begin(); c != lst2.end(); c++)
-        std::cout << *c << " ";
-    std::cout << std::endl;
+    std::cout << "\033[32mlst.reverse()\033[0m\n";
+    std::cout << "lst_std  :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "\n";
+    std::cout << "lst_ft   :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "\n\n";
 }
 
-// compare only integral part:
-bool mycomparison (double first, double second)
-{ return ( int(first)<int(second) ); }
-
-void    merge_test2()
+static void	other_test()
 {
-  std::list<double> first, second;
+	std::cout << "\033[32m[		other_test			]\033[0m\n";
+	std::list<int>  lst_std, lst_std2, lst_std3;
+    std::list<int>::iterator    it_std;
+	ft::list<int>   lst_ft, lst_ft2, lst_ft3;
+    ft::list<int>::iterator    it_ft;
 
-  first.push_back (3.1);
-  first.push_back (2.2);
-  first.push_back (2.9);
+	for (int i = 0; i < 9; i++)
+	{
+		lst_std.push_back(i + 1);
+		lst_std2.push_back(9 - i);
+		lst_ft.push_back(i + 1);
+		lst_ft2.push_back(9 - i);
+	}
+	lst_std3 = lst_std;
+	lst_ft3 = lst_ft;
 
-  second.push_back (3.7);
-  second.push_back (7.1);
-  second.push_back (1.4);
+	std::cout << "lst_std  :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "\n";
+	std::cout << "lst_std2 :";
+    for (it_std = lst_std2.begin(); it_std != lst_std2.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "\n";
+	std::cout << "lst_std3 :";
+    for (it_std = lst_std3.begin(); it_std != lst_std3.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "\n\n";
+	std::cout << "lst_ft   :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "\n";
+    std::cout << "lst_ft2  :";
+    for (it_ft = lst_ft2.begin(); it_ft != lst_ft2.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "\n";
+    std::cout << "lst_ft3  :";
+    for (it_ft = lst_ft3.begin(); it_ft != lst_ft3.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "\n";
+	
+	std::swap(lst_std, lst_std2);
+	ft::swap(lst_ft, lst_ft2);
 
-  first.sort();
-  second.sort();
+	std::cout << "\n\033[32mswap test : swap(lst, lst2)\033[0m\n";
+	std::cout << "lst_std  :";
+    for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "\n";
+	std::cout << "lst_std2 :";
+    for (it_std = lst_std2.begin(); it_std != lst_std2.end(); it_std++)
+        std::cout << " " << *it_std;
+    std::cout << "\n\n";
+	std::cout << "lst_ft   :";
+    for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "\n";
+    std::cout << "lst_ft2  :";
+    for (it_ft = lst_ft2.begin(); it_ft != lst_ft2.end(); it_ft++)
+        std::cout << " " << *it_ft;
+    std::cout << "\n\n";
 
-  first.merge(second);
+	if (lst_std == lst_std3)
+		std::cout << "lst_std == lst_std3\n";
+	else
+		std::cout << "lst_std != lst_std3\n";
 
-  // (second is now empty)
+	if (lst_std2 != lst_std3)
+		std::cout << "lst_std2 != lst_std3\n";
+	else
+		std::cout << "lst_std2 == lst_std3\n";
 
-  second.push_back (2.1);
+	std::cout << "\n";
 
-  first.merge(second,mycomparison);
+	if (lst_std > lst_std3)
+		std::cout << "lst_std > lst_std3\n";
+	else if (lst_std3 >= lst_std)
+		std::cout << "lst_std3 >= lst_std\n";
 
-  std::cout << "first contains:";
-  for (std::list<double>::iterator it=first.begin(); it!=first.end(); ++it)
-    std::cout << ' ' << *it;
-  std::cout << '\n';
+	if (lst_std2 < lst_std3)
+		std::cout << "lst_std2 < lst_std3\n";
+	else if (lst_std3 <= lst_std2)
+		std::cout << "lst_std3 <= lst_std2\n";
 }
 
-void    testtest()
+void list_test()
 {
-    ft::list<int> lst, lst2, lst3;
-    ft::list<int>::iterator c;
-
-    for (int i = 0; i < 8; i++)
-        lst.push_back(i * 100);
-    
-    for (int i = 0 ; i < 8; i++)
-        lst2.push_back(i * 10);
-
-    for (int i = 0; i < 20; i++)
-        lst3.push_back(3);
-    
-    //lst2.erase(lst3.begin(), lst3.end());
-
-    ft::swap(lst, lst2);
-
-    std::cout << "lst size = " << lst.size() << std::endl;
-    for (c = lst.begin(); c != lst.end(); c++)
-        std::cout << *c << " ";
-    std::cout << std::endl;
-    std::cout << "lst2 size = " << lst2.size() << std::endl;
-    for (c = lst2.begin(); c != lst2.end(); c++)
-        std::cout << *c << " ";
-    std::cout << std::endl;
-
-    if (lst < lst2)
-        std::cout << "lst < lst2\n";
-    else if (lst == lst2)
-        std::cout << "===\n";
-    else if (lst > lst2)
-        std::cout << "lst > lst2\n";
-}
-
-int main(void)
-{
-    
-    // ft::list<int> ss;
-    //insert_test();
-    //push_front_test();
-    //range_erase_test();
-    //swap_test();
-
-    //clear_test();
-    // splice_test();
-    // remove_test();
-    //remove_if_test();
-    // unique_test();
-    //reverse_test();
-    //sort_test();
-    // sort_test2();
-    // merge_test();
-    // merge_test2();
-    testtest();
-
-    return (0);
-
-    std::list<int> lst;
-    std::list<int> lst2;
-    std::list<int>::iterator a, b, c, d;
-
-    for (int i = 0; i < 2; i++)
-       lst.push_back(i + 1);
-
-
-    for (int i = 0; i < 120; i++)
-        lst2.push_back(1111);
-    lst2.push_back(2222);
-    lst2.push_back(3333);
-    lst2.push_back(4444);
-    lst2.push_back(5555);
-    lst2.push_back(6666);
-    lst2.push_back(7777);
-
-    // c = lst.begin();
-    // for (int i = 0; i < 1; i++)
-    //     c++;
-
-
-    
-    //b = lst.erase(lst.begin(), c);
-    // c = lst2.begin();
-    // c++;
-    // c++;
-    //b = lst.erase(c, lst2.end());
-
-    std::cout << "lst size = " << lst.size() << std::endl;
-
-    // lst.erase(lst2.begin(), lst.end());
-//    lst.pop_front();
-//    lst.pop_front();
-//    lst.pop_front();
-
-    return (0);
-
-
-    // for (int i = 0; i < 4; i++)
-    //    ss.push_back(1.11 * (i + 1));
-
-    //for(int i = 0; i < 4; i++)
-    //      ss.push_back(i + 10);
-
-    // ss.push_back(333);
-    // ss.push_back(3333);
-    // ss.push_back(33333);
-    //ss.push_back(33333);
-    //ss.pop_back();
-
-    //std::cout << ss.front() << " " << ss.back() << std::endl;
-
-    return (0);
-
-    // ft::list<int>::reverse_iterator rr;
-    // rr = ss.rbegin();
-    // rr++;
-    // rr++;
-    // ft::list<int>::iterator base = rr.base();
-    // ft::list<int>::const_reverse_iterator rrr(base);
-
-    // rrr = rr;
-
-    // if (rr == rrr)
-    //     std::cout << "Ok1\n";
-    // if (rrr == rr)
-    //     std::cout << "Ok2\n";
-    // if (rr != rrr)
-    //     std::cout << "Ok3\n";
-    // if (rrr != rr)
-    //     std::cout << "Ok4\n";
-
-    // // ss.print();
-
-    // std::cout << "base = " << *base << std::endl;
-    // std::cout << "rr = " << *rr << std::endl;
-    // std::cout << "rrr = " << *rrr << std::endl;
-
-
-    // //*rr = 22;
-    // ss.push_back(33);
-
-    // std::cout << *rr << std::endl;
-    // rr++;
-    // std::cout << *rr << std::endl;
-    // std::cout << *++rr << std::endl;
-    // rr--;
-    // std::cout << *rr << std::endl;
-    // std::cout << *--rr << std::endl;
-
-    //std::cout << "size = " << ss.size() << std::endl;
-    //ft::list<int>::iterator aa = ss.begin();
-
-    //for (std::list<int>::iterator i = ss.begin(); i != ss.end(); i++)
-    //    std::cout << *i << std::endl;
-
-    // std::cout << *aa++ << std::endl;
-    // std::cout << *aa++ << std::endl;
-    // std::cout << *aa++ << std::endl;
-    // std::cout << *aa++ << std::endl;
-    // std::cout << *aa++ << std::endl;
-    // std::cout << *aa++ << std::endl;
-    // std::cout << *aa++ << std::endl;
-
-    // ss.print();
-    //ss.pop_back();
-
-    // std::cout << "\n";
-    // std::cout << *aa++ << std::endl;
-    // std::cout << *aa++ << std::endl;
-    // std::cout << *aa++ << std::endl;
-    // std::cout << *aa++ << std::endl;
-    // std::cout << *aa++ << std::endl;
-    // std::cout << *aa++ << std::endl;
-    // std::cout << *aa++ << std::endl;
-
-
-//     ft::list<int> lst(4, 99);
-//     ft::list<int> lst2(lst.begin(), ++lst.begin());
-
-//     for (int i = 0; i < 4; i++)
-//     {
-//         lst2.push_back(i);
-//     }
-//    ft::list<int>::iterator it = lst2.begin();
-//    ft::list<int>::const_iterator it2(it);
-
-//     it2 = it;
-//     std::cout << *it << " vs " << *it2 << std::endl;
-
-//     std::list<test> ttt;
-//     test date(111);
-
-//     ttt.push_back(date);
-//     std::list<test>::iterator ci = ttt.begin();
-
-//     std::cout << "test " << ci->x << std::endl;
-
-//    if (it == it2)
-//        std::cout << "ok" << std::endl;
-
-
-//     ft::list<int> lst3;
-
-//     lst3 = lst;
-
-    // lst.print();
-    // lst2.print();
-    // lst3.print();
-
-    return (0);
+    std::cout << "\n\n\033[32m[		list_test			]\033[0m\n\n\n";
+    constructor_test();
+    iterators_test();
+    capacity_test();
+    element_access_test();
+    assign_test();
+    push_pop_test();
+    insert_erase_clear_test();
+    swap_test();
+    resize_test();
+    splice_test();
+    remove_test();
+    unique_test();
+    merge_test();
+    sort_test();
+    reverse_test();
+    other_test();
 }

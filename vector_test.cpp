@@ -1,14 +1,6 @@
 #include "ft_containers_test.hpp"
 
-// operator-> test class
-class	test{
-	public:
-		int num;
-		test(int n = 0) { num = n; }
-		~test() { }
-};
-
-void	constructor_test()
+static void	constructor_test()
 {
 	std::cout << "\033[32m[		constructor_test		]\033[0m\n";
 	std::vector<int> default_std;
@@ -88,7 +80,7 @@ void	constructor_test()
 
 }
 
-void	iterators_test()
+static void	iterators_test()
 {
 	std::cout << "\033[32m[		iterators_test			]\033[0m\n";
 	std::vector<int> vec_std;
@@ -101,7 +93,7 @@ void	iterators_test()
 	}
 
 	// std test
-	std::cout << "[std test]\n";
+	std::cout << "\033[32m[std test]\033[0m\n";
 	std::cout << "vec_std :";
 	for (size_t i = 0; i < vec_std.size(); i++)
 		std::cout << " " << vec_std[i];
@@ -184,7 +176,7 @@ void	iterators_test()
 
 
 	// ft test
-	std::cout << "[ft test]\n";
+	std::cout << "\033[32m[ft test]\033[0m\n";
 	std::cout << "vec_ft :";
 	for (size_t i = 0; i < vec_ft.size(); i++)
 		std::cout << " " << vec_ft[i];
@@ -244,7 +236,7 @@ void	iterators_test()
 	if (it_ft <= cit_ft)
 		std::cout << "it_ft <= cit_ft" << std::endl;
 
-	std::cout << "vec_ft begin() -> end() test :";
+	std::cout << "\nvec_ft begin() -> end() test :";
 	for (it_ft = vec_ft.begin(); it_ft != cit_ft; it_ft++)
 		std::cout << " " << *it_ft;
 	std::cout << "\n";
@@ -252,7 +244,7 @@ void	iterators_test()
 	ft::vector<int>::reverse_iterator rit_ft(vec_ft.rbegin());
 	ft::vector<int>::const_reverse_iterator crit_ft(vec_ft.rend());
 
-	std::cout << "\nvec_ft rbegin() -> rend() test :";
+	std::cout << "vec_ft rbegin() -> rend() test :";
 	for (rit_ft = vec_ft.rbegin(); rit_ft != crit_ft; rit_ft++)
 		std::cout << " " << *rit_ft;
 	std::cout << "\n";
@@ -265,7 +257,7 @@ void	iterators_test()
   	std::cout << "\n\n";
 
 	//operator-> test
-	std::cout << "[operator-> test]\n";
+	std::cout << "\033[32m[operator-> test]\033[0m\n";
 	std::vector<test> test_std;
 	ft::vector<test> test_ft;
 	test t(42);
@@ -278,7 +270,7 @@ void	iterators_test()
 	std::cout << "\n";
 }
 
-void	capacity_test()
+static void	capacity_test()
 {
 	std::cout << "\033[32m[		capacity_test			]\033[0m\n";
 	std::vector<int> vec_std;
@@ -316,8 +308,8 @@ void	capacity_test()
 	std::cout << "vec_std capacity() : " << vec_std.capacity() << std::endl;
 	std::cout << "vec_ft  capacity() : " << vec_ft.capacity() << std::endl;
 	std::cout << "\n";
-	std::cout << "[reserve test]\n";
-	
+
+	std::cout << "\033[32m[reserve test]\033[0m\n";
 	std::cout << "reserve(-1)\n";
 	try
 	{
@@ -353,7 +345,8 @@ void	capacity_test()
 	std::cout << "vec_std capacity() : " << vec_std.capacity() << std::endl;
 	std::cout << "vec_ft  capacity() : " << vec_ft.capacity() << std::endl;
 	std::cout << "\n";
-	std::cout << "resize test : resize(5), resize(8, 100), resize(10)\n";
+
+	std::cout << "\033[32mresize test : resize(5), resize(8, 100), resize(10)\033[0m\n";
 	std::cout << "vec_std before :";
 	for (size_t i = 0; i < vec_std.size(); i++)
 		std::cout << " " << vec_std[i];
@@ -379,10 +372,10 @@ void	capacity_test()
 	std::cout << "\n";
 }
 
-void	element_access_test()
+static void	element_access_test()
 {
 	std::cout << "\033[32m[		element_access_test		]\033[0m\n";
-	std::vector<int> vec_std;
+	std::vector<int>	vec_std;
 	ft::vector<int>	vec_ft;
 
 	for (int i = 0; i < 12; i++)
@@ -427,7 +420,7 @@ void	element_access_test()
 	std::cout << "\n";
 }
 
-void	modifiers_test()
+static void	modifiers_test()
 {
 	std::cout << "\033[32m[		modifiers_test			]\033[0m\n";
 	std::vector<int> vec_std;
@@ -451,7 +444,7 @@ void	modifiers_test()
 		vec_std.pop_back();
 		vec_ft.pop_back();
 	}
-	std::cout << "pop_back test : pop_back() x 4\n";
+	std::cout << "\n\033[32mpop_back test : vec.pop_back() x 4\033[0m\n";
 	std::cout << "vec_std :";
 	for (size_t i = 0; i < vec_std.size(); i++)
 		std::cout << " " << vec_std[i];
@@ -467,7 +460,7 @@ void	modifiers_test()
 	vec_std2.assign(20, 42);
 	vec_ft2.assign(20, 42);
 
-	std::cout << "\nfill assign test : vec2.assign(20, 42)\n";
+	std::cout << "\n\033[32mfill assign test : vec2.assign(20, 42)\033[0m\n";
 	std::cout << "vec_std2 :";
 	for (size_t i = 0; i < vec_std2.size(); i++)
 		std::cout << " " << vec_std2[i];
@@ -481,7 +474,7 @@ void	modifiers_test()
 	vec_std2.assign(vec_std2.begin(), vec_std2.begin() + 5);
 	vec_ft2.assign(vec_ft2.begin(), vec_ft2.begin() + 5);
 
-	std::cout << "\nrange assign test : vec2.assign(vec2.begin(), vec2.begin + 5)\n";
+	std::cout << "\n\033[32mrange assign test : vec2.assign(vec2.begin(), vec2.begin + 5)\033[0m\n";
 	std::cout << "vec_std2 :";
 	for (size_t i = 0; i < vec_std2.size(); i++)
 		std::cout << " " << vec_std2[i];
@@ -495,7 +488,7 @@ void	modifiers_test()
 	vec_std2.insert(vec_std2.begin() + 2, 7);
 	vec_ft2.insert(vec_ft2.begin() + 2, 7);
 
-	std::cout << "\nsingle element insert test : vec2.insert(vec2.begin() + 2, 7)\n";
+	std::cout << "\n\033[32msingle element insert test : vec2.insert(vec2.begin() + 2, 7)\033[0m\n";
 	std::cout << "vec_std2 :";
 	for (size_t i = 0; i < vec_std2.size(); i++)
 		std::cout << " " << vec_std2[i];
@@ -509,7 +502,7 @@ void	modifiers_test()
 	vec_std2.insert(vec_std2.end(), 4, 100);
 	vec_ft2.insert(vec_ft2.end(), 4, 100);
 
-	std::cout << "\nfill insert test : vec2.insert(vec2.end(), 4, 100)\n";
+	std::cout << "\n\033[32mfill insert test : vec2.insert(vec2.end(), 4, 100)\033[0m\n";
 	std::cout << "vec_std2 :";
 	for (size_t i = 0; i < vec_std2.size(); i++)
 		std::cout << " " << vec_std2[i];
@@ -523,7 +516,7 @@ void	modifiers_test()
 	vec_std2.insert(vec_std2.begin(), vec_std.begin(), vec_std.end());
 	vec_ft2.insert(vec_ft2.begin(), vec_ft.begin(), vec_ft.end());
 
-	std::cout << "\nrange insert test : vec2.insert(vec2.begin(), vec.begin(), vec.end())\n";
+	std::cout << "\n\033[32mrange insert test : vec2.insert(vec2.begin(), vec.begin(), vec.end())\033[0m\n";
 	std::cout << "vec_std2 :";
 	for (size_t i = 0; i < vec_std2.size(); i++)
 		std::cout << " " << vec_std2[i];
@@ -537,7 +530,7 @@ void	modifiers_test()
 	vec_std2.erase(vec_std2.begin() + 3);
 	vec_ft2.erase(vec_ft2.begin() + 3);
 
-	std::cout << "\nposition erase test : vec2.erase(vec2.begin() + 3))\n";
+	std::cout << "\n\033[32mposition erase test : vec2.erase(vec2.begin() + 3))\033[0m\n";
 	std::cout << "vec_std2 :";
 	for (size_t i = 0; i < vec_std2.size(); i++)
 		std::cout << " " << vec_std2[i];
@@ -551,7 +544,7 @@ void	modifiers_test()
 	vec_std2.erase(vec_std2.begin() + 3, vec_std2.end() - 5);
 	vec_ft2.erase(vec_ft2.begin() + 3, vec_ft2.end() - 5);
 	
-	std::cout << "\niterator erase test : vec2.erase(vec2.begin() + 3, vec2.end() - 5))\n";
+	std::cout << "\n\033[32miterator erase test : vec2.erase(vec2.begin() + 3, vec2.end() - 5))\033[0m\n";
 	std::cout << "vec_std2 :";
 	for (size_t i = 0; i < vec_std2.size(); i++)
 		std::cout << " " << vec_std2[i];
@@ -565,7 +558,7 @@ void	modifiers_test()
 	vec_std2.swap(vec_std);
 	vec_ft2.swap(vec_ft);
 	
-	std::cout << "\nswap test : vec2.swap(vec)\n";
+	std::cout << "\n\033[32mswap test : vec2.swap(vec)\033[0m\n";
 	std::cout << "vec_std  :";
 	for (size_t i = 0; i < vec_std.size(); i++)
 		std::cout << " " << vec_std[i];
@@ -583,7 +576,7 @@ void	modifiers_test()
 		std::cout << " " << vec_ft2[i];
 	std::cout << "\n";
 
-	std::cout << "\nclear test : vec2.clear()\n";
+	std::cout << "\n\033[32mclear test : vec2.clear()\033[0m\n";
 	vec_std2.clear();
 	vec_ft2.clear();
 	if (vec_std2.empty())
@@ -594,17 +587,14 @@ void	modifiers_test()
 	std::cout << "vec_ft2  size : " << vec_ft2.size() << std::endl;
 	std::cout << "vec_std2 capacity : " << vec_std2.capacity() << std::endl;
 	std::cout << "vec_ft2  capacity : " << vec_ft2.capacity() << std::endl;
+	std::cout << "\n";
 }
 
-void	other_test()
+static void	other_test()
 {
 	std::cout << "\033[32m[		other_test			]\033[0m\n";
-	std::vector<int> vec_std;
-	std::vector<int> vec_std2;
-	std::vector<int> vec_std3;
-	ft::vector<int>	vec_ft;
-	ft::vector<int>	vec_ft2;
-	ft::vector<int>	vec_ft3;
+	std::vector<int>	vec_std, vec_std2, vec_std3;
+	ft::vector<int>	vec_ft, vec_ft2, vec_ft3;
 
 	for (int i = 0; i < 9; i++)
 	{
@@ -627,7 +617,7 @@ void	other_test()
 	std::cout << "vec_std3 :";
 	for (size_t i = 0; i < vec_std3.size(); i++)
 		std::cout << " " << vec_std3[i];
-	std::cout << "\n";
+	std::cout << "\n\n";
 	std::cout << "vec_ft   :";
 	for (size_t i = 0; i < vec_ft.size(); i++)
 		std::cout << " " << vec_ft[i];
@@ -644,7 +634,7 @@ void	other_test()
 	std::swap(vec_std, vec_std2);
 	ft::swap(vec_ft, vec_ft2);
 
-	std::cout << "\nswap test : swap(vec, vec2)\n";
+	std::cout << "\n\033[32mswap test : swap(vec, vec2)\033[0m\n";
 	std::cout << "vec_std  :";
 	for (size_t i = 0; i < vec_std.size(); i++)
 		std::cout << " " << vec_std[i];
@@ -652,7 +642,7 @@ void	other_test()
 	std::cout << "vec_std2 :";
 	for (size_t i = 0; i < vec_std2.size(); i++)
 		std::cout << " " << vec_std2[i];
-	std::cout << "\n";
+	std::cout << "\n\n";
 	std::cout << "vec_ft   :";
 	for (size_t i = 0; i < vec_ft.size(); i++)
 		std::cout << " " << vec_ft[i];
@@ -672,6 +662,8 @@ void	other_test()
 	else
 		std::cout << "vec_std2 == vec_std3\n";
 
+	std::cout << "\n";
+
 	if (vec_std > vec_std3)
 		std::cout << "vec_std > vec_std3\n";
 	else if (vec_std3 >= vec_std)
@@ -685,6 +677,7 @@ void	other_test()
 
 void vector_test()
 {
+	std::cout << "\n\n\033[32m[		vector_test			]\033[0m\n\n\n";
 	constructor_test();
 	iterators_test();
 	capacity_test();
