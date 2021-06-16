@@ -34,24 +34,24 @@ namespace ft{
 
 			T	*getPtr() const { return (ptr); }
 						
-			bool	operator==(const VectorIterator &src) { return (ptr == src.ptr); }
+			bool	operator==(const VectorIterator &src) const { return (ptr == src.ptr); }
 			template<typename diffT>
-			bool operator==(const VectorIterator<diffT> &src) { return (ptr == const_cast<T*>(src.getPtr())); }
+			bool operator==(const VectorIterator<diffT> &src) const { return (ptr == const_cast<T*>(src.getPtr())); }
 
-			bool	operator!=(const VectorIterator &src) { return (ptr != src.ptr); }
+			bool	operator!=(const VectorIterator &src) const { return (ptr != src.ptr); }
 			template<typename diffT>
-			bool operator!=(const VectorIterator<diffT> &src) { return (ptr != const_cast<T*>(src.getPtr())); }
+			bool operator!=(const VectorIterator<diffT> &src) const { return (ptr != const_cast<T*>(src.getPtr())); }
 
-			T 	&operator*() { return (*ptr); }
+			T 	&operator*() const { return (*ptr); }
 
-			T	*operator->() { return (ptr); }
+			T	*operator->() const { return (ptr); }
 
 			VectorIterator	operator++(int){	// i++;
 				VectorIterator<T> temp = *this;
 				ptr++;
 				return (temp);
 			}
-			VectorIterator	operator++(){		// ++i;
+			VectorIterator	&operator++(){		// ++i;
 				ptr++;
 				return (*this);
 			}
@@ -60,7 +60,7 @@ namespace ft{
 				ptr--;
 				return (temp);
 			}
-			VectorIterator	operator--(){		// --i;
+			VectorIterator	&operator--(){		// --i;
 				ptr--;
 				return (*this);
 			}
@@ -77,7 +77,7 @@ namespace ft{
 
 			difference_type	operator-(const VectorIterator &src) const { return (ptr - src.ptr); }
 			template<typename diffT>
-			difference_type operator-(const VectorIterator<diffT> &src) { return (ptr - const_cast<T*>(src.getPtr())); }
+			difference_type operator-(const VectorIterator<diffT> &src) const { return (ptr - const_cast<T*>(src.getPtr())); }
 
 			VectorIterator	&operator+=(difference_type n){
 				ptr += n;
@@ -89,24 +89,27 @@ namespace ft{
                 return (*this);
             }
 			
-			bool operator<(const VectorIterator &src){ return (ptr < src.ptr); }
+			bool operator<(const VectorIterator &src) const { return (ptr < src.ptr); }
 			template<typename diffT>
-			bool operator<(const VectorIterator<diffT> &src) { return (ptr < const_cast<T*>(src.getPtr())); }
+			bool operator<(const VectorIterator<diffT> &src) const { return (ptr < const_cast<T*>(src.getPtr())); }
 
-			bool operator<=(const VectorIterator &src) { return (ptr <= src.ptr); }
+			bool operator<=(const VectorIterator &src) const { return (ptr <= src.ptr); }
 			template<typename diffT>
-			bool operator<=(const VectorIterator<diffT> &src) { return (ptr <= const_cast<T*>(src.getPtr())); }
+			bool operator<=(const VectorIterator<diffT> &src) const { return (ptr <= const_cast<T*>(src.getPtr())); }
 
-			bool operator>(const VectorIterator &src) { return (ptr > src.ptr); }
+			bool operator>(const VectorIterator &src) const { return (ptr > src.ptr); }
 			template<typename diffT>
-			bool operator>(const VectorIterator<diffT> &src) { return (ptr > const_cast<T*>(src.getPtr())); }
+			bool operator>(const VectorIterator<diffT> &src) const { return (ptr > const_cast<T*>(src.getPtr())); }
 
-			bool operator>=(const VectorIterator &src) { return (ptr >= src.ptr); }
+			bool operator>=(const VectorIterator &src) const { return (ptr >= src.ptr); }
 			template<typename diffT>
-			bool operator>=(const VectorIterator<diffT> &src) { return (ptr >= const_cast<T*>(src.getPtr())); }
+			bool operator>=(const VectorIterator<diffT> &src) const { return (ptr >= const_cast<T*>(src.getPtr())); }
 
-			T	&operator[](size_type n) { return (ptr[n]); }
+			T	&operator[](size_type n) const { return (ptr[n]); }
 	};
+
+	template <typename T>
+	VectorIterator<T> operator+(int n, const VectorIterator<T> &rhs){ return (rhs + n); }
 
     // class vector_reverse_iterator
 	template <typename T>
@@ -142,24 +145,24 @@ namespace ft{
 
 			VectorIterator<T>	base() { return (VectorIterator<T>(ptr + 1)); }
 
-			bool    operator==(const VectorReverseIterator &src) { return (ptr == src.ptr); }
+			bool    operator==(const VectorReverseIterator &src) const { return (ptr == src.ptr); }
 			template<typename diffT>
-			bool operator==(const VectorReverseIterator<diffT> &src) { return (ptr == const_cast<T*>(src.getPtr())); }
+			bool operator==(const VectorReverseIterator<diffT> &src) const { return (ptr == const_cast<T*>(src.getPtr())); }
 
-			bool    operator!=(const VectorReverseIterator &src) { return (ptr != src.ptr); }
+			bool    operator!=(const VectorReverseIterator &src) const { return (ptr != src.ptr); }
 			template<typename diffT>
-			bool operator!=(const VectorReverseIterator<diffT> &src) { return (ptr != const_cast<T*>(src.getPtr())); }
+			bool operator!=(const VectorReverseIterator<diffT> &src) const { return (ptr != const_cast<T*>(src.getPtr())); }
 
-			T &operator*() { return (*ptr); }
+			T &operator*() const { return (*ptr); }
 
-			T *operator->() { return (ptr); }
+			T *operator->() const { return (ptr); }
 
 			VectorReverseIterator	operator++(int){ // i++;
 				VectorReverseIterator<T> temp = *this;
 				ptr--;
 				return (temp);
 			}
-			VectorReverseIterator	operator++(){ // ++i;
+			VectorReverseIterator	&operator++(){ // ++i;
 				ptr--;
 				return (*this);
 			}
@@ -168,7 +171,7 @@ namespace ft{
 				ptr++;
 				return (temp);
 			}
-			VectorReverseIterator	operator--(){ // --i
+			VectorReverseIterator	&operator--(){ // --i
 				ptr++;
 				return (*this);
 			}
@@ -185,7 +188,7 @@ namespace ft{
 
 			difference_type operator-(const VectorReverseIterator &src) const { return (src.ptr - ptr); }
 			template<typename diffT>
-			difference_type operator-(const VectorReverseIterator<diffT> &src) { return (ptr - const_cast<T*>(src.getPtr())); }
+			difference_type operator-(const VectorReverseIterator<diffT> &src) const { return (const_cast<T*>(src.getPtr()) - ptr); }
 
 			VectorReverseIterator  &operator+=(difference_type n){
 				ptr -= n;
@@ -197,24 +200,27 @@ namespace ft{
 				return (*this);
 			}
 
-			bool operator<(const VectorReverseIterator &src) { return (ptr < src.ptr); }
+			bool operator<(const VectorReverseIterator &src) const { return (src.ptr < ptr); }
 			template<typename diffT>
-			bool operator<(const VectorReverseIterator<diffT> &src) { return (ptr < const_cast<T*>(src.getPtr())); }
+			bool operator<(const VectorReverseIterator<diffT> &src) const { return (const_cast<T*>(src.getPtr()) < ptr); }
 
-			bool operator<=(const VectorReverseIterator &src) { return (ptr <= src.ptr); }
+			bool operator<=(const VectorReverseIterator &src) const { return (src.ptr <= ptr); }
 			template<typename diffT>
-			bool operator<=(const VectorReverseIterator<diffT> &src) { return (ptr <= const_cast<T*>(src.getPtr())); }
+			bool operator<=(const VectorReverseIterator<diffT> &src) const { return (const_cast<T*>(src.getPtr()) <= ptr); }
 
-			bool operator>(const VectorReverseIterator &src) { return (ptr > src.ptr); }
+			bool operator>(const VectorReverseIterator &src) const { return (src.ptr > ptr); }
 			template<typename diffT>
-			bool operator>(const VectorReverseIterator<diffT> &src) { return (ptr > const_cast<T*>(src.getPtr())); }
+			bool operator>(const VectorReverseIterator<diffT> &src) const { return (const_cast<T*>(src.getPtr()) > ptr); }
 			
-			bool operator>=(const VectorReverseIterator &src) { return (ptr >= src.ptr); }
+			bool operator>=(const VectorReverseIterator &src) const { return (src.ptr >= ptr); }
 			template<typename diffT>
-			bool operator>=(const VectorReverseIterator<diffT> &src) { return (ptr >= const_cast<T*>(src.getPtr())); }
+			bool operator>=(const VectorReverseIterator<diffT> &src) const { return (const_cast<T*>(src.getPtr()) >= ptr); }
 
-			T const &operator[](size_type n) const { return (*(ptr - n)); }
+			T	&operator[](size_type n) const { return (*(ptr - n)); }
 	};
+
+	template <typename T>
+	VectorReverseIterator<T> operator+(int n, const VectorReverseIterator<T> &rhs){ return (rhs + n); }
 
 	// T* allocate(size_t) 			:	초기화되지 않은 메모리 공간을 할당하여 그 시작 주소를 반환한다.
 	// 									매개변수는 바이트 단위가 아닌 필요한 T 객체의 개수이다.
@@ -278,20 +284,22 @@ namespace ft{
 
 			// fill constructor
 			explicit vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()){
-                allocator_type _alloc = alloc;
+				allocator_type _alloc = alloc;
 
                 _capacity = n;
                 _size = n;
                 ary = _alloc.allocate(_capacity);
                 for (size_type i = 0; i < _size; i++)
-					ary[i] = val;
+					_alloc.construct(ary + i, val);
+					// ary[i] = val;
 			}
 
 			// range constructor
 			template <typename InputIterator>
 			vector(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type(), 
 					typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type type = 0){
-				allocator_type _alloc = alloc;
+				(void)alloc;
+				allocator_type _alloc;
 				InputIterator it = first;
 
 				(void)type;
@@ -304,7 +312,8 @@ namespace ft{
 				_capacity = _size;
 				ary = _alloc.allocate(_capacity);
 				for (size_type i = 0; i < _size; i++)
-                    ary[i] = *first++;
+					_alloc.construct(ary + i, *first++);
+                    // ary[i] = *first++;
 			}
 
 			// copy constructor
@@ -317,7 +326,8 @@ namespace ft{
 
 					ary = alloc.allocate(x._capacity);
 					for (size_type i = 0; i < x._size; i++)
-						ary[i] = x.ary[i];
+						alloc.construct(ary + i, x.ary[i]);
+						// ary[i] = x.ary[i];
 				}
 				_size = x._size;
 				_capacity = x._capacity;
@@ -326,23 +336,28 @@ namespace ft{
 			// Assign content
 			vector	&operator=(const vector &x){
 				allocator_type alloc;
-
-				if (ary != 0)
+				if (_capacity != 0)
 				{
 					for (size_type i = 0; i < _size; i++)
 						alloc.destroy(ary + i);
-					alloc.deallocate(ary, _capacity);
 				}
-				if (x._capacity == 0)
-					ary = 0;
+				if (_capacity >= x._size)
+				{
+					for (size_type i = 0; i < x._size; i++)
+						alloc.construct(ary + i, x.ary[i]);
+						// ary[i] = x.ary[i];
+				}
 				else
 				{
-					ary = alloc.allocate(x._capacity);
+					if (_capacity != 0)
+						alloc.deallocate(ary, _capacity);
+					ary = alloc.allocate(x._size);
 					for (size_type i = 0; i < x._size; i++)
-						ary[i] = x.ary[i];
+						alloc.construct(ary + i, x.ary[i]);
+						// ary[i] = x.ary[i];
+					_capacity = x._size;
 				}
 				_size = x._size;
-				_capacity = x._capacity;
 				return (*this);
 			}
 			
@@ -369,7 +384,12 @@ namespace ft{
 
             void    resize(size_type n, value_type val = value_type()){
                 if (n > _capacity)
-					reserve(n);
+				{
+					if (_size * 2 >= n)
+						reserve(_size * 2);
+					else
+						reserve(n);
+				}
                 for (size_type i = _size; i < n; i++)
                     ary[i] = val;
                 _size = n;
@@ -388,7 +408,8 @@ namespace ft{
                     T       *temp = alloc.allocate(n);
 
                     for(size_type i = 0; i < _size; i++)
-                        temp[i] = ary[i];
+						alloc.construct(temp + i, ary[i]);
+                        // temp[i] = ary[i];
                     for (size_type i = 0; i < _size; i++)
 						alloc.destroy(ary + i);
 					alloc.deallocate(ary, _capacity);
@@ -443,7 +464,8 @@ namespace ft{
 					reserve(n);
 				}
 				for (size_type i = 0; i < n; i++)
-					ary[i] = *first++;
+					alloc.construct(ary + i, *first++);
+					// ary[i] = *first++;
                 _size = n;
 			}
 
@@ -459,7 +481,8 @@ namespace ft{
 					reserve(n);
                 }
                 for (size_type i = 0; i < n; i++)
-                    ary[i] = val;
+					alloc.construct(ary + i, val);
+                    // ary[i] = val;
                 _size = n;
 			}
 
@@ -469,7 +492,9 @@ namespace ft{
 				if (_capacity == 0)
 				{
 					ary = alloc.allocate(1);
-					ary[_size++] = val;
+					alloc.construct(ary + _size, val);
+					// ary[_size] = val;
+					_size += 1;
 					_capacity = 1;
 				}
 				else if (_capacity <= _size)
@@ -478,8 +503,10 @@ namespace ft{
 					T	*temp = alloc.allocate(c);
 
 					for (size_type i = 0; i < _capacity; i++)
-						temp[i] = ary[i];
-					temp[_size] = val;
+						alloc.construct(temp + i, ary[i]);
+						// temp[i] = ary[i];
+					alloc.construct(temp + _size, val);
+					// temp[_size] = val;
 					for (size_type i = 0; i < _size; i++)
 						alloc.destroy(ary + i);
 					alloc.deallocate(ary, _capacity);
@@ -521,10 +548,13 @@ namespace ft{
 				}
 				temp = alloc.allocate(_capacity);
 				for (i = begin(); i != position; i++)
-					temp[count++] = *i;
-				temp[count++] = val;
+					alloc.construct(temp + count++, *i);
+					// temp[count++] = *i;
+				alloc.construct(temp + count++, val);
+				// temp[count++] = val;
 				for (i = position; i != end(); i++)
-					temp[count++] = *i;
+					alloc.construct(temp + count++, *i);
+					// temp[count++] = *i;
 				for (size_type i = 0; i < _size; i++)
 					alloc.destroy(ary + i);
 				alloc.deallocate(ary, c);
@@ -545,18 +575,21 @@ namespace ft{
 					return ;
 				if (_capacity < _size + n)
 				{
-					if (_capacity * 2 >= _size + n)
-						_capacity *= 2;
+					if (_size * 2 >= _size + n)
+						_capacity = _size * 2;
 					else
 						_capacity = _size + n;
 				}
 				temp = alloc.allocate(_capacity);
 				for (i = begin(); i != position; i++)
-					temp[count++] = *i;
+					alloc.construct(temp + count++, *i);
+					// temp[count++] = *i;
 				for (size_type p = 0; p < n; p++)
-					temp[count++] = val;
+					alloc.construct(temp + count++, val);
+					// temp[count++] = val;
 				for (i = position; i != end(); i++)
-					temp[count++] = *i;
+					alloc.construct(temp + count++, *i);
+					// temp[count++] = *i;
 				for (size_type i = 0; i < _size; i++)
 					alloc.destroy(ary + i);
 				alloc.deallocate(ary, c);
@@ -586,18 +619,21 @@ namespace ft{
 					return ;
 				if (_capacity < _size + n)
 				{
-					if (_capacity * 2 >= _size + n)
-						_capacity *= 2;
+					if (_size * 2 >= _size + n)
+						_capacity = _size * 2;
 					else
 						_capacity = _size + n;
 				}
 				temp = alloc.allocate(_capacity);
 				for (i = begin(); i != position; i++)
-					temp[count++] = *i;
+					alloc.construct(temp + count++, *i);
+					// temp[count++] = *i;
 				for (; first != last; first++)
-					temp[count++] = *first;
+					alloc.construct(temp + count++, *first);
+					// temp[count++] = *first;
 				for (i = position; i != end(); i++)
-					temp[count++] = *i;
+					alloc.construct(temp + count++, *i);
+					// temp[count++] = *i;
 				for (size_type i = 0; i < _size; i++)
 					alloc.destroy(ary + i);
 				alloc.deallocate(ary, c);

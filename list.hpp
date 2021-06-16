@@ -43,15 +43,15 @@ namespace ft{
 
             ft::Node<T> *getPtr() const { return (ptr); }
 
-            bool    operator==(const ListIterator &src) { return (ptr == src.ptr); }
-            bool    operator==(const ListConstIterator<T> &src) { return (ptr == src.getPtr()); }
+            bool    operator==(const ListIterator &src) const { return (ptr == src.ptr); }
+            bool    operator==(const ListConstIterator<T> &src) const { return (ptr == src.getPtr()); }
 
-            bool    operator!=(const ListIterator &src) { return (ptr != src.ptr); }
-            bool    operator!=(const ListConstIterator<T> &src) { return (ptr != src.getPtr()); }
+            bool    operator!=(const ListIterator &src) const { return (ptr != src.ptr); }
+            bool    operator!=(const ListConstIterator<T> &src) const { return (ptr != src.getPtr()); }
 
-            T   &operator*() { return (ptr->val); }
+            T   &operator*() const { return (ptr->val); }
 
-            T   *operator->() { return (&ptr->val); }
+            T   *operator->() const { return (&ptr->val); }
 
             ListIterator	operator++(int){	// i++;
                 ListIterator<T> temp = *this;
@@ -59,7 +59,7 @@ namespace ft{
                 return (temp);
             }
 
-            ListIterator	operator++(){		// ++i;
+            ListIterator	&operator++(){		// ++i;
 				ptr = ptr->next;
 				return (*this);
 			}
@@ -70,7 +70,7 @@ namespace ft{
 				return (temp);
 			}
 
-			ListIterator	operator--(){		// --i;
+			ListIterator	&operator--(){		// --i;
 				ptr = ptr->prev;
 				return (*this);
 			}
@@ -104,15 +104,15 @@ namespace ft{
 
             ft::Node<T> *getPtr() const { return (ptr); }
 
-            bool    operator==(const ListConstIterator &src) { return (ptr == src.ptr); }
-            bool    operator==(const ListIterator<T> &src) { return (ptr == src.getPtr()); }
+            bool    operator==(const ListConstIterator &src) const { return (ptr == src.ptr); }
+            bool    operator==(const ListIterator<T> &src) const { return (ptr == src.getPtr()); }
 
-            bool    operator!=(const ListConstIterator &src) { return (ptr != src.ptr); }
-            bool    operator!=(const ListIterator<T> &src) { return (ptr != src.getPtr()); }
+            bool    operator!=(const ListConstIterator &src) const { return (ptr != src.ptr); }
+            bool    operator!=(const ListIterator<T> &src) const { return (ptr != src.getPtr()); }
 
-            const T &operator*() { return (ptr->val); }
+            const T &operator*() const { return (ptr->val); }
 
-            const T *operator->() { return (&ptr->val); }
+            const T *operator->() const { return (&ptr->val); }
 
             ListConstIterator	operator++(int){	// i++;
                 ListConstIterator<T> temp = *this;
@@ -120,18 +120,18 @@ namespace ft{
                 return (temp);
             }
 
-			ListConstIterator	operator++(){		// ++i;
+			ListConstIterator	&operator++(){		// ++i;
 				ptr = ptr->next;
 				return (*this);
 			}
 
 			ListConstIterator	operator--(int){	// i--;
-				ListIterator<T> temp = *this;
+				ListConstIterator<T> temp = *this;
 				ptr = ptr->prev;
 				return (temp);
 			}
 
-			ListConstIterator	operator--(){		// --i;
+			ListConstIterator	&operator--(){		// --i;
 				ptr = ptr->prev;
 				return (*this);
 			}
@@ -168,15 +168,15 @@ namespace ft{
 
             ListIterator<T>	base() { return (ListIterator<T>(ptr->next)); }
 
-            bool    operator==(const ListReverseIterator &src) { return (ptr == src.ptr); }
-            bool    operator==(const ListReverseConstIterator<T> &src) { return (ptr == src.getPtr()); }
+            bool    operator==(const ListReverseIterator &src) const { return (ptr == src.ptr); }
+            bool    operator==(const ListReverseConstIterator<T> &src) const { return (ptr == src.getPtr()); }
 
-            bool    operator!=(const ListReverseIterator &src) { return (ptr != src.ptr); }
-            bool    operator!=(const ListReverseConstIterator<T> &src) { return (ptr != src.getPtr()); }
+            bool    operator!=(const ListReverseIterator &src) const { return (ptr != src.ptr); }
+            bool    operator!=(const ListReverseConstIterator<T> &src) const { return (ptr != src.getPtr()); }
 
-            T   &operator*() { return (ptr->val); }
+            T   &operator*() const { return (ptr->val); }
 
-            T   *operator->() { return (&ptr->val); }
+            T   *operator->() const { return (&ptr->val); }
 
             ListReverseIterator	operator++(int){	// i++;
                 ListReverseIterator<T> temp = *this;
@@ -184,7 +184,7 @@ namespace ft{
                 return (temp);
             }
 
-			ListReverseIterator	operator++(){		// ++i;
+			ListReverseIterator	&operator++(){		// ++i;
 				ptr = ptr->prev;
 				return (*this);
 			}
@@ -195,7 +195,7 @@ namespace ft{
 				return (temp);
 			}
 
-			ListReverseIterator	operator--(){		// --i;
+			ListReverseIterator	&operator--(){		// --i;
 				ptr = ptr->next;
 				return (*this);
 			}
@@ -236,15 +236,15 @@ namespace ft{
 
             ListConstIterator<T>	base() { return (ListConstIterator<T>(ptr->next)); }
 
-            bool    operator==(const ListReverseConstIterator &src) { return (ptr == src.ptr); }
-            bool    operator==(const ListReverseIterator<T> &src) { return (ptr == src.getPtr()); }
+            bool    operator==(const ListReverseConstIterator &src) const { return (ptr == src.ptr); }
+            bool    operator==(const ListReverseIterator<T> &src) const { return (ptr == src.getPtr()); }
 
-            bool    operator!=(const ListReverseConstIterator &src) { return (ptr != src.ptr); }
-            bool    operator!=(const ListReverseIterator<T> &src) { return (ptr != src.getPtr()); }
+            bool    operator!=(const ListReverseConstIterator &src) const { return (ptr != src.ptr); }
+            bool    operator!=(const ListReverseIterator<T> &src) const { return (ptr != src.getPtr()); }
 
-            const T &operator*() { return (ptr->val); }
+            const T &operator*() const { return (ptr->val); }
 
-            const T *operator->() { return (&ptr->val); }
+            const T *operator->() const { return (&ptr->val); }
 
             ListReverseConstIterator	operator++(int){	// i++;
                 ListReverseConstIterator<T> temp = *this;
@@ -252,7 +252,7 @@ namespace ft{
                 return (temp);
             }
 
-			ListReverseConstIterator	operator++(){		// ++i;
+			ListReverseConstIterator	&operator++(){		// ++i;
 				ptr = ptr->prev;
 				return (*this);
 			}
@@ -263,7 +263,7 @@ namespace ft{
 				return (temp);
 			}
 
-			ListReverseConstIterator	operator--(){		// --i;
+			ListReverseConstIterator	&operator--(){		// --i;
 				ptr = ptr->next;
 				return (*this);
 			}
@@ -388,6 +388,7 @@ namespace ft{
                     push_back(temp->val);
                     temp = temp->next;
                 }
+                _size = x._size;
             }
 
             // Assign content
