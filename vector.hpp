@@ -286,8 +286,8 @@ namespace ft{
 			explicit vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()){
 				allocator_type _alloc = alloc;
 
-                _capacity = n;
                 _size = n;
+                _capacity = n;
                 ary = _alloc.allocate(_capacity);
                 for (size_type i = 0; i < _size; i++)
 					_alloc.construct(ary + i, val);
@@ -298,8 +298,7 @@ namespace ft{
 			template <typename InputIterator>
 			vector(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type(), 
 					typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type type = 0){
-				(void)alloc;
-				allocator_type _alloc;
+				allocator_type _alloc = alloc;
 				InputIterator it = first;
 
 				(void)type;
