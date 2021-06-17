@@ -702,7 +702,7 @@ static void	other_test()
 
 void vector_test()
 {
-	std::cout << "\n\n\033[32m[		vector_test			]\033[0m\n\n\n";
+	std::cout << "\n\n\033[34m[		vector_test			]\033[0m\n\n\n";
 	constructor_test();
 	iterators_test();
 	capacity_test();

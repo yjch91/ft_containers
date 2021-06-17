@@ -2,7 +2,7 @@
 
 void stack_test()
 {
-    std::cout << "\n\n\033[32m[		stack_test			]\033[0m\n\n\n";
+    std::cout << "\n\n\033[34m[		stack_test			]\033[0m\n\n\n";
     std::stack<int> stk_std, stk_std2;
     ft::stack<int> stk_ft, stk_ft2;
 

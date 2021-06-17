@@ -254,12 +254,14 @@ namespace ft{
 						return ("allocator<T>::allocate(size_t n) 'n' exceeds maximum supported size");
 					}
 			};
+
             class   OutOfRangeException : public std::exception{
                 public:
                     virtual const char      *what() const throw(){
                         return ("vector");
                     }
             };
+
 		private:
 			T *ary;
 			size_type _size;
@@ -384,8 +386,8 @@ namespace ft{
             void    resize(size_type n, value_type val = value_type()){
                 if (n > _capacity)
 				{
-					if (_size * 2 >= n)
-						reserve(_size * 2);
+					if (_capacity * 2 >= n)
+						reserve(_capacity * 2);
 					else
 						reserve(n);
 				}
@@ -574,8 +576,8 @@ namespace ft{
 					return ;
 				if (_capacity < _size + n)
 				{
-					if (_size * 2 >= _size + n)
-						_capacity = _size * 2;
+					if (_capacity * 2 >= _size + n)
+						_capacity = _capacity * 2;
 					else
 						_capacity = _size + n;
 				}
@@ -618,8 +620,8 @@ namespace ft{
 					return ;
 				if (_capacity < _size + n)
 				{
-					if (_size * 2 >= _size + n)
-						_capacity = _size * 2;
+					if (_capacity * 2 >= _size + n)
+						_capacity = _capacity * 2;
 					else
 						_capacity = _size + n;
 				}

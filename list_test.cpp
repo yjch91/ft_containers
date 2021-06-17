@@ -1188,7 +1188,7 @@ static void	other_test()
 
 void list_test()
 {
-    std::cout << "\n\n\033[32m[		list_test			]\033[0m\n\n\n";
+    std::cout << "\n\n\033[34m[		list_test			]\033[0m\n\n\n";
     constructor_test();
     iterators_test();
     capacity_test();

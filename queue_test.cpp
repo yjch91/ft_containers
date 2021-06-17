@@ -2,7 +2,7 @@
 
 void queue_test()
 {
-    std::cout << "\n\n\033[32m[		queue_test			]\033[0m\n\n\n";
+    std::cout << "\n\n\033[34m[		queue_test			]\033[0m\n\n\n";
     std::queue<int> que_std, que_std2;
     ft::queue<int> que_ft, que_ft2;
 

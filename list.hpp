@@ -12,11 +12,8 @@ namespace ft{
     struct Node
     {
         T   val;
-        bool is_node;
         Node    *prev;
         Node    *next;
-
-        Node() { is_node = false; }
     };
     
     template <typename T>
@@ -284,22 +281,6 @@ namespace ft{
             typedef ListReverseConstIterator<T> const_reverse_iterator;
             typedef std::ptrdiff_t difference_type;
             typedef size_t size_type;
-
-            class   PopException : public std::exception{
-                public:
-                    virtual const char  *what() const throw(){
-                        return ("free(): invalid pointer"); // check plz!!!!!!!!!!!!!!
-                    }
-            };
-
-            class   EraseException : public std::exception{
-                public:
-                    virtual const char  *what() const throw(){
-                        return ("munmap_chunk(): invalid pointer"); // check plz!!!!!!!!!!!!!!
-                    }
-            };
-            // lst lst2 있을 때 둘다 push_back하고 lst 지우는거 테스트해보고 lst2는 push_back 안하고 테스트해서
-            // mummap_chunk랑 free 다른데 mac에서도 다른지 확인
         private:
             ft::Node<T> *node;
             size_type _size;
@@ -317,13 +298,13 @@ namespace ft{
                                     
                 right->next = left;
             }
+            
         public:
             // default constructor
             explicit list(const allocator_type &alloc = allocator_type()){
                 (void)alloc;
                 node = new ft::Node<T>;
                 node->val = value_type();
-                node->is_node = true;
                 node->prev = node;
                 node->next = node;
                 _size = 0;
@@ -348,7 +329,6 @@ namespace ft{
                 (void)alloc;
                 node = new ft::Node<T>;
                 node->val = value_type();
-                node->is_node = true;
                 node->prev = node;
                 node->next = node;
                 _size = 0;
@@ -364,7 +344,6 @@ namespace ft{
                 (void)type;
                 node = new ft::Node<T>;
                 node->val = value_type();
-                node->is_node = true;
                 node->prev = node;
                 node->next = node;
                 _size = 0;
@@ -378,7 +357,6 @@ namespace ft{
 
                 node = new ft::Node<T>;
                 node->val = value_type();
-                node->is_node = true;
                 node->prev = node;
                 node->next = node;
                 _size = 0;
@@ -424,7 +402,7 @@ namespace ft{
 
             size_type   size() const { return (_size); }
 
-            size_type	max_size() const{
+            size_type	max_size() const{ 
                 return (std::min((size_type)std::numeric_limits<difference_type>::max(),
                             std::numeric_limits<size_type>::max() / sizeof(ft::Node<T>)));
             }
@@ -468,8 +446,6 @@ namespace ft{
             void    pop_front(){
                 ft::Node<T> *temp = node->next;
 
-                if (temp == node)
-                    throw PopException();
                 node->next->next->prev = node;
                 node->next = node->next->next;
                 delete temp;
@@ -490,8 +466,6 @@ namespace ft{
             void    pop_back(){
                 ft::Node<T> *temp = node->prev;
 
-                if (temp == node)
-                    throw PopException();
                 node->prev->prev->next = node;
                 node->prev = node->prev->prev;
                 delete temp;
@@ -594,8 +568,6 @@ namespace ft{
                 ft::Node<T> *pos = position.getPtr();
                 ft::Node<T> *ret = pos->next;
 
-                if (pos->is_node == true)
-                    throw EraseException();
                 pos->prev->next = pos->next;
                 pos->next->prev = pos->prev;
                 delete pos;
@@ -614,8 +586,6 @@ namespace ft{
                 temp = left;
                 while (temp != right)
                 {
-                    if (temp->is_node == true)
-                        throw EraseException();
                     left = left->next;
                     delete temp;
                     temp = left;
