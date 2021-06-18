@@ -11,11 +11,11 @@ static void constructor_test()
 		default_std.push_back((i + 1) * 11);
 		default_ft.push_back((i + 1) * 11);
 	}
+
 	std::cout << "default std :";
 	for (size_t i = 0; i < default_std.size(); i++)
 		std::cout << " " << default_std[i];
 	std::cout << "\n";
-
 	std::cout << "default ft  :";
 	for (size_t i = 0; i < default_ft.size(); i++)
 		std::cout << " " << default_ft[i];
@@ -297,7 +297,6 @@ static void capacity_test()
 		std::cout << " " << vec_std[i];
 	std::cout << "\n";
 	std::cout << "vec_std size() : " << vec_std.size() << std::endl;
-
 	std::cout << "vec_ft  :";
 	for (size_t i = 0; i < vec_ft.size(); i++)
 		std::cout << " " << vec_ft[i];
@@ -308,7 +307,6 @@ static void capacity_test()
 	std::cout << "vec_std max_size() : " << vec_std.max_size() << std::endl;
 	std::cout << "vec_ft  max_size() : " << vec_ft.max_size() << std::endl;
 	std::cout << "\n";
-
 	std::cout << "vec_std2 max_size() : " << vec_std2.max_size() << std::endl;
 	std::cout << "vec_ft2  max_size() : " << vec_ft2.max_size() << std::endl;
 	std::cout << "\n";
@@ -368,7 +366,6 @@ static void capacity_test()
 	for (size_t i = 0; i < vec_std.size(); i++)
 		std::cout << " " << vec_std[i];
 	std::cout << "\n\n";
-
 	std::cout << "vec_ft before :";
 	for (size_t i = 0; i < vec_ft.size(); i++)
 		std::cout << " " << vec_ft[i];
@@ -399,7 +396,6 @@ static void element_access_test()
 	for (size_t i = 0; i < vec_std.size(); i++)
 		std::cout << " " << vec_std[i];
 	std::cout << "\n";
-
 	std::cout << "vec_ft  :";
 	for (size_t i = 0; i < vec_ft.size(); i++)
 		std::cout << " " << vec_ft[i];
@@ -450,7 +446,6 @@ static void modifiers_test()
 	for (size_t i = 0; i < vec_std.size(); i++)
 		std::cout << " " << vec_std[i];
 	std::cout << "\n";
-
 	std::cout << "vec_ft :";
 	for (size_t i = 0; i < vec_ft.size(); i++)
 		std::cout << " " << vec_ft[i];
@@ -467,7 +462,6 @@ static void modifiers_test()
 	for (size_t i = 0; i < vec_std.size(); i++)
 		std::cout << " " << vec_std[i];
 	std::cout << "\n";
-
 	std::cout << "vec_ft :";
 	for (size_t i = 0; i < vec_ft.size(); i++)
 		std::cout << " " << vec_ft[i];
@@ -484,7 +478,6 @@ static void modifiers_test()
 	for (size_t i = 0; i < vec_std2.size(); i++)
 		std::cout << " " << vec_std2[i];
 	std::cout << "\n";
-
 	std::cout << "vec_ft2  :";
 	for (size_t i = 0; i < vec_ft2.size(); i++)
 		std::cout << " " << vec_ft2[i];
@@ -498,7 +491,6 @@ static void modifiers_test()
 	for (size_t i = 0; i < vec_std2.size(); i++)
 		std::cout << " " << vec_std2[i];
 	std::cout << "\n";
-
 	std::cout << "vec_ft2  :";
 	for (size_t i = 0; i < vec_ft2.size(); i++)
 		std::cout << " " << vec_ft2[i];
@@ -512,7 +504,6 @@ static void modifiers_test()
 	for (size_t i = 0; i < vec_std2.size(); i++)
 		std::cout << " " << vec_std2[i];
 	std::cout << "\n";
-
 	std::cout << "vec_ft2  :";
 	for (size_t i = 0; i < vec_ft2.size(); i++)
 		std::cout << " " << vec_ft2[i];
@@ -526,7 +517,6 @@ static void modifiers_test()
 	for (size_t i = 0; i < vec_std2.size(); i++)
 		std::cout << " " << vec_std2[i];
 	std::cout << "\n";
-
 	std::cout << "vec_ft2  :";
 	for (size_t i = 0; i < vec_ft2.size(); i++)
 		std::cout << " " << vec_ft2[i];
@@ -540,7 +530,6 @@ static void modifiers_test()
 	for (size_t i = 0; i < vec_std2.size(); i++)
 		std::cout << " " << vec_std2[i];
 	std::cout << "\n";
-
 	std::cout << "vec_ft2  :";
 	for (size_t i = 0; i < vec_ft2.size(); i++)
 		std::cout << " " << vec_ft2[i];
@@ -554,7 +543,6 @@ static void modifiers_test()
 	for (size_t i = 0; i < vec_std2.size(); i++)
 		std::cout << " " << vec_std2[i];
 	std::cout << "\n";
-
 	std::cout << "vec_ft2  :";
 	for (size_t i = 0; i < vec_ft2.size(); i++)
 		std::cout << " " << vec_ft2[i];
@@ -568,7 +556,6 @@ static void modifiers_test()
 	for (size_t i = 0; i < vec_std2.size(); i++)
 		std::cout << " " << vec_std2[i];
 	std::cout << "\n";
-
 	std::cout << "vec_ft2  :";
 	for (size_t i = 0; i < vec_ft2.size(); i++)
 		std::cout << " " << vec_ft2[i];
@@ -586,7 +573,6 @@ static void modifiers_test()
 	for (size_t i = 0; i < vec_std2.size(); i++)
 		std::cout << " " << vec_std2[i];
 	std::cout << "\n";
-
 	std::cout << "vec_ft   :";
 	for (size_t i = 0; i < vec_ft.size(); i++)
 		std::cout << " " << vec_ft[i];
@@ -640,7 +626,6 @@ static void other_test()
 	for (size_t i = 0; i < vec_std3.size(); i++)
 		std::cout << " " << vec_std3[i];
 	std::cout << "\n\n";
-
 	std::cout << "vec_ft   :";
 	for (size_t i = 0; i < vec_ft.size(); i++)
 		std::cout << " " << vec_ft[i];
@@ -666,7 +651,6 @@ static void other_test()
 	for (size_t i = 0; i < vec_std2.size(); i++)
 		std::cout << " " << vec_std2[i];
 	std::cout << "\n\n";
-	
 	std::cout << "vec_ft   :";
 	for (size_t i = 0; i < vec_ft.size(); i++)
 		std::cout << " " << vec_ft[i];

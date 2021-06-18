@@ -13,11 +13,11 @@ static void constructor_test()
 		default_std.push_back((i + 1) * 11);
 		default_ft.push_back((i + 1) * 11);
 	}
+
 	std::cout << "default std :";
 	for (i_std = default_std.begin(); i_std != default_std.end(); i_std++)
 		std::cout << " " << *i_std;
 	std::cout << "\n";
-
 	std::cout << "default ft  :";
 	for (i_ft = default_ft.begin(); i_ft != default_ft.end(); i_ft++)
 		std::cout << " " << *i_ft;
@@ -36,6 +36,7 @@ static void constructor_test()
 	for (i_ft = fill_ft1.begin(); i_ft != fill_ft1.end(); i_ft++)
 		std::cout << " " << *i_ft;
 	std::cout << "\n\n";
+
 	std::cout << "fill std2 :";
 	for (i_std = fill_std2.begin(); i_std != fill_std2.end(); i_std++)
 		std::cout << " " << *i_std;
@@ -242,11 +243,13 @@ static void capacity_test()
 	if (lst_ft.empty())
 		std::cout << "lst_ft  is empty\n";
 	std::cout << "\n";
+
 	for (int i = 0; i < 15; i++)
 	{
 		lst_std.push_back((i + 1) * 11);
 		lst_ft.push_back((i + 1) * 11);
 	}
+
 	std::cout << "lst_std :";
 	for (std::list<int>::iterator i = lst_std.begin(); i != lst_std.end(); i++)
 		std::cout << " " << *i;
@@ -258,6 +261,7 @@ static void capacity_test()
 	std::cout << "\n";
 	std::cout << "lst_ft  size() : " << lst_ft.size() << std::endl;
 	std::cout << "\n";
+
 	std::cout << "lst_std max_size() : " << lst_std.max_size() << std::endl;
 	std::cout << "lst_ft  max_size() : " << lst_ft.max_size() << std::endl;
 	std::cout << "\n";
@@ -277,6 +281,7 @@ static void	element_access_test()
 		lst_std.push_back(i + 1);
 		lst_ft.push_back(i + 1);
 	}
+
 	std::cout << "lst_std :";
 	for (std::list<int>::iterator i = lst_std.begin(); i != lst_std.end(); i++)
 		std::cout << " " << *i;
@@ -285,6 +290,7 @@ static void	element_access_test()
 	for (ft::list<int>::iterator i = lst_ft.begin(); i != lst_ft.end(); i++)
 		std::cout << " " << *i;
 	std::cout << "\n\n";
+
 	std::cout << "lst_std.front() = " << lst_std.front() << std::endl;
 	std::cout << "lst_ft.front() = " <<  lst_ft.front() << std::endl;
 	std::cout << "lst_std.back() = " << lst_std.back() << std::endl;
@@ -559,17 +565,14 @@ static void swap_test()
     for (it_std = first_std.begin(); it_std != first_std.end(); it_std++)
         std::cout << " " << *it_std;
     std::cout << "      size = " << first_std.size() << "\n";
-
     std::cout << "second_std :";
     for (it_std = second_std.begin(); it_std != second_std.end(); it_std++)
         std::cout << " " << *it_std;
     std::cout << "      size = " << second_std.size() << "\n\n";
-
     std::cout << "first_ft   :";
     for (it_ft = first_ft.begin(); it_ft != first_ft.end(); it_ft++)
         std::cout << " " << *it_ft;
     std::cout << "      size = " << first_ft.size() << "\n";
-
     std::cout << "second_ft  :";
     for (it_ft = second_ft.begin(); it_ft != second_ft.end(); it_ft++)
         std::cout << " " << *it_ft;
@@ -583,17 +586,14 @@ static void swap_test()
     for (it_std = first_std.begin(); it_std != first_std.end(); it_std++)
         std::cout << " " << *it_std;
     std::cout << "      size = " << first_std.size() << "\n";
-
     std::cout << "second_std :";
     for (it_std = second_std.begin(); it_std != second_std.end(); it_std++)
         std::cout << " " << *it_std;
     std::cout << "      size = " << second_std.size() << "\n\n";
-
     std::cout << "first_ft   :";
     for (it_ft = first_ft.begin(); it_ft != first_ft.end(); it_ft++)
         std::cout << " " << *it_ft;
     std::cout << "      size = " << first_ft.size() << "\n";
-
     std::cout << "second_ft  :";
     for (it_ft = second_ft.begin(); it_ft != second_ft.end(); it_ft++)
         std::cout << " " << *it_ft;
