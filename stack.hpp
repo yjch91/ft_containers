@@ -6,7 +6,7 @@
 #include "list.hpp"
 
 namespace ft{
-
+    // class stack
     template <typename T, typename Container = ft::list<T> >
     class stack{
         public:
@@ -24,27 +24,27 @@ namespace ft{
             // destructor
             ~stack() { }
 
-            bool    empty() const{
+            bool empty() const{
                 return (c.empty());
             }
 
-            size_type   size() const{
+            size_type size() const{
                 return (c.size());
             }
 
-            value_type  &top(){
+            value_type &top(){
                 return (c.back());
             }
 
-            const value_type    &top() const{
+            const value_type &top() const{
                 return (c.back());
             }
 
-            void    push(const value_type &val){
+            void push(const value_type &val){
                 c.push_back(val);
             }
 
-            void    pop(){
+            void pop(){
                 c.pop_back();
             }
 
@@ -72,7 +72,6 @@ namespace ft{
 
     template <typename T, typename Container>
     bool operator>=(const stack<T, Container> &lhs, const stack<T, Container> &rhs) { return (!(lhs < rhs)); }
-
 }
 
 #endif

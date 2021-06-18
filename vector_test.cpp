@@ -1,10 +1,10 @@
 #include "ft_containers_test.hpp"
 
-static void	constructor_test()
+static void constructor_test()
 {
 	std::cout << "\033[32m[		constructor_test		]\033[0m\n";
-	std::vector<int> default_std;
-	ft::vector<int> default_ft;
+	std::vector<int>	default_std;
+	ft::vector<int>	default_ft;
 
 	for (int i = 0; i < 10; i++)
 	{
@@ -21,10 +21,10 @@ static void	constructor_test()
 		std::cout << " " << default_ft[i];
 	std::cout << "\n\n";
 
-	std::vector<int> fill_std1(5);
-	std::vector<int> fill_std2(10, 42);
-	ft::vector<int> fill_ft1(5);
-	ft::vector<int> fill_ft2(10, 42);
+	std::vector<int>	fill_std1(5);
+	std::vector<int>	fill_std2(10, 42);
+	ft::vector<int>	fill_ft1(5);
+	ft::vector<int>	fill_ft2(10, 42);
 
 	std::cout << "fill std1 :";
 	for (size_t i = 0; i < fill_std1.size(); i++)
@@ -55,8 +55,8 @@ static void	constructor_test()
 		std::cout << " " << range_ft[i];
 	std::cout << "\n\n";
 
-	std::vector<int> copy_std(range_std);
-	ft::vector<int> copy_ft(range_ft);
+	std::vector<int>	copy_std(range_std);
+	ft::vector<int>	copy_ft(range_ft);
 
 	std::cout << "copy std :";
 	for (size_t i = 0; i < copy_std.size(); i++)
@@ -80,10 +80,10 @@ static void	constructor_test()
 
 }
 
-static void	iterators_test()
+static void iterators_test()
 {
 	std::cout << "\033[32m[		iterators_test			]\033[0m\n";
-	std::vector<int> vec_std;
+	std::vector<int>	vec_std;
 	ft::vector<int>	vec_ft;
 
 	for (int i = 0; i < 20; i++)
@@ -99,7 +99,8 @@ static void	iterators_test()
 		std::cout << " " << vec_std[i];
 	std::cout << "\n\n";
 
-	std::vector<int>::iterator it_std;
+	std::vector<int>::iterator	it_std;
+
 	it_std = vec_std.begin();
 	std::cout << "it_std : " << *it_std << std::endl;
 	it_std += 3;
@@ -112,9 +113,10 @@ static void	iterators_test()
 	std::cout << "it_std = it_std + 2 : " << *it_std << std::endl;
 	it_std = it_std - 1;
 	std::cout << "it_std = it_std - 5 : " << *it_std << std::endl;
-	
 	std::cout << "\n";
-	std::vector<int>::iterator copy_it_std(it_std);
+
+	std::vector<int>::iterator	copy_it_std(it_std);
+
 	std::cout << "copy_it_std : " << *copy_it_std << std::endl;
 	it_std -= 1;
 	std::cout << "it_std -= 1 : " << *it_std << std::endl;
@@ -123,8 +125,8 @@ static void	iterators_test()
 	std::cout << "copy_it_std[1] : " << copy_it_std[1] << std::endl;
 	std::cout << "it_std[0] : " << it_std[0] << std::endl;
 	std::cout << "it_std[0] : " << it_std[1] << std::endl;
-
 	std::cout << "\n";
+
 	if (copy_it_std == it_std)
 		std::cout << "copy_it_std == it_std" << std::endl;
 	if (copy_it_std != it_std)
@@ -138,7 +140,7 @@ static void	iterators_test()
 	if (copy_it_std >= it_std)
 		std::cout << "copy_it_std >= it_std" << std::endl;
 
-	std::vector<int>::const_iterator cit_std = vec_std.end();
+	std::vector<int>::const_iterator	cit_std = vec_std.end();
 	
 	if (cit_std == it_std)
 		std::cout << "cit_std == it_std" << std::endl;
@@ -158,8 +160,8 @@ static void	iterators_test()
 		std::cout << " " << *it_std;
 	std::cout << "\n";
 
-	std::vector<int>::reverse_iterator rit_std(vec_std.rbegin());
-	std::vector<int>::const_reverse_iterator crit_std(vec_std.rend());
+	std::vector<int>::reverse_iterator	rit_std(vec_std.rbegin());
+	std::vector<int>::const_reverse_iterator	crit_std(vec_std.rend());
 
 	std::cout << "vec_std rbegin() -> rend() test :";
 	for (rit_std = vec_std.rbegin(); rit_std != crit_std; rit_std++)
@@ -173,7 +175,6 @@ static void	iterators_test()
     	std::cout << " " << *it_std;
   	std::cout << "\n\n";
 
-
 	// ft test
 	std::cout << "\033[32m[ft test]\033[0m\n";
 	std::cout << "vec_ft :";
@@ -181,7 +182,8 @@ static void	iterators_test()
 		std::cout << " " << vec_ft[i];
 	std::cout << "\n\n";
 
-	ft::vector<int>::iterator it_ft;
+	ft::vector<int>::iterator	it_ft;
+
 	it_ft = vec_ft.begin();
 	std::cout << "it_ft : " << *it_ft << std::endl;
 	it_ft += 3;
@@ -194,9 +196,10 @@ static void	iterators_test()
 	std::cout << "it_ft = it_ft + 2 : " << *it_ft << std::endl;
 	it_ft = it_ft - 1;
 	std::cout << "it_ft = it_ft - 5 : " << *it_ft << std::endl;
-	
 	std::cout << "\n";
-	ft::vector<int>::iterator copy_it_ft(it_ft);
+
+	ft::vector<int>::iterator	copy_it_ft(it_ft);
+
 	std::cout << "copy_it_ft : " << *copy_it_ft << std::endl;
 	it_ft -= 1;
 	std::cout << "it_std -= 1 : " << *it_ft << std::endl;
@@ -205,8 +208,8 @@ static void	iterators_test()
 	std::cout << "copy_it_ft[1] : " << copy_it_ft[1] << std::endl;
 	std::cout << "it_ft[0] : " << it_ft[0] << std::endl;
 	std::cout << "it_ft[0] : " << it_ft[1] << std::endl;
-
 	std::cout << "\n";
+
 	if (copy_it_ft == it_ft)
 		std::cout << "copy_it_ft == it_ft" << std::endl;
 	if (copy_it_ft != it_ft)
@@ -220,7 +223,7 @@ static void	iterators_test()
 	if (copy_it_ft >= it_ft)
 		std::cout << "copy_it_ft >= it_ft" << std::endl;
 
-	ft::vector<int>::const_iterator cit_ft = vec_ft.end();
+	ft::vector<int>::const_iterator	cit_ft = vec_ft.end();
 	
 	if (cit_ft == it_ft)
 		std::cout << "cit_ft == it_ft" << std::endl;
@@ -240,8 +243,8 @@ static void	iterators_test()
 		std::cout << " " << *it_ft;
 	std::cout << "\n";
 
-	ft::vector<int>::reverse_iterator rit_ft(vec_ft.rbegin());
-	ft::vector<int>::const_reverse_iterator crit_ft(vec_ft.rend());
+	ft::vector<int>::reverse_iterator	rit_ft(vec_ft.rbegin());
+	ft::vector<int>::const_reverse_iterator	crit_ft(vec_ft.rend());
 
 	std::cout << "vec_ft rbegin() -> rend() test :";
 	for (rit_ft = vec_ft.rbegin(); rit_ft != crit_ft; rit_ft++)
@@ -257,9 +260,9 @@ static void	iterators_test()
 
 	// operator-> test
 	std::cout << "\033[32m[operator-> test]\033[0m\n";
-	std::vector<test> test_std;
-	ft::vector<test> test_ft;
-	test t(42);
+	std::vector<test>	test_std;
+	ft::vector<test>	test_ft;
+	test	t(42);
 
 	test_std.push_back(t);
 	test_ft.push_back(t);
@@ -269,41 +272,47 @@ static void	iterators_test()
 	std::cout << "\n";
 }
 
-static void	capacity_test()
+static void capacity_test()
 {
 	std::cout << "\033[32m[		capacity_test			]\033[0m\n";
-	std::vector<int> vec_std;
-	std::vector<std::string> vec_std2;
+	std::vector<int>	vec_std;
+	std::vector<std::string>	vec_std2;
 	ft::vector<int>	vec_ft;
-	ft::vector<std::string> vec_ft2;
+	ft::vector<std::string>	vec_ft2;
 
 	if (vec_std.empty())
 		std::cout << "vec_std is empty\n";
 	if (vec_ft.empty())
 		std::cout << "vec_ft  is empty\n";
 	std::cout << "\n";
+
 	for (int i = 0; i < 15; i++)
 	{
 		vec_std.push_back((i + 1) * 11);
 		vec_ft.push_back((i + 1) * 11);
 	}
+
 	std::cout << "vec_std :";
 	for (size_t i = 0; i < vec_std.size(); i++)
 		std::cout << " " << vec_std[i];
 	std::cout << "\n";
 	std::cout << "vec_std size() : " << vec_std.size() << std::endl;
+
 	std::cout << "vec_ft  :";
 	for (size_t i = 0; i < vec_ft.size(); i++)
 		std::cout << " " << vec_ft[i];
 	std::cout << "\n";
 	std::cout << "vec_ft  size() : " << vec_ft.size() << std::endl;
 	std::cout << "\n";
+
 	std::cout << "vec_std max_size() : " << vec_std.max_size() << std::endl;
 	std::cout << "vec_ft  max_size() : " << vec_ft.max_size() << std::endl;
 	std::cout << "\n";
+
 	std::cout << "vec_std2 max_size() : " << vec_std2.max_size() << std::endl;
 	std::cout << "vec_ft2  max_size() : " << vec_ft2.max_size() << std::endl;
 	std::cout << "\n";
+
 	std::cout << "vec_std capacity() : " << vec_std.capacity() << std::endl;
 	std::cout << "vec_ft  capacity() : " << vec_ft.capacity() << std::endl;
 	std::cout << "\n";
@@ -333,11 +342,13 @@ static void	capacity_test()
 	vec_ft.reserve(0);
 	std::cout << "vec_std capacity() : " << vec_std.capacity() << std::endl;
 	std::cout << "vec_ft  capacity() : " << vec_ft.capacity() << std::endl;
+
 	std::cout << "reserve(10)\n";
 	vec_std.reserve(10);
 	vec_ft.reserve(10);
 	std::cout << "vec_std capacity() : " << vec_std.capacity() << std::endl;
 	std::cout << "vec_ft  capacity() : " << vec_ft.capacity() << std::endl;
+
 	std::cout << "reserve(42)\n";
 	vec_std.reserve(42);
 	vec_ft.reserve(42);
@@ -357,6 +368,7 @@ static void	capacity_test()
 	for (size_t i = 0; i < vec_std.size(); i++)
 		std::cout << " " << vec_std[i];
 	std::cout << "\n\n";
+
 	std::cout << "vec_ft before :";
 	for (size_t i = 0; i < vec_ft.size(); i++)
 		std::cout << " " << vec_ft[i];
@@ -371,7 +383,7 @@ static void	capacity_test()
 	std::cout << "\n";
 }
 
-static void	element_access_test()
+static void element_access_test()
 {
 	std::cout << "\033[32m[		element_access_test		]\033[0m\n";
 	std::vector<int>	vec_std;
@@ -382,14 +394,17 @@ static void	element_access_test()
 		vec_std.push_back(i + 1);
 		vec_ft.push_back(i + 1);
 	}
+
 	std::cout << "vec_std :";
 	for (size_t i = 0; i < vec_std.size(); i++)
 		std::cout << " " << vec_std[i];
 	std::cout << "\n";
+
 	std::cout << "vec_ft  :";
 	for (size_t i = 0; i < vec_ft.size(); i++)
 		std::cout << " " << vec_ft[i];
 	std::cout << "\n\n";
+
 	std::cout << "vec_std[7] = " << vec_std[7] << std::endl;
 	std::cout << "vec_ft[7] = " << vec_ft[7] << std::endl;
 	std::cout << "vec_std.at(7) = " << vec_std.at(7) << std::endl;
@@ -419,10 +434,10 @@ static void	element_access_test()
 	std::cout << "\n";
 }
 
-static void	modifiers_test()
+static void modifiers_test()
 {
 	std::cout << "\033[32m[		modifiers_test			]\033[0m\n";
-	std::vector<int> vec_std;
+	std::vector<int>	vec_std;
 	ft::vector<int>	vec_ft;
 
 	for (int i = 0; i < 12; i++)
@@ -430,30 +445,35 @@ static void	modifiers_test()
 		vec_std.push_back(i + 1);
 		vec_ft.push_back(i + 1);
 	}
+
 	std::cout << "vec_std :";
 	for (size_t i = 0; i < vec_std.size(); i++)
 		std::cout << " " << vec_std[i];
 	std::cout << "\n";
-	std::cout << "vec_ft :";
-	for (size_t i = 0; i < vec_ft.size(); i++)
-		std::cout << " " << vec_ft[i];
-	std::cout << "\n";
-	for (int i = 0; i < 4; i++)
-	{
-		vec_std.pop_back();
-		vec_ft.pop_back();
-	}
-	std::cout << "\n\033[32mpop_back test : vec.pop_back() x 4\033[0m\n";
-	std::cout << "vec_std :";
-	for (size_t i = 0; i < vec_std.size(); i++)
-		std::cout << " " << vec_std[i];
-	std::cout << "\n";
+
 	std::cout << "vec_ft :";
 	for (size_t i = 0; i < vec_ft.size(); i++)
 		std::cout << " " << vec_ft[i];
 	std::cout << "\n";
 
-	std::vector<int> vec_std2;
+	for (int i = 0; i < 4; i++)
+	{
+		vec_std.pop_back();
+		vec_ft.pop_back();
+	}
+
+	std::cout << "\n\033[32mpop_back test : vec.pop_back() x 4\033[0m\n";
+	std::cout << "vec_std :";
+	for (size_t i = 0; i < vec_std.size(); i++)
+		std::cout << " " << vec_std[i];
+	std::cout << "\n";
+
+	std::cout << "vec_ft :";
+	for (size_t i = 0; i < vec_ft.size(); i++)
+		std::cout << " " << vec_ft[i];
+	std::cout << "\n";
+
+	std::vector<int>	vec_std2;
 	ft::vector<int>	vec_ft2;
 	
 	vec_std2.assign(20, 42);
@@ -566,6 +586,7 @@ static void	modifiers_test()
 	for (size_t i = 0; i < vec_std2.size(); i++)
 		std::cout << " " << vec_std2[i];
 	std::cout << "\n";
+
 	std::cout << "vec_ft   :";
 	for (size_t i = 0; i < vec_ft.size(); i++)
 		std::cout << " " << vec_ft[i];
@@ -578,10 +599,12 @@ static void	modifiers_test()
 	std::cout << "\n\033[32mclear test : vec2.clear()\033[0m\n";
 	vec_std2.clear();
 	vec_ft2.clear();
+
 	if (vec_std2.empty())
 		std::cout << "vec_std2 is empty\n";
 	if (vec_ft2.empty())
 		std::cout << "vec_ft2  is empty\n";
+
 	std::cout << "vec_std2 size : " << vec_std2.size() << std::endl;
 	std::cout << "vec_ft2  size : " << vec_ft2.size() << std::endl;
 	std::cout << "vec_std2 capacity : " << vec_std2.capacity() << std::endl;
@@ -589,7 +612,7 @@ static void	modifiers_test()
 	std::cout << "\n";
 }
 
-static void	other_test()
+static void other_test()
 {
 	std::cout << "\033[32m[		other_test			]\033[0m\n";
 	std::vector<int>	vec_std, vec_std2, vec_std3;
@@ -617,6 +640,7 @@ static void	other_test()
 	for (size_t i = 0; i < vec_std3.size(); i++)
 		std::cout << " " << vec_std3[i];
 	std::cout << "\n\n";
+
 	std::cout << "vec_ft   :";
 	for (size_t i = 0; i < vec_ft.size(); i++)
 		std::cout << " " << vec_ft[i];
@@ -642,6 +666,7 @@ static void	other_test()
 	for (size_t i = 0; i < vec_std2.size(); i++)
 		std::cout << " " << vec_std2[i];
 	std::cout << "\n\n";
+	
 	std::cout << "vec_ft   :";
 	for (size_t i = 0; i < vec_ft.size(); i++)
 		std::cout << " " << vec_ft[i];
@@ -661,7 +686,6 @@ static void	other_test()
 		std::cout << "vec_std2 != vec_std3\n";
 	else
 		std::cout << "vec_std2 == vec_std3\n";
-
 	std::cout << "\n";
 
 	if (vec_std > vec_std3)
@@ -673,7 +697,6 @@ static void	other_test()
 		std::cout << "vec_std2 < vec_std3\n";
 	else if (vec_std3 <= vec_std2)
 		std::cout << "vec_std3 <= vec_std2\n";
-
 	std::cout << "\n";
 
 	std::cout << "\033[32mft relational operators test\033[0m\n";
@@ -686,7 +709,6 @@ static void	other_test()
 		std::cout << "vec_ft2 != vec_ft3\n";
 	else
 		std::cout << "vec_ft2 == vec_ft3\n";
-
 	std::cout << "\n";
 
 	if (vec_ft > vec_ft3)

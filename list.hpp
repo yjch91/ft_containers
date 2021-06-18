@@ -7,13 +7,12 @@
 #include "utils.hpp"
 
 namespace ft{
-
+    // struct node
     template <typename T>
-    struct Node
-    {
-        T   val;
-        Node    *prev;
-        Node    *next;
+    struct node{
+        T val;
+        node *prev;
+        node *next;
     };
     
     template <typename T>
@@ -23,7 +22,7 @@ namespace ft{
     template <typename T>
     class ListIterator{
         private:
-            ft::Node<T> *ptr;
+            ft::node<T> *ptr;
         public:
             ListIterator() { ptr = 0; }
 
@@ -31,43 +30,43 @@ namespace ft{
 
             ListIterator(const ListIterator &src) : ptr(src.ptr) { }
 
-            ListIterator    &operator=(const ListIterator &src){
+            ListIterator &operator=(const ListIterator &src){
                 ptr = src.ptr;
                 return (*this);
             }
 
-            explicit ListIterator(ft::Node<T> *p) : ptr(p) { }
+            explicit ListIterator(ft::node<T> *p) : ptr(p) { }
 
-            ft::Node<T> *getPtr() const { return (ptr); }
+            ft::node<T> *getPtr() const { return (ptr); }
 
-            bool    operator==(const ListIterator &src) const { return (ptr == src.ptr); }
-            bool    operator==(const ListConstIterator<T> &src) const { return (ptr == src.getPtr()); }
+            bool operator==(const ListIterator &src) const { return (ptr == src.ptr); }
+            bool operator==(const ListConstIterator<T> &src) const { return (ptr == src.getPtr()); }
 
-            bool    operator!=(const ListIterator &src) const { return (ptr != src.ptr); }
-            bool    operator!=(const ListConstIterator<T> &src) const { return (ptr != src.getPtr()); }
+            bool operator!=(const ListIterator &src) const { return (ptr != src.ptr); }
+            bool operator!=(const ListConstIterator<T> &src) const { return (ptr != src.getPtr()); }
 
-            T   &operator*() const { return (ptr->val); }
+            T &operator*() const { return (ptr->val); }
 
-            T   *operator->() const { return (&ptr->val); }
+            T *operator->() const { return (&ptr->val); }
 
-            ListIterator	operator++(int){	// i++;
+            ListIterator operator++(int){	// i++;
                 ListIterator<T> temp = *this;
                 ptr = ptr->next;
                 return (temp);
             }
 
-            ListIterator	&operator++(){		// ++i;
+            ListIterator &operator++(){		// ++i;
 				ptr = ptr->next;
 				return (*this);
 			}
 
-			ListIterator	operator--(int){	// i--;
+			ListIterator operator--(int){	// i--;
 				ListIterator<T> temp = *this;
 				ptr = ptr->prev;
 				return (temp);
 			}
 
-			ListIterator	&operator--(){		// --i;
+			ListIterator &operator--(){		// --i;
 				ptr = ptr->prev;
 				return (*this);
 			}
@@ -77,7 +76,7 @@ namespace ft{
     template <typename T>
     class ListConstIterator{
         private:
-            ft::Node<T> *ptr;
+            ft::node<T> *ptr;
         public:
             ListConstIterator() { ptr = 0; }
 
@@ -87,48 +86,48 @@ namespace ft{
 
             ListConstIterator(const ListIterator<T> &src) : ptr(src.getPtr()) { }
 
-            ListConstIterator    &operator=(const ListConstIterator &src){
+            ListConstIterator &operator=(const ListConstIterator &src){
                 ptr = src.ptr;
                 return (*this);
             }
 
-            ListConstIterator    &operator=(const ListIterator<T> &src){
+            ListConstIterator &operator=(const ListIterator<T> &src){
                 ptr = src.getPtr();
                 return (*this);
             }
 
-            explicit ListConstIterator(ft::Node<T> *p) : ptr(p) { }
+            explicit ListConstIterator(ft::node<T> *p) : ptr(p) { }
 
-            ft::Node<T> *getPtr() const { return (ptr); }
+            ft::node<T> *getPtr() const { return (ptr); }
 
-            bool    operator==(const ListConstIterator &src) const { return (ptr == src.ptr); }
-            bool    operator==(const ListIterator<T> &src) const { return (ptr == src.getPtr()); }
+            bool operator==(const ListConstIterator &src) const { return (ptr == src.ptr); }
+            bool operator==(const ListIterator<T> &src) const { return (ptr == src.getPtr()); }
 
-            bool    operator!=(const ListConstIterator &src) const { return (ptr != src.ptr); }
-            bool    operator!=(const ListIterator<T> &src) const { return (ptr != src.getPtr()); }
+            bool operator!=(const ListConstIterator &src) const { return (ptr != src.ptr); }
+            bool operator!=(const ListIterator<T> &src) const { return (ptr != src.getPtr()); }
 
             const T &operator*() const { return (ptr->val); }
 
             const T *operator->() const { return (&ptr->val); }
 
-            ListConstIterator	operator++(int){	// i++;
-                ListConstIterator<T> temp = *this;
+            ListConstIterator operator++(int){	// i++;
+                ListConstIterator<T>    temp = *this;
                 ptr = ptr->next;
                 return (temp);
             }
 
-			ListConstIterator	&operator++(){		// ++i;
+			ListConstIterator &operator++(){		// ++i;
 				ptr = ptr->next;
 				return (*this);
 			}
 
-			ListConstIterator	operator--(int){	// i--;
-				ListConstIterator<T> temp = *this;
+			ListConstIterator operator--(int){	// i--;
+				ListConstIterator<T>    temp = *this;
 				ptr = ptr->prev;
 				return (temp);
 			}
 
-			ListConstIterator	&operator--(){		// --i;
+			ListConstIterator &operator--(){		// --i;
 				ptr = ptr->prev;
 				return (*this);
 			}
@@ -141,7 +140,7 @@ namespace ft{
     template <typename T>
     class ListReverseIterator{
         private:
-            ft::Node<T> *ptr;
+            ft::node<T> *ptr;
         public:
             ListReverseIterator() { ptr = 0; }
 
@@ -154,45 +153,45 @@ namespace ft{
 
             ListReverseIterator(const ListReverseIterator &src) : ptr(src.ptr) { }
 
-            ListReverseIterator    &operator=(const ListReverseIterator &src){
+            ListReverseIterator &operator=(const ListReverseIterator &src){
                 ptr = src.ptr;
                 return (*this);
             }
 
-            explicit ListReverseIterator(ft::Node<T> *p) : ptr(p) { }
+            explicit ListReverseIterator(ft::node<T> *p) : ptr(p) { }
 
-            ft::Node<T> *getPtr() const { return (ptr); }
+            ft::node<T> *getPtr() const { return (ptr); }
 
-            ListIterator<T>	base() { return (ListIterator<T>(ptr->next)); }
+            ListIterator<T> base() { return (ListIterator<T>(ptr->next)); }
 
-            bool    operator==(const ListReverseIterator &src) const { return (ptr == src.ptr); }
-            bool    operator==(const ListReverseConstIterator<T> &src) const { return (ptr == src.getPtr()); }
+            bool operator==(const ListReverseIterator &src) const { return (ptr == src.ptr); }
+            bool operator==(const ListReverseConstIterator<T> &src) const { return (ptr == src.getPtr()); }
 
-            bool    operator!=(const ListReverseIterator &src) const { return (ptr != src.ptr); }
-            bool    operator!=(const ListReverseConstIterator<T> &src) const { return (ptr != src.getPtr()); }
+            bool operator!=(const ListReverseIterator &src) const { return (ptr != src.ptr); }
+            bool operator!=(const ListReverseConstIterator<T> &src) const { return (ptr != src.getPtr()); }
 
-            T   &operator*() const { return (ptr->val); }
+            T &operator*() const { return (ptr->val); }
 
-            T   *operator->() const { return (&ptr->val); }
+            T *operator->() const { return (&ptr->val); }
 
-            ListReverseIterator	operator++(int){	// i++;
-                ListReverseIterator<T> temp = *this;
+            ListReverseIterator operator++(int){	// i++;
+                ListReverseIterator<T>  temp = *this;
                 ptr = ptr->prev;
                 return (temp);
             }
 
-			ListReverseIterator	&operator++(){		// ++i;
+			ListReverseIterator &operator++(){		// ++i;
 				ptr = ptr->prev;
 				return (*this);
 			}
 
-			ListReverseIterator	operator--(int){	// i--;
-				ListReverseIterator<T> temp = *this;
+			ListReverseIterator operator--(int){	// i--;
+				ListReverseIterator<T>  temp = *this;
 				ptr = ptr->next;
 				return (temp);
 			}
 
-			ListReverseIterator	&operator--(){		// --i;
+			ListReverseIterator &operator--(){		// --i;
 				ptr = ptr->next;
 				return (*this);
 			}
@@ -202,7 +201,7 @@ namespace ft{
     template <typename T>
     class ListReverseConstIterator{
         private:
-            ft::Node<T> *ptr;
+            ft::node<T> *ptr;
         public:
             ListReverseConstIterator() { ptr = 0; }
 
@@ -217,50 +216,50 @@ namespace ft{
 
             ListReverseConstIterator(const ListReverseIterator<T> &src) : ptr(src.getPtr()) { }
 
-            ListReverseConstIterator    &operator=(const ListReverseConstIterator &src){
+            ListReverseConstIterator &operator=(const ListReverseConstIterator &src){
                 ptr = src.ptr;
                 return (*this);
             }
 
-            ListReverseConstIterator    &operator=(const ListReverseIterator<T> &src){
+            ListReverseConstIterator &operator=(const ListReverseIterator<T> &src){
                 ptr = src.getPtr();
                 return (*this);
             }
 
-            explicit ListReverseConstIterator(ft::Node<T> *p) : ptr(p) { }
+            explicit ListReverseConstIterator(ft::node<T> *p) : ptr(p) { }
 
-            ft::Node<T> *getPtr() const { return (ptr); }
+            ft::node<T> *getPtr() const { return (ptr); }
 
-            ListConstIterator<T>	base() { return (ListConstIterator<T>(ptr->next)); }
+            ListConstIterator<T> base() { return (ListConstIterator<T>(ptr->next)); }
 
-            bool    operator==(const ListReverseConstIterator &src) const { return (ptr == src.ptr); }
-            bool    operator==(const ListReverseIterator<T> &src) const { return (ptr == src.getPtr()); }
+            bool operator==(const ListReverseConstIterator &src) const { return (ptr == src.ptr); }
+            bool operator==(const ListReverseIterator<T> &src) const { return (ptr == src.getPtr()); }
 
-            bool    operator!=(const ListReverseConstIterator &src) const { return (ptr != src.ptr); }
-            bool    operator!=(const ListReverseIterator<T> &src) const { return (ptr != src.getPtr()); }
+            bool operator!=(const ListReverseConstIterator &src) const { return (ptr != src.ptr); }
+            bool operator!=(const ListReverseIterator<T> &src) const { return (ptr != src.getPtr()); }
 
             const T &operator*() const { return (ptr->val); }
 
             const T *operator->() const { return (&ptr->val); }
 
-            ListReverseConstIterator	operator++(int){	// i++;
+            ListReverseConstIterator operator++(int){	// i++;
                 ListReverseConstIterator<T> temp = *this;
                 ptr = ptr->prev;
                 return (temp);
             }
 
-			ListReverseConstIterator	&operator++(){		// ++i;
+			ListReverseConstIterator &operator++(){		// ++i;
 				ptr = ptr->prev;
 				return (*this);
 			}
 
-			ListReverseConstIterator	operator--(int){	// i--;
+			ListReverseConstIterator operator--(int){	// i--;
 				ListReverseConstIterator<T> temp = *this;
 				ptr = ptr->next;
 				return (temp);
 			}
 
-			ListReverseConstIterator	&operator--(){		// --i;
+			ListReverseConstIterator &operator--(){		// --i;
 				ptr = ptr->next;
 				return (*this);
 			}
@@ -282,11 +281,11 @@ namespace ft{
             typedef std::ptrdiff_t difference_type;
             typedef size_t size_type;
         private:
-            ft::Node<T> *node;
+            ft::node<T> *node;
             size_type _size;
 
-            void    nodeChange(ft::Node<T> *left, ft::Node<T> *right){
-                ft::Node<T> *prev_backup = left->prev;
+            void nodeChange(ft::node<T> *left, ft::node<T> *right){
+                ft::node<T> *prev_backup = left->prev;
 
                 left->prev = right;
 
@@ -303,7 +302,7 @@ namespace ft{
             // default constructor
             explicit list(const allocator_type &alloc = allocator_type()){
                 (void)alloc;
-                node = new ft::Node<T>;
+                node = new ft::node<T>;
                 node->val = value_type();
                 node->prev = node;
                 node->next = node;
@@ -312,8 +311,8 @@ namespace ft{
 
             // destructor
             ~list(){
-                ft::Node<T> *end_node = node;
-                ft::Node<T> *temp = node->next;
+                ft::node<T> *end_node = node;
+                ft::node<T> *temp = node->next;
 
                 while (temp != end_node)
                 {
@@ -327,7 +326,7 @@ namespace ft{
             // fill constructor
             explicit list(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()){
                 (void)alloc;
-                node = new ft::Node<T>;
+                node = new ft::node<T>;
                 node->val = value_type();
                 node->prev = node;
                 node->next = node;
@@ -342,7 +341,7 @@ namespace ft{
                             typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type type = 0){
                 (void)alloc;
                 (void)type;
-                node = new ft::Node<T>;
+                node = new ft::node<T>;
                 node->val = value_type();
                 node->prev = node;
                 node->next = node;
@@ -353,9 +352,9 @@ namespace ft{
 
             // copy constructor
             list(const list &x){
-                ft::Node<T> *temp = 0;
+                ft::node<T> *temp = 0;
 
-                node = new ft::Node<T>;
+                node = new ft::node<T>;
                 node->val = value_type();
                 node->prev = node;
                 node->next = node;
@@ -369,9 +368,9 @@ namespace ft{
                 _size = x._size;
             }
 
-            // Assign content
-            list    &operator=(const list &x){
-                ft::Node<T> *temp = 0;
+            // assign content
+            list &operator=(const list &x){
+                ft::node<T> *temp = 0;
 
                 if (node != node->next)
                     clear();
@@ -385,11 +384,11 @@ namespace ft{
             }
 
             // [Iterators]
-            iterator    begin() { return (iterator(node->next)); }
-            const_iterator  begin() const { return (const_iterator(node->next)); }
+            iterator begin() { return (iterator(node->next)); }
+            const_iterator begin() const { return (const_iterator(node->next)); }
 
-            iterator    end() { return (iterator(node)); }
-            const_iterator  end() const { return (const_iterator(node)); }
+            iterator end() { return (iterator(node)); }
+            const_iterator end() const { return (const_iterator(node)); }
 
             reverse_iterator rbegin() { return (reverse_iterator(node->prev)); }
             const_reverse_iterator rbegin() const { return (const_reverse_iterator(node->prev)); }
@@ -398,17 +397,17 @@ namespace ft{
             const_reverse_iterator rend() const { return (const_reverse_iterator(node)); }
 
             // [Capacity]
-            bool    empty() const { return (_size == 0); }
+            bool empty() const { return (_size == 0); }
 
-            size_type   size() const { return (_size); }
+            size_type size() const { return (_size); }
 
-            size_type	max_size() const{ 
+            size_type max_size() const{
                 return (std::min((size_type)std::numeric_limits<difference_type>::max(),
-                            std::numeric_limits<size_type>::max() / sizeof(ft::Node<T>)));
+                            std::numeric_limits<size_type>::max() / sizeof(ft::node<T>)));
             }
 
             // [Element access]
-            reference   front() { return (node->next->val); }
+            reference front() { return (node->next->val); }
             const_reference front() const { return (node->next->val); }
 
             reference back() { return (node->prev->val); }
@@ -417,7 +416,7 @@ namespace ft{
             // [Modifiers]
             // range assign
             template <typename InputIterator>
-            void assign (InputIterator first, InputIterator last,
+            void assign(InputIterator first, InputIterator last,
                             typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type type = 0){
                 (void)type;
                 clear();
@@ -426,14 +425,14 @@ namespace ft{
             }
 
             // fill assign
-            void assign (size_type n, const value_type &val){
+            void assign(size_type n, const value_type &val){
                 clear();
                 for (size_type i = 0; i < n; i++)
                     push_back(val);
             }
 
-            void    push_front(const value_type &val){
-                ft::Node<T> *new_node = new ft::Node<T>;
+            void push_front(const value_type &val){
+                ft::node<T> *new_node = new ft::node<T>;
 
                 new_node->val = val;
                 node->next->prev = new_node;
@@ -443,8 +442,8 @@ namespace ft{
                 _size++;
             }
 
-            void    pop_front(){
-                ft::Node<T> *temp = node->next;
+            void pop_front(){
+                ft::node<T> *temp = node->next;
 
                 node->next->next->prev = node;
                 node->next = node->next->next;
@@ -452,8 +451,8 @@ namespace ft{
                 _size--;
             }
 
-            void    push_back(const value_type &val){
-                ft::Node<T> *new_node = new ft::Node<T>;
+            void push_back(const value_type &val){
+                ft::node<T> *new_node = new ft::node<T>;
 
                 new_node->val = val;
                 node->prev->next = new_node;
@@ -463,8 +462,8 @@ namespace ft{
                 _size++;
             }
 
-            void    pop_back(){
-                ft::Node<T> *temp = node->prev;
+            void pop_back(){
+                ft::node<T> *temp = node->prev;
 
                 node->prev->prev->next = node;
                 node->prev = node->prev->prev;
@@ -473,9 +472,9 @@ namespace ft{
             }
 
             // single element insert
-            iterator insert (iterator position, const value_type &val){
-                ft::Node<T> *new_node = new ft::Node<T>;
-                ft::Node<T> *pos = position.getPtr();
+            iterator insert(iterator position, const value_type &val){
+                ft::node<T> *new_node = new ft::node<T>;
+                ft::node<T> *pos = position.getPtr();
 
                 new_node->val = val;
                 pos->prev->next = new_node;
@@ -487,23 +486,23 @@ namespace ft{
             }
 
             // fill insert
-            void insert (iterator position, size_type n, const value_type &val){
-                ft::Node<T> *left_node = 0;
-                ft::Node<T> *right_node = 0;
-                ft::Node<T> *pos = position.getPtr();
+            void insert(iterator position, size_type n, const value_type &val){
+                ft::node<T> *left_node = 0;
+                ft::node<T> *right_node = 0;
+                ft::node<T> *pos = position.getPtr();
 
                 for (size_type i = 0; i < n; i++)
                 {
                     if (i == 0)
                     {
-                        left_node = new ft::Node<T>;
+                        left_node = new ft::node<T>;
                         left_node->val = val;
                         left_node->prev = 0;
                         left_node->next = 0;
                         right_node = left_node;
                     }
                     else{
-                        ft::Node<T> *new_node = new ft::Node<T>;
+                        ft::node<T> *new_node = new ft::node<T>;
 
                         new_node->val = val;
                         right_node->next = new_node;
@@ -524,11 +523,11 @@ namespace ft{
 
             // range insert
             template <class InputIterator>
-            void insert (iterator position, InputIterator first, InputIterator last,
+            void insert(iterator position, InputIterator first, InputIterator last,
                             typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type type = 0){
-                ft::Node<T> *left_node = 0;
-                ft::Node<T> *right_node = 0;
-                ft::Node<T> *pos = position.getPtr();
+                ft::node<T> *left_node = 0;
+                ft::node<T> *right_node = 0;
+                ft::node<T> *pos = position.getPtr();
                 size_type   n = 0;
 
                 (void)type;
@@ -536,14 +535,14 @@ namespace ft{
                 {
                     if (i == first)
                     {
-                        left_node = new ft::Node<T>;
+                        left_node = new ft::node<T>;
                         left_node->val = *i;
                         left_node->prev = 0;
                         left_node->next = 0;
                         right_node = left_node;
                     }
                     else{
-                        ft::Node<T> *new_node = new ft::Node<T>;
+                        ft::node<T> *new_node = new ft::node<T>;
 
                         new_node->val = *i;
                         right_node->next = new_node;
@@ -563,10 +562,10 @@ namespace ft{
                 _size += n;
             }
 
-            iterator    erase(iterator position)
+            iterator erase(iterator position)
             {
-                ft::Node<T> *pos = position.getPtr();
-                ft::Node<T> *ret = pos->next;
+                ft::node<T> *pos = position.getPtr();
+                ft::node<T> *ret = pos->next;
 
                 pos->prev->next = pos->next;
                 pos->next->prev = pos->prev;
@@ -575,11 +574,11 @@ namespace ft{
                 return (iterator(ret));
             }
 
-            iterator    erase(iterator first, iterator last)
+            iterator erase(iterator first, iterator last)
             {
-                ft::Node<T> *left = first.getPtr();
-                ft::Node<T> *right = last.getPtr();
-                ft::Node<T> *temp = 0;
+                ft::node<T> *left = first.getPtr();
+                ft::node<T> *right = last.getPtr();
+                ft::node<T> *temp = 0;
    
                 left->prev->next = right;
                 right->prev = left->prev;
@@ -594,18 +593,18 @@ namespace ft{
                 return (iterator(right));
             }
 
-            void    swap(list &x){
-                size_type s = _size;
-                ft::Node<T> *n = node;
+            void swap(list &x){
+                ft::node<T> *n = node;
+                size_type   s = _size;
 
-                _size = x._size;
                 node = x.node;
+                _size = x._size;
 
-                x._size = s;
                 x.node = n;
+                x._size = s;
             }
 
-            void    resize(size_type n, value_type val = value_type())
+            void resize(size_type n, value_type val = value_type())
             {
                 if (_size < n)
                 {
@@ -615,7 +614,7 @@ namespace ft{
                 else if (_size > n)
                 {
                     size_type count = 0;
-                    ft::Node<T> *temp = node->next;
+                    ft::node<T> *temp = node->next;
                     while (temp != node)
                     {
                         count++;
@@ -639,9 +638,9 @@ namespace ft{
                 }
             }
 
-            void    clear(){
-                ft::Node<T> *end_node = node;
-                ft::Node<T> *temp = node->next;
+            void clear(){
+                ft::node<T> *end_node = node;
+                ft::node<T> *temp = node->next;
 
                 while (temp != end_node)
                 {
@@ -656,10 +655,10 @@ namespace ft{
 
             // [Operations]
             // entire list splice
-            void    splice(iterator position, list &x){
-                ft::Node<T> *left_node = x.node->next;
-                ft::Node<T> *right_node = x.node->prev;
-                ft::Node<T> *pos = position.getPtr();
+            void splice(iterator position, list &x){
+                ft::node<T> *left_node = x.node->next;
+                ft::node<T> *right_node = x.node->prev;
+                ft::node<T> *pos = position.getPtr();
                 
                 if (left_node == right_node && left_node == x.node)
                     return ;
@@ -676,9 +675,9 @@ namespace ft{
             }            
 
             // single element splice
-            void    splice(iterator position, list &x, iterator i){
-                ft::Node<T> *pos = position.getPtr();
-                ft::Node<T> *i_pos = i.getPtr();
+            void splice(iterator position, list &x, iterator i){
+                ft::node<T> *pos = position.getPtr();
+                ft::node<T> *i_pos = i.getPtr();
 
                 i_pos->prev->next = i_pos->next;
                 i_pos->next->prev = i_pos->prev;
@@ -693,10 +692,10 @@ namespace ft{
             }
 
             // element range splice
-            void    splice(iterator position, list &x, iterator first, iterator last){
-                ft::Node<T> *left_node = first.getPtr();
-                ft::Node<T> *right_node = last.getPtr()->prev;
-                ft::Node<T> *pos = position.getPtr();
+            void splice(iterator position, list &x, iterator first, iterator last){
+                ft::node<T> *left_node = first.getPtr();
+                ft::node<T> *right_node = last.getPtr()->prev;
+                ft::node<T> *pos = position.getPtr();
                 size_type   n = 0;
                 
                 if (first == last)
@@ -716,7 +715,7 @@ namespace ft{
                 x._size -= n;
             }
 
-            void    remove(const value_type &val){
+            void remove(const value_type &val){
                 iterator    i = begin();
 
                 while (i != end())
@@ -729,7 +728,7 @@ namespace ft{
             }
 
             template <typename Predicate>
-            void    remove_if(Predicate pred){
+            void remove_if(Predicate pred){
                 iterator    i = begin();
 
                 while (i != end())
@@ -741,7 +740,7 @@ namespace ft{
                 }
             }
 
-            void    unique(){
+            void unique(){
                 iterator    i = begin();
 
                 i++;
@@ -774,7 +773,7 @@ namespace ft{
                 }
             }
 
-            void    merge(list &x){
+            void merge(list &x){
                 iterator    i;
                 
                 if (&x == this)
@@ -805,7 +804,7 @@ namespace ft{
             }
 
             template <typename Compare>
-            void    merge(list &x, Compare comp){
+            void merge(list &x, Compare comp){
                 iterator    i;
                 
                 if (&x == this)
@@ -835,7 +834,7 @@ namespace ft{
                 splice(end(), x);
             }
 
-            void    sort(){
+            void sort(){
                 iterator    i;
                 iterator    j;
                 size_type   n = 0;
@@ -868,7 +867,7 @@ namespace ft{
             }
 
             template <typename Compare>
-            void    sort(Compare comp){
+            void sort(Compare comp){
                 iterator    i;
                 iterator    j;
                 size_type   n = 0;
@@ -900,10 +899,10 @@ namespace ft{
                 _size = n;
             }
 
-            void    reverse(){
+            void reverse(){
                 iterator    i = begin();
-                ft::Node<T> *p = 0;
-                ft::Node<T> *temp = 0;
+                ft::node<T> *p = 0;
+                ft::node<T> *temp = 0;
 
                 while (i != end())
                 {
@@ -975,7 +974,6 @@ namespace ft{
 
 	template <typename T, typename Alloc>
 	void swap(list<T, Alloc> &x, list<T, Alloc> &y) { x.swap(y); }
-
 }
 
 #endif

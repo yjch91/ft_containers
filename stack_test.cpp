@@ -4,7 +4,7 @@ void stack_test()
 {
     std::cout << "\n\n\033[34m[		stack_test			]\033[0m\n\n\n";
     std::stack<int> stk_std, stk_std2;
-    ft::stack<int> stk_ft, stk_ft2;
+    ft::stack<int>  stk_ft, stk_ft2;
 
     // std test
     std::cout << "\033[32m[std test]\033[0m\n";

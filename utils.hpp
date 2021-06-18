@@ -3,12 +3,11 @@
 # define UTILS_HPP
 
 namespace ft{
-
 	template <bool Cond, typename T = void>
 	struct enable_if {};
 
 	template <>
-	struct enable_if<true> {
+	struct enable_if<true>{
 		typedef bool type;
 	};
 
@@ -38,10 +37,9 @@ namespace ft{
 	template <>
 	struct is_integral<unsigned int> { static const bool value = true; };
 	template <>
-	struct is_integral<unsigned long int > { static const bool value = true; };
+	struct is_integral<unsigned long int> { static const bool value = true; };
 	template <>
-	struct is_integral<unsigned long long int > { static const bool value = true; };
-    
+	struct is_integral<unsigned long long int> { static const bool value = true; };
 }
 
 #endif

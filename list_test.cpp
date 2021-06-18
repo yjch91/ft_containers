@@ -1,6 +1,6 @@
 #include "ft_containers_test.hpp"
 
-static void	constructor_test()
+static void constructor_test()
 {
 	std::cout << "\033[32m[		constructor_test		]\033[0m\n";
 	std::list<int>  default_std;
@@ -23,10 +23,10 @@ static void	constructor_test()
 		std::cout << " " << *i_ft;
 	std::cout << "\n\n";
 
-	std::list<int> fill_std1(5);
-	std::list<int> fill_std2(10, 42);
-	ft::list<int> fill_ft1(5);
-	ft::list<int> fill_ft2(10, 42);
+	std::list<int>  fill_std1(5);
+	std::list<int>  fill_std2(10, 42);
+	ft::list<int>   fill_ft1(5);
+	ft::list<int>   fill_ft2(10, 42);
 
 	std::cout << "fill std1 :";
 	for (i_std = fill_std1.begin(); i_std != fill_std1.end(); i_std++)
@@ -46,7 +46,8 @@ static void	constructor_test()
 	std::cout << "\n\n";
 
     std::list<int>::iterator    std_b, std_e;
-    ft::list<int>::iterator    ft_b, ft_e;
+    ft::list<int>::iterator ft_b, ft_e;
+
     std_b = default_std.begin();
     std_e = default_std.end();
     ft_b = default_ft.begin();
@@ -88,7 +89,7 @@ static void	constructor_test()
 	std::cout << "\n\n";
 }
 
-static void	iterators_test()
+static void iterators_test()
 {
 	std::cout << "\033[32m[		iterators_test			]\033[0m\n";
 	std::list<int>  lst_std;
@@ -103,7 +104,9 @@ static void	iterators_test()
 	// std test
 	std::cout << "\033[32m[std test]\033[0m\n";
 	std::cout << "lst_std :";
+
 	std::list<int>::iterator    it_std;
+
 	for (it_std = lst_std.begin(); it_std != lst_std.end(); it_std++)
 		std::cout << " " << *it_std;
 	std::cout << "\n\n";
@@ -114,18 +117,19 @@ static void	iterators_test()
 	std::cout << "it_std++ : " << *(it_std++) << std::endl;
 	std::cout << "it_std-- : " << *(it_std--) << std::endl;
 	std::cout << "--it_std : " << *(--it_std) << std::endl;
-	
 	std::cout << "\n";
-	std::list<int>::iterator copy_it_std(it_std);
-	std::cout << "copy_it_std : " << *copy_it_std << std::endl;
 
+	std::list<int>::iterator    copy_it_std(it_std);
+
+	std::cout << "copy_it_std : " << *copy_it_std << std::endl;
 	std::cout << "\n";
+
 	if (copy_it_std == it_std)
 		std::cout << "copy_it_std == it_std" << std::endl;
 	if (copy_it_std != it_std)
 		std::cout << "copy_it_std != it_std" << std::endl;
 
-	std::list<int>::const_iterator cit_std = lst_std.end();
+	std::list<int>::const_iterator  cit_std = lst_std.end();
 	
 	if (cit_std == it_std)
 		std::cout << "cit_std == it_std" << std::endl;
@@ -137,8 +141,8 @@ static void	iterators_test()
 		std::cout << " " << *it_std;
 	std::cout << "\n";
 
-	std::list<int>::reverse_iterator rit_std(lst_std.rbegin());
-	std::list<int>::const_reverse_iterator crit_std(lst_std.rend());
+	std::list<int>::reverse_iterator    rit_std(lst_std.rbegin());
+	std::list<int>::const_reverse_iterator  crit_std(lst_std.rend());
 
 	std::cout << "lst_std rbegin() -> rend() test :";
 	for (rit_std = lst_std.rbegin(); rit_std != crit_std; rit_std++)
@@ -146,17 +150,20 @@ static void	iterators_test()
 	std::cout << "\n";
 
 	rit_std = lst_std.rend();
-	std::list<int>::const_reverse_iterator crit_std2(lst_std.end());
+
+	std::list<int>::const_reverse_iterator  crit_std2(lst_std.end());
+
   	std::cout << "reverse_iterator base test :";
   	for (it_std = rit_std.base(); it_std != crit_std2.base(); ++it_std)
     	std::cout << " " << *it_std;
   	std::cout << "\n\n";
 
-
 	// ft test
 	std::cout << "\033[32m[ft test]\033[0m\n";
 	std::cout << "lst_ft :";
+
 	ft::list<int>::iterator it_ft;
+
 	for (it_ft = lst_ft.begin(); it_ft != lst_ft.end(); it_ft++)
 		std::cout << " " << *it_ft;
 	std::cout << "\n\n";
@@ -167,18 +174,19 @@ static void	iterators_test()
 	std::cout << "it_ft++ : " << *(it_ft++) << std::endl;
 	std::cout << "it_ft-- : " << *(it_ft--) << std::endl;
 	std::cout << "--it_ft : " << *(--it_ft) << std::endl;
-	
 	std::cout << "\n";
-	ft::list<int>::iterator copy_it_ft(it_ft);
-	std::cout << "copy_it_ft : " << *copy_it_ft << std::endl;
 
+	ft::list<int>::iterator copy_it_ft(it_ft);
+
+	std::cout << "copy_it_ft : " << *copy_it_ft << std::endl;
 	std::cout << "\n";
+
 	if (copy_it_ft == it_ft)
 		std::cout << "copy_it_ft == it_ft" << std::endl;
 	if (copy_it_ft != it_ft)
 		std::cout << "copy_it_ft != it_ft" << std::endl;
 
-	ft::list<int>::const_iterator cit_ft = lst_ft.end();
+	ft::list<int>::const_iterator   cit_ft = lst_ft.end();
 	
 	if (cit_ft == it_ft)
 		std::cout << "cit_ft == it_ft" << std::endl;
@@ -191,7 +199,7 @@ static void	iterators_test()
 	std::cout << "\n";
 
 	ft::list<int>::reverse_iterator rit_ft(lst_ft.rbegin());
-	ft::list<int>::const_reverse_iterator crit_ft(lst_ft.rend());
+	ft::list<int>::const_reverse_iterator   crit_ft(lst_ft.rend());
 
 	std::cout << "lst_ft rbegin() -> rend() test :";
 	for (rit_ft = lst_ft.rbegin(); rit_ft != crit_ft; rit_ft++)
@@ -199,7 +207,9 @@ static void	iterators_test()
 	std::cout << "\n";
 
 	rit_ft = lst_ft.rend();
-	ft::list<int>::const_reverse_iterator crit_ft2(lst_ft.end());
+
+	ft::list<int>::const_reverse_iterator   crit_ft2(lst_ft.end());
+
   	std::cout << "reverse_iterator base test :";
   	for (it_ft = rit_ft.base(); it_ft != crit_ft2.base(); ++it_ft)
     	std::cout << " " << *it_ft;
@@ -208,8 +218,8 @@ static void	iterators_test()
 	// operator-> test
 	std::cout << "\033[32m[operator-> test]\033[0m\n";
 	std::list<test> test_std;
-	ft::list<test> test_ft;
-	test t(42);
+	ft::list<test>  test_ft;
+	test    t(42);
 
 	test_std.push_back(t);
 	test_ft.push_back(t);
@@ -219,13 +229,13 @@ static void	iterators_test()
 	std::cout << "\n";
 }
 
-static void	capacity_test()
+static void capacity_test()
 {
 	std::cout << "\033[32m[		capacity_test			]\033[0m\n";
-	std::list<int> lst_std;
-	std::list<std::string> lst_std2;
-	ft::list<int>	lst_ft;
-	ft::list<std::string> lst_ft2;
+	std::list<int>  lst_std;
+	std::list<std::string>  lst_std2;
+	ft::list<int>   lst_ft;
+	ft::list<std::string>   lst_ft2;
 
 	if (lst_std.empty())
 		std::cout << "lst_std is empty\n";
@@ -285,9 +295,9 @@ static void	element_access_test()
 static void assign_test()
 {
     std::cout << "\033[32m[	       	assign_test	        	]\033[0m\n";
-    std::list<int>   first_std;
-    std::list<int>   second_std;
-    std::list<int>::iterator it_std;
+    std::list<int>  first_std;
+    std::list<int>  second_std;
+    std::list<int>::iterator    it_std;
     ft::list<int>   first_ft;
     ft::list<int>   second_ft;
     ft::list<int>::iterator it_ft;
@@ -341,11 +351,11 @@ static void assign_test()
     std::cout << "      size = " << first_ft.size() << "\n\n";
 }
 
-static void    push_pop_test()
+static void push_pop_test()
 {
     std::cout << "\033[32m[	       	push_pop_test	        	]\033[0m\n";
     std::list<int>  lst_std;
-    std::list<int>::iterator it_std;
+    std::list<int>::iterator    it_std;
     ft::list<int>   lst_ft;
     ft::list<int>::iterator it_ft;
 
@@ -430,11 +440,11 @@ static void    push_pop_test()
     std::cout << "      size = " << lst_ft.size() << "\n\n";
 }
 
-static void    insert_erase_clear_test()
+static void insert_erase_clear_test()
 {
     std::cout << "\033[32m[             insert_erase_clear_test	   	]\033[0m\n";
     std::list<int>  lst_std;
-    std::list<int>::iterator it_std;
+    std::list<int>::iterator    it_std;
     ft::list<int>   lst_ft;
     ft::list<int>::iterator it_ft;
 
@@ -535,14 +545,14 @@ static void    insert_erase_clear_test()
     std::cout << "      size = " << lst_ft.size() << "\n\n";
 }
 
-static void    swap_test()
+static void swap_test()
 {
     std::cout << "\033[32m[	       	swap_test	        	]\033[0m\n";
-    std::list<int> first_std(3, 42);
-    std::list<int> second_std(5, 99);
-    std::list<int>::iterator it_std;
-    ft::list<int> first_ft(3, 42);
-    ft::list<int> second_ft(5, 99);
+    std::list<int>  first_std(3, 42);
+    std::list<int>  second_std(5, 99);
+    std::list<int>::iterator    it_std;
+    ft::list<int>   first_ft(3, 42);
+    ft::list<int>   second_ft(5, 99);
     ft::list<int>::iterator it_ft;
 
     std::cout << "first_std  :";
@@ -590,13 +600,13 @@ static void    swap_test()
     std::cout << "      size = " << second_ft.size() << "\n\n";
 }
 
-static void    resize_test()
+static void resize_test()
 {
     std::cout << "\033[32m[	       	resize_test	        	]\033[0m\n";
     std::list<int>  lst_std;
     std::list<int>::iterator    it_std;
-    ft::list<int>  lst_ft;
-    ft::list<int>::iterator    it_ft;
+    ft::list<int>   lst_ft;
+    ft::list<int>::iterator it_ft;
 
     for (int i = 1; i < 10; ++i)
     {
@@ -633,7 +643,7 @@ static void    resize_test()
 
 }
 
-static void    splice_test()
+static void splice_test()
 {
     std::cout << "\033[32m[	       	splice_test	        	]\033[0m\n";
     std::list<int>  lst_std, lst_std2;
@@ -747,13 +757,13 @@ static void    splice_test()
     std::cout << "      size = " << lst_ft2.size() << "\n\n";
 }
 
-bool    single_digit(const int &value) { return (value < 10); }
+bool single_digit(const int &value) { return (value < 10); }
 
 struct is_odd{
     bool operator()(const int &value) { return (value % 2) == 1; }
 };
 
-static void    remove_test()
+static void remove_test()
 {
     std::cout << "\033[32m[	       	remove_test	        	]\033[0m\n";
     int myints[] = { 15, 42, 36, 7, 17, 20, 39, 4, 1 };
@@ -811,13 +821,13 @@ static void    remove_test()
     std::cout << "      size = " << lst_ft.size() << "\n\n";
 }
 
-bool    same_integral_part (double first, double second) { return (int(first) == int(second)); }
+bool same_integral_part(double first, double second) { return (int(first) == int(second)); }
 
 struct is_near{
     bool operator()(double first, double second) { return (fabs(first-second) < 5.0); }
 };
 
-static void    unique_test()
+static void unique_test()
 {
     std::cout << "\033[32m[	       	unique_test	        	]\033[0m\n";
     double mydoubles[] = {12.15, 2.72, 73.0, 12.77, 3.14, 12.77, 73.35, 72.25, 15.3, 72.25};
@@ -878,9 +888,9 @@ static void    unique_test()
     std::cout << "      size = " << lst_ft.size() << "\n\n";
 }
 
-bool    mycomparison(double first, double second) { return (int(first) < int(second)); }
+bool mycomparison(double first, double second) { return (int(first) < int(second)); }
 
-static void    merge_test()
+static void merge_test()
 {
     std::cout << "\033[32m[	       	merge_test	        	]\033[0m\n";
     std::list<double>  lst_std, lst_std2;
@@ -970,9 +980,9 @@ static void    merge_test()
     std::cout << "      size = " << lst_ft2.size() << "\n\n";
 }
 
-bool    compare_nocase(const std::string &first, const std::string &second)
+bool compare_nocase(const std::string &first, const std::string &second)
 {
-  unsigned int i = 0;
+  unsigned int  i = 0;
   while ((i < first.length()) && (i < second.length()))
   {
     if (tolower(first[i]) < tolower(second[i]))
@@ -984,7 +994,7 @@ bool    compare_nocase(const std::string &first, const std::string &second)
   return (first.length() < second.length());
 }
 
-static void    sort_test()
+static void sort_test()
 {
     std::cout << "\033[32m[	       	sort_test	        	]\033[0m\n";
     std::list<std::string>  lst_std;
@@ -1036,7 +1046,7 @@ static void    sort_test()
     std::cout << "\n\n";
 }
 
-static void    reverse_test()
+static void reverse_test()
 {
     std::cout << "\033[32m[	       	reverse_test	        	]\033[0m\n";
     std::list<int>  lst_std;
@@ -1073,7 +1083,7 @@ static void    reverse_test()
     std::cout << "\n\n";
 }
 
-static void	other_test()
+static void other_test()
 {
 	std::cout << "\033[32m[		other_test			]\033[0m\n";
 	std::list<int>  lst_std, lst_std2, lst_std3;
