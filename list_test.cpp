@@ -36,7 +36,6 @@ static void constructor_test()
 	for (i_ft = fill_ft1.begin(); i_ft != fill_ft1.end(); i_ft++)
 		std::cout << " " << *i_ft;
 	std::cout << "\n\n";
-
 	std::cout << "fill std2 :";
 	for (i_std = fill_std2.begin(); i_std != fill_std2.end(); i_std++)
 		std::cout << " " << *i_std;

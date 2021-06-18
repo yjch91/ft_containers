@@ -310,7 +310,6 @@ static void capacity_test()
 	std::cout << "vec_std2 max_size() : " << vec_std2.max_size() << std::endl;
 	std::cout << "vec_ft2  max_size() : " << vec_ft2.max_size() << std::endl;
 	std::cout << "\n";
-
 	std::cout << "vec_std capacity() : " << vec_std.capacity() << std::endl;
 	std::cout << "vec_ft  capacity() : " << vec_ft.capacity() << std::endl;
 	std::cout << "\n";
