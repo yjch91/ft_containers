@@ -1156,7 +1156,6 @@ static void other_test()
 		std::cout << "lst_std2 != lst_std3\n";
 	else
 		std::cout << "lst_std2 == lst_std3\n";
-
 	std::cout << "\n";
 
 	if (lst_std > lst_std3)
@@ -1168,7 +1167,6 @@ static void other_test()
 		std::cout << "lst_std2 < lst_std3\n";
 	else if (lst_std3 <= lst_std2)
 		std::cout << "lst_std3 <= lst_std2\n";
-    
     std::cout << "\n";
 
     std::cout << "\033[32mft relational operators test\033[0m\n";
@@ -1181,7 +1179,6 @@ static void other_test()
 		std::cout << "lst_ft2 != lst_ft3\n";
 	else
 		std::cout << "lst_ft2 == lst_ft3\n";
-
 	std::cout << "\n";
 
 	if (lst_ft > lst_ft3)

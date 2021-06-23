@@ -4,12 +4,14 @@
 
 #include <iostream>
 #include <cmath>
-#include <vector> 
+#include <vector>
 #include <list>
+#include <map>
 #include <stack>
 #include <queue>
 #include "vector.hpp"
 #include "list.hpp"
+#include "map.hpp"
 #include "stack.hpp"
 #include "queue.hpp"
 
@@ -23,6 +25,7 @@ class   test{
 
 void vector_test();
 void list_test();
+void map_test();
 void stack_test();
 void queue_test();
 

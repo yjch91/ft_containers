@@ -110,7 +110,7 @@ namespace ft{
 
             const T *operator->() const { return (&ptr->val); }
 
-            ListConstIterator operator++(int){	// i++;
+            ListConstIterator operator++(int){	    // i++;
                 ListConstIterator<T>    temp = *this;
                 ptr = ptr->next;
                 return (temp);
@@ -121,7 +121,7 @@ namespace ft{
 				return (*this);
 			}
 
-			ListConstIterator operator--(int){	// i--;
+			ListConstIterator operator--(int){	    // i--;
 				ListConstIterator<T>    temp = *this;
 				ptr = ptr->prev;
 				return (temp);
@@ -134,7 +134,7 @@ namespace ft{
     };
 
     template <typename T>
-    class ListReverseConstIterator;
+    class ListConstReverseIterator;
 
     // class list_reverse_iterator
     template <typename T>
@@ -165,10 +165,10 @@ namespace ft{
             ListIterator<T> base() { return (ListIterator<T>(ptr->next)); }
 
             bool operator==(const ListReverseIterator &src) const { return (ptr == src.ptr); }
-            bool operator==(const ListReverseConstIterator<T> &src) const { return (ptr == src.getPtr()); }
+            bool operator==(const ListConstReverseIterator<T> &src) const { return (ptr == src.getPtr()); }
 
             bool operator!=(const ListReverseIterator &src) const { return (ptr != src.ptr); }
-            bool operator!=(const ListReverseConstIterator<T> &src) const { return (ptr != src.getPtr()); }
+            bool operator!=(const ListConstReverseIterator<T> &src) const { return (ptr != src.getPtr()); }
 
             T &operator*() const { return (ptr->val); }
 
@@ -199,67 +199,67 @@ namespace ft{
 
     // class list_reverse_const_iterator
     template <typename T>
-    class ListReverseConstIterator{
+    class ListConstReverseIterator{
         private:
             ft::node<T> *ptr;
         public:
-            ListReverseConstIterator() { ptr = 0; }
+            ListConstReverseIterator() { ptr = 0; }
 
-            ~ListReverseConstIterator() { }
+            ~ListConstReverseIterator() { }
 
-            explicit ListReverseConstIterator(ListConstIterator<T> it){
+            explicit ListConstReverseIterator(ListConstIterator<T> it){
 				ptr = it.getPtr();
 				ptr = ptr->prev;
 			}
 
-            ListReverseConstIterator(const ListReverseConstIterator &src) : ptr(src.ptr) { }
+            ListConstReverseIterator(const ListConstReverseIterator &src) : ptr(src.ptr) { }
 
-            ListReverseConstIterator(const ListReverseIterator<T> &src) : ptr(src.getPtr()) { }
+            ListConstReverseIterator(const ListReverseIterator<T> &src) : ptr(src.getPtr()) { }
 
-            ListReverseConstIterator &operator=(const ListReverseConstIterator &src){
+            ListConstReverseIterator &operator=(const ListConstReverseIterator &src){
                 ptr = src.ptr;
                 return (*this);
             }
 
-            ListReverseConstIterator &operator=(const ListReverseIterator<T> &src){
+            ListConstReverseIterator &operator=(const ListReverseIterator<T> &src){
                 ptr = src.getPtr();
                 return (*this);
             }
 
-            explicit ListReverseConstIterator(ft::node<T> *p) : ptr(p) { }
+            explicit ListConstReverseIterator(ft::node<T> *p) : ptr(p) { }
 
             ft::node<T> *getPtr() const { return (ptr); }
 
             ListConstIterator<T> base() { return (ListConstIterator<T>(ptr->next)); }
 
-            bool operator==(const ListReverseConstIterator &src) const { return (ptr == src.ptr); }
+            bool operator==(const ListConstReverseIterator &src) const { return (ptr == src.ptr); }
             bool operator==(const ListReverseIterator<T> &src) const { return (ptr == src.getPtr()); }
 
-            bool operator!=(const ListReverseConstIterator &src) const { return (ptr != src.ptr); }
+            bool operator!=(const ListConstReverseIterator &src) const { return (ptr != src.ptr); }
             bool operator!=(const ListReverseIterator<T> &src) const { return (ptr != src.getPtr()); }
 
             const T &operator*() const { return (ptr->val); }
 
             const T *operator->() const { return (&ptr->val); }
 
-            ListReverseConstIterator operator++(int){	// i++;
-                ListReverseConstIterator<T> temp = *this;
+            ListConstReverseIterator operator++(int){	// i++;
+                ListConstReverseIterator<T> temp = *this;
                 ptr = ptr->prev;
                 return (temp);
             }
 
-			ListReverseConstIterator &operator++(){		// ++i;
+			ListConstReverseIterator &operator++(){		// ++i;
 				ptr = ptr->prev;
 				return (*this);
 			}
 
-			ListReverseConstIterator operator--(int){	// i--;
-				ListReverseConstIterator<T> temp = *this;
+			ListConstReverseIterator operator--(int){	// i--;
+				ListConstReverseIterator<T> temp = *this;
 				ptr = ptr->next;
 				return (temp);
 			}
 
-			ListReverseConstIterator &operator--(){		// --i;
+			ListConstReverseIterator &operator--(){		// --i;
 				ptr = ptr->next;
 				return (*this);
 			}
@@ -277,7 +277,7 @@ namespace ft{
             typedef ListIterator<T> iterator;
             typedef ListConstIterator<T> const_iterator;
             typedef ListReverseIterator<T> reverse_iterator;
-            typedef ListReverseConstIterator<T> const_reverse_iterator;
+            typedef ListConstReverseIterator<T> const_reverse_iterator;
             typedef std::ptrdiff_t difference_type;
             typedef size_t size_type;
         private:

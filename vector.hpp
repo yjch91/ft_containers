@@ -46,7 +46,7 @@ namespace ft{
 
 			T *operator->() const { return (ptr); }
 
-			VectorIterator operator++(int){	// i++;
+			VectorIterator operator++(int){		// i++;
 				VectorIterator<T>	temp = *this;
 				ptr++;
 				return (temp);
@@ -55,7 +55,7 @@ namespace ft{
 				ptr++;
 				return (*this);
 			}
-			VectorIterator operator--(int){	// i--;
+			VectorIterator operator--(int){		// i--;
 				VectorIterator<T>	temp = *this;
 				ptr--;
 				return (temp);
@@ -157,21 +157,21 @@ namespace ft{
 
 			T *operator->() const { return (ptr); }
 
-			VectorReverseIterator operator++(int){ // i++;
+			VectorReverseIterator operator++(int){	// i++;
 				VectorReverseIterator<T>	temp = *this;
 				ptr--;
 				return (temp);
 			}
-			VectorReverseIterator &operator++(){ // ++i;
+			VectorReverseIterator &operator++(){	// ++i;
 				ptr--;
 				return (*this);
 			}
-			VectorReverseIterator operator--(int){ // i--;
+			VectorReverseIterator operator--(int){	// i--;
 				VectorReverseIterator<T>	temp = *this;
 				ptr++;
 				return (temp);
 			}
-			VectorReverseIterator &operator--(){ // --i
+			VectorReverseIterator &operator--(){	// --i
 				ptr++;
 				return (*this);
 			}

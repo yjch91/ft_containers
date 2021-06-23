@@ -4,7 +4,7 @@ CC = clang++ -std=c++98
 
 CFLAGS = -Wall -Wextra -Werror
 
-SRCS = main.cpp vector_test.cpp list_test.cpp stack_test.cpp queue_test.cpp
+SRCS = main.cpp vector_test.cpp list_test.cpp map_test.cpp stack_test.cpp queue_test.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
