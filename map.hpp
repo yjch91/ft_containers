@@ -1096,55 +1096,83 @@ namespace ft{
             }
 
             iterator lower_bound(const key_type &k){
-                iterator    it = begin();
+                ft::tree<Key, T, Compare>   *temp = root;
+                ft::tree<Key, T, Compare>   *ret = 0;
                 key_compare cmp = key_comp();
 
-                while (it != end())
+                while (temp != 0)
                 {
-                    if (cmp(it->first, k) == false)
-                        break ;
-                    it++;
+                    if (cmp(temp->val.first, k) == true)
+                        temp = temp->right;
+                    else
+                    {
+                        ret = temp;
+                        temp = temp->left;
+                    }
                 }
-                return (it);
+                if (ret == 0)
+                    return (end());
+                return (find(ret->val.first));
             }
 
             const_iterator lower_bound(const key_type &k) const{
-                const_iterator    it = begin();
+                ft::tree<Key, T, Compare>   *temp = root;
+                ft::tree<Key, T, Compare>   *ret = 0;
                 key_compare cmp = key_comp();
 
-                while (it != end())
+                while (temp != 0)
                 {
-                    if (cmp(it->first, k) == false)
-                        break ;
-                    it++;
+                    if (cmp(temp->val.first, k) == true)
+                        temp = temp->right;
+                    else
+                    {
+                        ret = temp;
+                        temp = temp->left;
+                    }
                 }
-                return (it);
+                if (ret == 0)
+                    return (end());
+                return (find(ret->val.first));
             }
 
             iterator upper_bound(const key_type &k){
-                iterator    it = begin();
+                ft::tree<Key, T, Compare>   *temp = root;
+                ft::tree<Key, T, Compare>   *ret = 0;
                 key_compare cmp = key_comp();
 
-                while (it != end())
+                while (temp != 0)
                 {
-                    if (cmp(k, it->first) == true)
-                        break ;
-                    it++;
+                    if (cmp(k, temp->val.first) == false)
+                        temp = temp->right;
+                    else
+                    {
+                        ret = temp;
+                        temp = temp->left;
+                    }
                 }
-                return (it);
+                if (ret == 0)
+                    return (end());
+                return (find(ret->val.first));
             }
 
             const_iterator upper_bound(const key_type &k) const{
-                const_iterator    it = begin();
+                ft::tree<Key, T, Compare>   *temp = root;
+                ft::tree<Key, T, Compare>   *ret = 0;
                 key_compare cmp = key_comp();
 
-                while (it != end())
+                while (temp != 0)
                 {
-                    if (cmp(k, it->first) == true)
-                        break ;
-                    it++;
+                    if (cmp(k, temp->val.first) == false)
+                        temp = temp->right;
+                    else
+                    {
+                        ret = temp;
+                        temp = temp->left;
+                    }
                 }
-                return (it);
+                if (ret == 0)
+                    return (end());
+                return (find(ret->val.first));
             }
 
             pair<const_iterator, const_iterator> equal_range(const key_type &k) const{

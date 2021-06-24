@@ -520,18 +520,11 @@ namespace ft{
 			// single element insert
 			iterator insert(iterator position, const value_type &val){
 				allocator_type	alloc;
-				iterator	i = begin();
-				size_type	j = 0;
+				iterator	i;
+				size_type	j = position - begin();
 				size_type	count = 0;
 				size_type	c = _capacity;
 				
-				while (i != position)
-				{
-					i++;
-					j++;
-					if (j > _size)
-						break ;
-				}
 				if (_capacity >= _size + 1)
 				{
 					count = _size;
@@ -565,20 +558,13 @@ namespace ft{
 			// fill insert
 			void insert(iterator position, size_type n, const value_type &val){
 				allocator_type	alloc;
-				iterator	i = begin();
-				size_type	j = 0;
+				iterator	i;
+				size_type	j = position - begin();
 				size_type	count = 0;
 				size_type	c = _capacity;
 
 				if (n == 0)
 					return ;
-				while (i != position)
-				{
-					i++;
-					j++;
-					if (j > _size)
-						break ;
-				}
 				if (_capacity >= _size + n)
 				{
 					count = _size - 1 + n;
@@ -617,8 +603,8 @@ namespace ft{
 			void insert(iterator position, InputIterator first, InputIterator last,
 							typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type type = 0){
 				allocator_type	alloc;
-				iterator	i = begin();
-				size_type	j = 0;
+				iterator	i;
+				size_type	j = position - begin();
 				size_type	count = 0;
 				size_type	c = _capacity;
 				size_type	n = 0;
@@ -632,13 +618,6 @@ namespace ft{
 				}
 				if (n == 0)
 					return ;
-				while (i != position)
-				{
-					i++;
-					j++;
-					if (j > _size)
-						break ;
-				}
 				if (_capacity >= _size + n)
 				{
 					count = _size - 1 + n;
