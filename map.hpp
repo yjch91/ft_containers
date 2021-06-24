@@ -322,7 +322,9 @@ namespace ft{
             MapIterator operator++(int){	// i++;
                 MapIterator<Key, T, Compare>    temp = *this;
 
-                if (ptr == root->back())
+                if (ptr == leaf)
+                    ptr = root->front();
+                else if (ptr == root->back())
                     ptr = leaf;
                 else
                     ptr = ptr->next();
@@ -330,7 +332,9 @@ namespace ft{
             }
 
             MapIterator &operator++(){		// ++i;
-                if (ptr == root->back())
+                if (ptr == leaf)
+                    ptr = root->front();
+                else if (ptr == root->back())
                     ptr = leaf;
                 else
                     ptr = ptr->next();
@@ -340,7 +344,9 @@ namespace ft{
 			MapIterator operator--(int){	// i--;
 				MapIterator<Key, T, Compare>    temp = *this;
 
-                if (ptr == leaf)
+                if (ptr == root->front())
+                    ptr = leaf;
+                else if (ptr == leaf)
                     ptr = root->back();
                 else
                     ptr = ptr->prev();
@@ -348,7 +354,9 @@ namespace ft{
 			}
 
 			MapIterator &operator--(){		// --i;
-                if (ptr == leaf)
+                if (ptr == root->front())
+                    ptr = leaf;
+                else if (ptr == leaf)
                     ptr = root->back();
                 else
                     ptr = ptr->prev();
@@ -411,7 +419,9 @@ namespace ft{
             MapConstIterator operator++(int){	// i++;
                 MapConstIterator<Key, T, Compare>   temp = *this;
 
-                if (ptr == root->back())
+                if (ptr == leaf)
+                    ptr = root->front();
+                else if (ptr == root->back())
                     ptr = leaf;
                 else
                     ptr = ptr->next();
@@ -419,7 +429,9 @@ namespace ft{
             }
 
             MapConstIterator &operator++(){		// ++i;
-                if (ptr == root->back())
+                if (ptr == leaf)
+                    ptr = root->front();
+                else if (ptr == root->back())
                     ptr = leaf;
                 else
                     ptr = ptr->next();
@@ -429,15 +441,19 @@ namespace ft{
 			MapConstIterator operator--(int){	// i--;
 				MapConstIterator<Key, T, Compare>   temp = *this;
 
-                if (ptr == leaf)
+                if (ptr == root->front())
+                    ptr = leaf;
+                else if (ptr == leaf)
                     ptr = root->back();
                 else
                     ptr = ptr->prev();
-                return (temp);
+				return (temp);
 			}
 
 			MapConstIterator &operator--(){		// --i;
-                if (ptr == leaf)
+                if (ptr == root->front())
+                    ptr = leaf;
+                else if (ptr == leaf)
                     ptr = root->back();
                 else
                     ptr = ptr->prev();
@@ -518,7 +534,9 @@ namespace ft{
             MapReverseIterator operator++(int){     // i++;
                 MapReverseIterator<Key, T, Compare>    temp = *this;
                 
-                if (ptr == root->front())
+                if (ptr == leaf)
+                    ptr = root->back();
+                else if (ptr == root->front())
                     ptr = leaf;
                 else
                     ptr = ptr->prev();
@@ -526,7 +544,9 @@ namespace ft{
             }
 
             MapReverseIterator &operator++(){		// ++i;
-                if (ptr == root->front())
+                if (ptr == leaf)
+                    ptr = root->back();
+                else if (ptr == root->front())
                     ptr = leaf;
                 else
                     ptr = ptr->prev();
@@ -536,7 +556,9 @@ namespace ft{
 			MapReverseIterator operator--(int){	    // i--;
 				MapReverseIterator<Key, T, Compare>    temp = *this;
 
-                if (ptr == leaf)
+                if (ptr == root->back())
+                    ptr = leaf;
+                else if (ptr == leaf)
                     ptr = root->front();
                 else
                     ptr = ptr->next();
@@ -544,7 +566,9 @@ namespace ft{
 			}
 
 			MapReverseIterator &operator--(){		// --i;
-                if (ptr == leaf)
+                if (ptr == root->back())
+                    ptr = leaf;
+                else if (ptr == leaf)
                     ptr = root->front();
                 else
                     ptr = ptr->next();
@@ -631,7 +655,9 @@ namespace ft{
             MapConstReverseIterator operator++(int){    // i++;
                 MapConstReverseIterator<Key, T, Compare>    temp = *this;
 
-                if (ptr == root->front())
+                if (ptr == leaf)
+                    ptr = root->back();
+                else if (ptr == root->front())
                     ptr = leaf;
                 else
                     ptr = ptr->prev();
@@ -639,7 +665,9 @@ namespace ft{
             }
 
             MapConstReverseIterator &operator++(){		// ++i;
-                if (ptr == root->front())
+                if (ptr == leaf)
+                    ptr = root->back();
+                else if (ptr == root->front())
                     ptr = leaf;
                 else
                     ptr = ptr->prev();
@@ -649,7 +677,9 @@ namespace ft{
 			MapConstReverseIterator operator--(int){    // i--;
 				MapConstReverseIterator<Key, T, Compare>    temp = *this;
 
-                if (ptr == leaf)
+                if (ptr == root->back())
+                    ptr = leaf;
+                else if (ptr == leaf)
                     ptr = root->front();
                 else
                     ptr = ptr->next();
@@ -657,7 +687,9 @@ namespace ft{
 			}
 
 			MapConstReverseIterator &operator--(){      // --i;
-                if (ptr == leaf)
+                if (ptr == root->back())
+                    ptr = leaf;
+                else if (ptr == leaf)
                     ptr = root->front();
                 else
                     ptr = ptr->next();
