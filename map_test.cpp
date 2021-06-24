@@ -224,7 +224,7 @@ static void capacity_test()
 	std::cout << "map_std max_size() : " << map_std.max_size() << std::endl;
 	std::cout << "map_ft  max_size() : " << map_ft.max_size() << std::endl;
 	std::cout << "\n";
-	std::cout << "map_std2 max_size() :  " << map_std2.max_size() << std::endl;
+	std::cout << "map_std2 max_size() : " << map_std2.max_size() << std::endl;
 	std::cout << "map_ft2  max_size() : " << map_ft2.max_size() << std::endl;
 	std::cout << "\n";
 }
