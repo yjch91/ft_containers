@@ -293,7 +293,6 @@ namespace ft{
                 ary = _alloc.allocate(_capacity);
                 for (size_type i = 0; i < _size; i++)
 					_alloc.construct(ary + i, val);
-					// ary[i] = val;
 			}
 
 			// range constructor
@@ -314,7 +313,6 @@ namespace ft{
 				ary = _alloc.allocate(_capacity);
 				for (size_type i = 0; i < _size; i++)
 					_alloc.construct(ary + i, *first++);
-                    // ary[i] = *first++;
 			}
 
 			// copy constructor
@@ -328,7 +326,6 @@ namespace ft{
 					ary = alloc.allocate(x._capacity);
 					for (size_type i = 0; i < x._size; i++)
 						alloc.construct(ary + i, x.ary[i]);
-						// ary[i] = x.ary[i];
 				}
 				_size = x._size;
 				_capacity = x._capacity;
@@ -347,7 +344,6 @@ namespace ft{
 				{
 					for (size_type i = 0; i < x._size; i++)
 						alloc.construct(ary + i, x.ary[i]);
-						// ary[i] = x.ary[i];
 				}
 				else
 				{
@@ -356,7 +352,6 @@ namespace ft{
 					ary = alloc.allocate(x._size);
 					for (size_type i = 0; i < x._size; i++)
 						alloc.construct(ary + i, x.ary[i]);
-						// ary[i] = x.ary[i];
 					_capacity = x._size;
 				}
 				_size = x._size;
@@ -411,7 +406,6 @@ namespace ft{
 
                     for(size_type i = 0; i < _size; i++)
 						alloc.construct(temp + i, ary[i]);
-                        // temp[i] = ary[i];
                     for (size_type i = 0; i < _size; i++)
 						alloc.destroy(ary + i);
 					alloc.deallocate(ary, _capacity);
@@ -468,7 +462,6 @@ namespace ft{
 				}
 				for (size_type i = 0; i < n; i++)
 					alloc.construct(ary + i, *first++);
-					// ary[i] = *first++;
                 _size = n;
 			}
 
@@ -486,7 +479,6 @@ namespace ft{
                 }
                 for (size_type i = 0; i < n; i++)
 					alloc.construct(ary + i, val);
-                    // ary[i] = val;
                 _size = n;
 			}
 
@@ -497,7 +489,6 @@ namespace ft{
 				{
 					ary = alloc.allocate(1);
 					alloc.construct(ary + _size, val);
-					// ary[_size] = val;
 					_size += 1;
 					_capacity = 1;
 				}
@@ -508,9 +499,7 @@ namespace ft{
 
 					for (size_type i = 0; i < _capacity; i++)
 						alloc.construct(temp + i, ary[i]);
-						// temp[i] = ary[i];
 					alloc.construct(temp + _size, val);
-					// temp[_size] = val;
 					for (size_type i = 0; i < _size; i++)
 						alloc.destroy(ary + i);
 					alloc.deallocate(ary, _capacity);
@@ -531,7 +520,6 @@ namespace ft{
 			// single element insert
 			iterator insert(iterator position, const value_type &val){
 				allocator_type	alloc;
-				T	*temp = 0;
 				iterator	i = begin();
 				size_type	j = 0;
 				size_type	count = 0;
@@ -544,25 +532,32 @@ namespace ft{
 					if (j > _size)
 						break ;
 				}
-				if (_capacity < _size + 1)
+				if (_capacity >= _size + 1)
+				{
+					count = _size;
+					for (c = 0; c < _size - j; c++)
+					{
+						alloc.construct(ary + count, ary[count - 1]);
+						count--;
+					}
+					alloc.construct(ary + count, val);
+				}
+				else if (_capacity < _size + 1)
 				{
 					_capacity *= 2;
 					if (_capacity == 0)
 						_capacity = 1;
+					T	*temp = alloc.allocate(_capacity);
+					for (i = begin(); i != position; i++)
+						alloc.construct(temp + count++, *i);
+					alloc.construct(temp + count++, val);
+					for (i = position; i != end(); i++)
+						alloc.construct(temp + count++, *i);
+					for (size_type i = 0; i < _size; i++)
+						alloc.destroy(ary + i);
+					alloc.deallocate(ary, c);
+					ary = temp;
 				}
-				temp = alloc.allocate(_capacity);
-				for (i = begin(); i != position; i++)
-					alloc.construct(temp + count++, *i);
-					// temp[count++] = *i;
-				alloc.construct(temp + count++, val);
-				// temp[count++] = val;
-				for (i = position; i != end(); i++)
-					alloc.construct(temp + count++, *i);
-					// temp[count++] = *i;
-				for (size_type i = 0; i < _size; i++)
-					alloc.destroy(ary + i);
-				alloc.deallocate(ary, c);
-				ary = temp;
 				_size += 1;
 				return (iterator(&ary[j]));
 			}
@@ -570,34 +565,50 @@ namespace ft{
 			// fill insert
 			void insert(iterator position, size_type n, const value_type &val){
 				allocator_type	alloc;
-				T	*temp = 0;
 				iterator	i = begin();
+				size_type	j = 0;
 				size_type	count = 0;
 				size_type	c = _capacity;
 
 				if (n == 0)
 					return ;
-				if (_capacity < _size + n)
+				while (i != position)
+				{
+					i++;
+					j++;
+					if (j > _size)
+						break ;
+				}
+				if (_capacity >= _size + n)
+				{
+					count = _size - 1 + n;
+					for (c = 0; c < _size - j; c++)
+					{
+						alloc.construct(ary + count, ary[count - n]);
+						count--;
+					}
+					c = n;
+					while (c--)
+						alloc.construct(ary + count--, val);
+				}
+				else if (_capacity < _size + n)
 				{
 					if (_capacity * 2 >= _size + n)
 						_capacity = _capacity * 2;
 					else
 						_capacity = _size + n;
+					T	*temp = alloc.allocate(_capacity);
+					for (i = begin(); i != position; i++)
+						alloc.construct(temp + count++, *i);
+					for (size_type p = 0; p < n; p++)
+						alloc.construct(temp + count++, val);
+					for (i = position; i != end(); i++)
+						alloc.construct(temp + count++, *i);
+					for (size_type i = 0; i < _size; i++)
+						alloc.destroy(ary + i);
+					alloc.deallocate(ary, c);
+					ary = temp;
 				}
-				temp = alloc.allocate(_capacity);
-				for (i = begin(); i != position; i++)
-					alloc.construct(temp + count++, *i);
-					// temp[count++] = *i;
-				for (size_type p = 0; p < n; p++)
-					alloc.construct(temp + count++, val);
-					// temp[count++] = val;
-				for (i = position; i != end(); i++)
-					alloc.construct(temp + count++, *i);
-					// temp[count++] = *i;
-				for (size_type i = 0; i < _size; i++)
-					alloc.destroy(ary + i);
-				alloc.deallocate(ary, c);
-				ary = temp;
 				_size += n;
 			}
 
@@ -607,11 +618,11 @@ namespace ft{
 							typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type type = 0){
 				allocator_type	alloc;
 				iterator	i = begin();
-				T	*temp = 0;
+				size_type	j = 0;
 				size_type	count = 0;
 				size_type	c = _capacity;
 				size_type	n = 0;
-				InputIterator it = first;
+				InputIterator	it = first;
 
 				(void)type;
 				while (it != last)
@@ -621,27 +632,47 @@ namespace ft{
 				}
 				if (n == 0)
 					return ;
-				if (_capacity < _size + n)
+				while (i != position)
+				{
+					i++;
+					j++;
+					if (j > _size)
+						break ;
+				}
+				if (_capacity >= _size + n)
+				{
+					count = _size - 1 + n;
+					for (c = 0; c < _size - j; c++)
+					{
+						alloc.construct(ary + count, ary[count - n]);
+						count--;
+					}
+					while (1)
+					{
+						last--;
+						alloc.construct(ary + count--, *last);
+						if (last == first)
+							break ;
+					}
+				}
+				else if (_capacity < _size + n)
 				{
 					if (_capacity * 2 >= _size + n)
 						_capacity = _capacity * 2;
 					else
 						_capacity = _size + n;
+					T	*temp = alloc.allocate(_capacity);
+					for (i = begin(); i != position; i++)
+						alloc.construct(temp + count++, *i);
+					for (; first != last; first++)
+						alloc.construct(temp + count++, *first);
+					for (i = position; i != end(); i++)
+						alloc.construct(temp + count++, *i);
+					for (size_type i = 0; i < _size; i++)
+						alloc.destroy(ary + i);
+					alloc.deallocate(ary, c);
+					ary = temp;
 				}
-				temp = alloc.allocate(_capacity);
-				for (i = begin(); i != position; i++)
-					alloc.construct(temp + count++, *i);
-					// temp[count++] = *i;
-				for (; first != last; first++)
-					alloc.construct(temp + count++, *first);
-					// temp[count++] = *first;
-				for (i = position; i != end(); i++)
-					alloc.construct(temp + count++, *i);
-					// temp[count++] = *i;
-				for (size_type i = 0; i < _size; i++)
-					alloc.destroy(ary + i);
-				alloc.deallocate(ary, c);
-				ary = temp;
 				_size += n;
 			}
 

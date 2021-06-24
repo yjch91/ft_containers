@@ -780,9 +780,9 @@ static void other_test()
 	std::cout << "\n";
 
 	if (map_std > map_std3)
-		std::cout << "map_std > map_std3\n";
+        std::cout << "map_std > map_std3\n";
 	else if (map_std3 >= map_std)
-		std::cout << "map_std3 >= map_std\n";
+        std::cout << "map_std3 >= map_std\n";
 
 	if (map_std2 < map_std3)
 		std::cout << "map_std2 < map_std3\n";
@@ -792,9 +792,9 @@ static void other_test()
 
     std::cout << "\033[32mft relational operators test\033[0m\n";
     if (map_ft == map_ft3)
-		std::cout << "map_ft == map_ft3\n";
+        std::cout << "map_ft == map_ft3\n";
 	else
-	    std::cout << "map_ft != map_ft3\n";
+        std::cout << "map_ft != map_ft3\n";
 
 	if (map_ft2 != map_ft3)
 		std::cout << "map_ft2 != map_ft3\n";
