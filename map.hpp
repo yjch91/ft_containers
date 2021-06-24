@@ -115,41 +115,6 @@ namespace ft{
                 while (1)
                 {
                     temp = ptr;
-                    if (ptr->parent == 0)
-                        break ;
-                    ptr = ptr->parent;
-                    if (ptr == 0)
-                        break ;
-                    else if (ptr->right == temp)
-                        break ;
-                }     
-            }
-            return (ptr);
-        }
-
-        ft::tree<Key, T, Compare> *rprev(){
-            ft::tree<Key, T, Compare>   *ptr = this;
-
-            if (ptr->left != 0)
-            {
-                ptr = ptr->left;
-                if (ptr->right == 0)
-                    return (ptr);
-                while (1)
-                {
-                    if (ptr->right != 0)
-                        ptr = ptr->right;
-                    else
-                        break ;
-                }
-            }
-            else
-            {
-                ft::tree<Key, T, Compare>    *temp;
-
-                while (1)
-                {
-                    temp = ptr;
                     ptr = ptr->parent;
                     if (ptr == 0)
                         break ;
@@ -163,7 +128,7 @@ namespace ft{
         ft::tree<Key, T, Compare> *next(){
             ft::tree<Key, T, Compare>   *ptr = this;
 
-            if (ptr->right != 0)
+            if (ptr->right != 0) 
             {
                 ptr = ptr->right;
                 if (ptr->left == 0)
@@ -183,41 +148,6 @@ namespace ft{
                 while (1)
                 {
                     temp = ptr;
-                    ptr = ptr->parent;
-                    if (ptr == 0)
-                        break ;
-                    else if (ptr->left == temp)
-                        break ;
-                }
-            }
-            return (ptr);
-        }
-
-        ft::tree<Key, T, Compare> *rnext(){
-            ft::tree<Key, T, Compare>   *ptr = this;
-
-            if (ptr->right != 0)
-            {
-                ptr = ptr->right;
-                if (ptr->left == 0)
-                    return (ptr);
-                while (1)
-                {
-                    if (ptr->left != 0)
-                        ptr = ptr->left;
-                    else
-                        break ;
-                }
-            }
-            else
-            {
-                ft::tree<Key, T, Compare>    *temp;
-
-                while (1)
-                {
-                    temp = ptr;
-                    if (ptr->parent == 0)
-                        break ;
                     ptr = ptr->parent;
                     if (ptr == 0)
                         break ;
@@ -352,27 +282,32 @@ namespace ft{
         private:
             ft::tree<Key, T, Compare> *ptr;
             ft::tree<Key, T, Compare> *root;
+            ft::tree<Key, T, Compare> *leaf;
         public:
             MapIterator(){
                 ptr = 0;
                 root = 0;
+                leaf = 0;
             }
 
             ~MapIterator() { }
 
-            MapIterator(const MapIterator &src) : ptr(src.ptr), root(src.root) { }
+            MapIterator(const MapIterator &src) : ptr(src.ptr), root(src.root), leaf(src.leaf) { }
 
             MapIterator &operator=(const MapIterator &src){
                 ptr = src.ptr;
                 root = src.root;
+                leaf = src.leaf;
                 return (*this);
             }
 
-            explicit MapIterator(ft::tree<Key, T, Compare> *p, ft::tree<Key, T, Compare> *r = 0) : ptr(p), root(r) { }
+            explicit MapIterator(ft::tree<Key, T, Compare> *p, ft::tree<Key, T, Compare> *r = 0, ft::tree<Key, T, Compare> *l = 0) : ptr(p), root(r), leaf(l) { }
 
             ft::tree<Key, T, Compare> *getPtr() const { return (ptr); }
 
             ft::tree<Key, T, Compare> *getRoot() const { return (root); }
+
+            ft::tree<Key, T, Compare> *getLeaf() const { return (leaf); }
 
             bool operator==(const MapIterator &src) const { return (ptr == src.ptr); }
             bool operator==(const MapConstIterator<Key, T, Compare> &src) const { return (ptr == src.getPtr()); }
@@ -387,19 +322,25 @@ namespace ft{
             MapIterator operator++(int){	// i++;
                 MapIterator<Key, T, Compare>    temp = *this;
 
-                ptr = ptr->next();
+                if (ptr == root->back())
+                    ptr = leaf;
+                else
+                    ptr = ptr->next();
                 return (temp);
             }
 
             MapIterator &operator++(){		// ++i;
-                ptr = ptr->next();
+                if (ptr == root->back())
+                    ptr = leaf;
+                else
+                    ptr = ptr->next();
 				return (*this);
 			}
 
 			MapIterator operator--(int){	// i--;
 				MapIterator<Key, T, Compare>    temp = *this;
 
-                if (ptr == 0 || ptr == root->front())
+                if (ptr == leaf)
                     ptr = root->back();
                 else
                     ptr = ptr->prev();
@@ -407,7 +348,7 @@ namespace ft{
 			}
 
 			MapIterator &operator--(){		// --i;
-                if (ptr == 0 || ptr == root->front())
+                if (ptr == leaf)
                     ptr = root->back();
                 else
                     ptr = ptr->prev();
@@ -421,35 +362,41 @@ namespace ft{
         private:
             ft::tree<Key, T, Compare> *ptr;
             ft::tree<Key, T, Compare> *root;
+            ft::tree<Key, T, Compare> *leaf;
         public:
             MapConstIterator(){
                 ptr = 0;
                 root = 0;
+                leaf = 0;
             }
 
             ~MapConstIterator() { }
 
-            MapConstIterator(const MapConstIterator &src) : ptr(src.ptr), root(src.root) { }
+            MapConstIterator(const MapConstIterator &src) : ptr(src.ptr), root(src.root), leaf(src.leaf) { }
 
-            MapConstIterator(const MapIterator<Key, T, Compare> &src) : ptr(src.getPtr()), root(src.getRoot()) { }  
+            MapConstIterator(const MapIterator<Key, T, Compare> &src) : ptr(src.getPtr()), root(src.getRoot()), leaf(src.getLeaf()) { }  
 
             MapConstIterator &operator=(const MapConstIterator &src){
                 ptr = src.ptr;
                 root = src.root;
+                leaf = src.leaf;
                 return (*this);
             }
 
             MapConstIterator &operator=(const MapIterator<Key, T, Compare> &src){
                 ptr = src.getPtr();
                 root = src.getRoot();
+                leaf = src.getLeaf();
                 return (*this);
             }
 
-            explicit MapConstIterator(ft::tree<Key, T, Compare> *p, ft::tree<Key, T, Compare> *r = 0) : ptr(p), root(r) { }
+            explicit MapConstIterator(ft::tree<Key, T, Compare> *p, ft::tree<Key, T, Compare> *r = 0, ft::tree<Key, T, Compare> *l = 0) : ptr(p), root(r), leaf(l) { }
 
             ft::tree<Key, T, Compare> *getPtr() const { return (ptr); }
 
             ft::tree<Key, T, Compare> *getRoot() const { return (root); }
+
+            ft::tree<Key, T, Compare> *getLeaf() const { return (leaf); }
 
             bool operator==(const MapConstIterator &src) const { return (ptr == src.ptr); }
             bool operator==(const MapIterator<Key, T, Compare> &src) const { return (ptr == src.getPtr()); }
@@ -464,19 +411,25 @@ namespace ft{
             MapConstIterator operator++(int){	// i++;
                 MapConstIterator<Key, T, Compare>   temp = *this;
 
-                ptr = ptr->next();
+                if (ptr == root->back())
+                    ptr = leaf;
+                else
+                    ptr = ptr->next();
                 return (temp);
             }
 
             MapConstIterator &operator++(){		// ++i;
-                ptr = ptr->next();
+                if (ptr == root->back())
+                    ptr = leaf;
+                else
+                    ptr = ptr->next();
 				return (*this);
 			}
 
 			MapConstIterator operator--(int){	// i--;
 				MapConstIterator<Key, T, Compare>   temp = *this;
 
-                if (ptr == 0 || ptr == root->front())
+                if (ptr == leaf)
                     ptr = root->back();
                 else
                     ptr = ptr->prev();
@@ -484,7 +437,7 @@ namespace ft{
 			}
 
 			MapConstIterator &operator--(){		// --i;
-                if (ptr == 0 || ptr == root->front())
+                if (ptr == leaf)
                     ptr = root->back();
                 else
                     ptr = ptr->prev();
@@ -501,10 +454,12 @@ namespace ft{
         private:
             ft::tree<Key, T, Compare> *ptr;
             ft::tree<Key, T, Compare> *root;
+            ft::tree<Key, T, Compare> *leaf;
         public:
             MapReverseIterator(){
                 ptr = 0;
                 root = 0;
+                leaf = 0;
             }
 
             ~MapReverseIterator() { }
@@ -512,33 +467,39 @@ namespace ft{
             explicit MapReverseIterator(MapIterator<Key, T, Compare> it){
                 ptr = it.getPtr();
                 root = it.getRoot();
+                leaf = it.getLeaf();
                 if (root == 0)
-                    return ; 
-                if (ptr == 0 || ptr == root->front())
+                    ptr = leaf;
+                else if (ptr == leaf)
                     ptr = root->back();
                 else
                     ptr = ptr->prev();
+                if (ptr == 0)
+                    ptr = leaf;
             }
 
-            MapReverseIterator(const MapReverseIterator &src) : ptr(src.ptr), root(src.root) { }
+            MapReverseIterator(const MapReverseIterator &src) : ptr(src.ptr), root(src.root), leaf(src.leaf) { }
 
             MapReverseIterator &operator=(const MapReverseIterator &src){
                 ptr = src.ptr;
                 root = src.root;
+                leaf = src.leaf;
                 return (*this);
             }
 
-            explicit MapReverseIterator(ft::tree<Key, T, Compare> *p, ft::tree<Key, T, Compare> *r = 0) : ptr(p), root(r) { }
+            explicit MapReverseIterator(ft::tree<Key, T, Compare> *p, ft::tree<Key, T, Compare> *r = 0, ft::tree<Key, T, Compare> *l = 0) : ptr(p), root(r), leaf(l) { }
 
             ft::tree<Key, T, Compare> *getPtr() const { return (ptr); }
 
             ft::tree<Key, T, Compare> *getRoot() const { return (root); }
 
+            ft::tree<Key, T, Compare> *getLeaf() const { return (leaf); }
+
             MapIterator<Key, T, Compare> base(){
                 ft::tree<Key, T, Compare> *temp = ptr;
 
-                if (ptr == 0)
-                    return (MapIterator<Key, T, Compare>(root->front()));
+                if (temp == leaf)
+                    temp = root->front();
                 else
                     temp = ptr->next();
                 return (MapIterator<Key, T, Compare>(temp));
@@ -556,31 +517,37 @@ namespace ft{
 
             MapReverseIterator operator++(int){     // i++;
                 MapReverseIterator<Key, T, Compare>    temp = *this;
-
-                ptr = ptr->rprev();
+                
+                if (ptr == root->front())
+                    ptr = leaf;
+                else
+                    ptr = ptr->prev();
                 return (temp);
             }
 
             MapReverseIterator &operator++(){		// ++i;
-                ptr = ptr->rprev();
+                if (ptr == root->front())
+                    ptr = leaf;
+                else
+                    ptr = ptr->prev();
 				return (*this);
 			}
 
 			MapReverseIterator operator--(int){	    // i--;
 				MapReverseIterator<Key, T, Compare>    temp = *this;
 
-                if (ptr == 0 || ptr == root->back())
+                if (ptr == leaf)
                     ptr = root->front();
                 else
-                    ptr = ptr->rnext();
+                    ptr = ptr->next();
 				return (temp);
 			}
 
 			MapReverseIterator &operator--(){		// --i;
-                if (ptr == 0 || ptr == root->back())
+                if (ptr == leaf)
                     ptr = root->front();
                 else
-                    ptr = ptr->rnext();
+                    ptr = ptr->next();
 				return (*this);
 			}
     };
@@ -591,10 +558,12 @@ namespace ft{
         private:
             ft::tree<Key, T, Compare> *ptr;
             ft::tree<Key, T, Compare> *root;
+            ft::tree<Key, T, Compare> *leaf;
         public:
             MapConstReverseIterator(){
                 ptr = 0;
                 root = 0;
+                leaf = 0;
             }
 
             ~MapConstReverseIterator() { }
@@ -602,41 +571,48 @@ namespace ft{
             explicit MapConstReverseIterator(MapConstIterator<Key, T, Compare> it){
                 ptr = it.getPtr();
                 root = it.getRoot();
+                leaf = it.getLeaf();
                 if (root == 0)
-                    return ; 
-                if (ptr == 0 || ptr == root->front())
+                    ptr = leaf;
+                if (ptr == leaf)
                     ptr = root->back();
                 else
                     ptr = ptr->prev();
+                if (ptr == 0)
+                    ptr = leaf;
             }
 
-            MapConstReverseIterator(const MapConstReverseIterator &src) : ptr(src.ptr), root(src.root) { }
+            MapConstReverseIterator(const MapConstReverseIterator &src) : ptr(src.ptr), root(src.root), leaf(src.leaf) { }
 
-            MapConstReverseIterator(const MapReverseIterator<Key, T, Compare> &src) : ptr(src.getPtr()), root(src.getRoot()) { }
+            MapConstReverseIterator(const MapReverseIterator<Key, T, Compare> &src) : ptr(src.getPtr()), root(src.getRoot()), leaf(src.getLeaf()) { }
 
             MapConstReverseIterator &operator=(const MapConstReverseIterator &src){
                 ptr = src.ptr;
                 root = src.root;
+                leaf = src.leaf;
                 return (*this);
             }
 
             MapConstReverseIterator &operator=(const MapReverseIterator<Key, T, Compare> &src){
                 ptr = src.getPtr();
                 root = src.getRoot();
+                leaf = src.getLeaf();
                 return (*this);
             }
 
-            explicit MapConstReverseIterator(ft::tree<Key, T, Compare> *p, ft::tree<Key, T, Compare> *r = 0) : ptr(p), root(r) { }
+            explicit MapConstReverseIterator(ft::tree<Key, T, Compare> *p, ft::tree<Key, T, Compare> *r = 0, ft::tree<Key, T, Compare> *l = 0) : ptr(p), root(r), leaf(l) { }
 
             ft::tree<Key, T, Compare> *getPtr() const { return (ptr); }
 
             ft::tree<Key, T, Compare> *getRoot() const { return (root); }
 
+            ft::tree<Key, T, Compare> *getLeaf() const { return (leaf); }
+
             MapConstIterator<Key, T, Compare> base(){
                 ft::tree<Key, T, Compare> *temp = ptr;
 
-                if (ptr == 0)
-                    return (MapConstIterator<Key, T, Compare>(root->front()));
+                if (temp == leaf)
+                    temp = root->front();
                 else
                     temp = ptr->next();
                 return (MapConstIterator<Key, T, Compare>(temp));
@@ -655,30 +631,36 @@ namespace ft{
             MapConstReverseIterator operator++(int){    // i++;
                 MapConstReverseIterator<Key, T, Compare>    temp = *this;
 
-                ptr = ptr->rprev();
+                if (ptr == root->front())
+                    ptr = leaf;
+                else
+                    ptr = ptr->prev();
                 return (temp);
             }
 
             MapConstReverseIterator &operator++(){		// ++i;
-                ptr = ptr->rprev();
+                if (ptr == root->front())
+                    ptr = leaf;
+                else
+                    ptr = ptr->prev();
 				return (*this);
 			}
 
 			MapConstReverseIterator operator--(int){    // i--;
 				MapConstReverseIterator<Key, T, Compare>    temp = *this;
 
-                if (ptr == 0 || ptr == root->back())
+                if (ptr == leaf)
                     ptr = root->front();
                 else
-                    ptr = ptr->rnext();
+                    ptr = ptr->next();
 				return (temp);
 			}
 
 			MapConstReverseIterator &operator--(){      // --i;
-                if (ptr == 0 || ptr == root->back())
+                if (ptr == leaf)
                     ptr = root->front();
                 else
-                    ptr = ptr->rnext();
+                    ptr = ptr->next();
 				return (*this);
 			}
     };
@@ -715,6 +697,7 @@ namespace ft{
             typedef size_t size_type;
         private:
             ft::tree<Key, T, Compare> *root;
+            ft::tree<Key, T, Compare> *leaf;
             size_type _size;
         public:
             // empty constructor
@@ -722,12 +705,14 @@ namespace ft{
                 (void)comp;
                 (void)alloc;
                 root = 0;
+                leaf = new ft::tree<Key, T, Compare>(value_type());
                 _size = 0;
             }
             
             // destructor
             ~map(){
                 clear();
+                delete leaf;
             }
 
             // range constructor
@@ -736,6 +721,7 @@ namespace ft{
                 (void)comp;
                 (void)alloc;
                 root = 0;
+                leaf = new ft::tree<Key, T, Compare>(value_type());
                 _size = 0;
                 insert(first, last);
             }
@@ -743,6 +729,7 @@ namespace ft{
             // copy constructor
             map(const map &x){
                 root = 0;
+                leaf = new ft::tree<Key, T, Compare>(value_type());
                 _size = 0;
                 insert(x.begin(), x.end());
             }
@@ -757,50 +744,42 @@ namespace ft{
             // [Iterators]
             iterator begin(){
                 if (root == 0)
-                    return (iterator(root, root));
-                return (iterator(root->front(), root));
+                    return (iterator(leaf, root, leaf));
+                return (iterator(root->front(), root, leaf));
             }
 
             const_iterator begin() const{
                 if (root == 0)
-                    return (const_iterator(root, root));
-                return (const_iterator(root->front(), root));
+                    return (const_iterator(leaf, root, leaf));
+                return (const_iterator(root->front(), root, leaf));
             }
  
             iterator end(){
-                if (root == 0)
-                    return (iterator(root, root));
-                return (iterator(root->back()->right, root));
+                return (iterator(leaf, root, leaf));
             }
 
             const_iterator end() const{
-                if (root == 0)
-                    return (const_iterator(root, root));
-                return (const_iterator(root->back()->right, root));
+                return (const_iterator(leaf, root, leaf));
             }
 
             reverse_iterator rbegin(){
                 if (root == 0)
-                    return (reverse_iterator(root, root));
-                return (reverse_iterator(root->back(), root));
+                    return (reverse_iterator(leaf, root, leaf));
+                return (reverse_iterator(root->back(), root, leaf));
             }
 
             const_reverse_iterator rbegin() const{
                 if (root == 0)
-                    return (const_reverse_iterator(root));
-                return (const_reverse_iterator(root->back(), root));
+                    return (const_reverse_iterator(leaf, root, leaf));
+                return (const_reverse_iterator(root->back(), root, leaf));
             }
 
             reverse_iterator rend(){
-                if (root == 0)
-                    return (reverse_iterator(root, root));
-                return (reverse_iterator(root->front()->left, root));
+                return (reverse_iterator(leaf, root, leaf));
             }
 
             const_reverse_iterator rend() const{
-                if (root == 0)
-                    return (const_reverse_iterator(root, root));
-                return (const_reverse_iterator(root->front()->left, root));
+                return (const_reverse_iterator(leaf, root, leaf));
             }
 
             // [Capacity]
@@ -1062,7 +1041,7 @@ namespace ft{
                 while (i != end()){
                     temp = i;
                     i++;
-                    delete temp.getPtr();
+                    erase(temp);
                 }
                 root = 0;
                 _size = 0;
@@ -1089,7 +1068,7 @@ namespace ft{
                 }
                 if (temp == 0)
                     return (end());
-                return (iterator(temp));
+                return (iterator(temp, root, leaf));
             }
 
             const_iterator find(const key_type &k) const{
@@ -1107,7 +1086,7 @@ namespace ft{
                 }
                 if (temp == 0)
                     return (end());
-                return (const_iterator(temp));
+                return (const_iterator(temp, root, leaf));
             }
 
             size_type count(const key_type &k) const{

@@ -794,7 +794,7 @@ static void other_test()
     if (map_ft == map_ft3)
 		std::cout << "map_ft == map_ft3\n";
 	else
-		std::cout << "map_ft != map_ft3\n";
+	    std::cout << "map_ft != map_ft3\n";
 
 	if (map_ft2 != map_ft3)
 		std::cout << "map_ft2 != map_ft3\n";
