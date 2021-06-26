@@ -14,6 +14,10 @@
 #include "map.hpp"
 #include "stack.hpp"
 #include "queue.hpp"
+#include <set>
+#include "set.hpp"
+#include "multiset.hpp"
+#include "multimap.hpp"
 
 // operator-> test class
 class   test{
@@ -28,5 +32,8 @@ void list_test();
 void map_test();
 void stack_test();
 void queue_test();
+void set_test();
+void multiset_test();
+void multimap_test();
 
 #endif

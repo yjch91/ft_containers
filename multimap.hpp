@@ -1,22 +1,22 @@
-#ifndef MAP_HPP
+#ifndef MULTIMAP_HPP
 
-# define MAP_HPP
+# define MULTIMAP_HPP
 
 #include <iostream>
 #include <limits>
 #include "iterator.hpp"
 
 namespace ft{
-    // class map
+    // class multimap
     template <typename Key, typename T, typename Compare = ft::less<Key>, typename Alloc = std::allocator<ft::pair<const Key, T> > >
-    class map{
+    class multimap{
         public:
             typedef Key key_type;
-            typedef T mapped_type;
-            typedef ft::pair<const key_type, mapped_type> value_type;
+            typedef T multimapped_type;
+            typedef ft::pair<const key_type, multimapped_type> value_type;
             typedef Compare key_compare;
             class value_compare{
-                friend class map;
+                friend class multimap;
                 protected:
                     Compare comp;
                     value_compare(Compare c) : comp(c) { }
@@ -43,7 +43,7 @@ namespace ft{
             size_type _size;
         public:
             // empty constructor
-            explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()){
+            explicit multimap(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()){
                 (void)comp;
                 (void)alloc;
                 root = 0;
@@ -52,14 +52,14 @@ namespace ft{
             }
             
             // destructor
-            ~map(){
+            ~multimap(){
                 clear();
                 delete leaf;
             }
 
             // range constructor
             template <typename InputIterator>
-            map(InputIterator first, InputIterator last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()){
+            multimap(InputIterator first, InputIterator last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()){
                 (void)comp;
                 (void)alloc;
                 root = 0;
@@ -69,7 +69,7 @@ namespace ft{
             }
 
             // copy constructor
-            map(const map &x){
+            multimap(const multimap &x){
                 root = 0;
                 leaf = new ft::tree<value_type>(value_type());
                 _size = 0;
@@ -77,7 +77,7 @@ namespace ft{
             }
             
             // assign content
-            map &operator=(const map &x){
+            multimap &operator=(const multimap &x){
                 clear();
                 insert(x.begin(), x.end());
                 return (*this);
@@ -135,24 +135,19 @@ namespace ft{
             }
 
             // [Element access]
-            mapped_type &operator[](const key_type &k){
-                return ((*((this->insert(ft::make_pair(k, mapped_type()))).first)).second);
+            multimapped_type &operator[](const key_type &k){
+                return ((*((this->insert(ft::make_pair(k, multimapped_type()))).first)).second);
             }
 
             // [Modifiers]
             // single element insert
-            pair<iterator, bool> insert(const value_type &val){
+            iterator insert(const value_type &val){
                 ft::tree<value_type>   *temp = root;
                 ft::tree<value_type>   *new_node;
-                ft::pair<iterator, bool>    ret;
                 key_compare cmp;
+                size_type c;
+                iterator ret;
 
-                if (find(val.first) != end())
-                {
-                    ret.first = find(val.first);
-                    ret.second = false;
-                    return (ret);
-                }
                 new_node = new ft::tree<value_type>(val);
                 if (root == 0)
                     root = new_node;
@@ -160,7 +155,7 @@ namespace ft{
                 {
                     while (1) // 들어갈 위치 찾기
                     {
-                        if (cmp(temp->val.first, val.first) == true)
+                        if (cmp(temp->val.first, val.first) == true || temp->val.first == val.first)
                         {
                             if (temp->right == 0)
                                 break ;
@@ -174,7 +169,7 @@ namespace ft{
                         }
                     }
                     // 위치에 새로운 노드 넣기
-                    if (cmp(temp->val.first, val.first) == true)
+                    if (cmp(temp->val.first, val.first) == true || temp->val.first == val.first)
                     {
                         temp->right = new_node;
                         new_node->parent = temp;
@@ -190,15 +185,17 @@ namespace ft{
                         root = root->parent;
                 }
                 _size++;
-                ret.first = find(val.first);
-                ret.second = true;
+                ret = find(val.first);
+                c = count(val.first);
+                while (c != 0 && --c)
+                    ret++;
                 return (ret);
             }
 
             // with hint insert
             iterator insert(iterator position, const value_type &val){
                 (void)position;
-                return (insert(val).first);
+                return (insert(val));
             }
 
             // range insert
@@ -213,150 +210,154 @@ namespace ft{
 
             void erase(iterator position)
             {
-                erase(position->first);
+                iterator    it = position;
+                ft::tree<value_type>   *temp;
+
+                if (it != end())
+                {
+                    temp = it.getPtr();
+                    // 자식노드가 없는 경우
+                    if (temp->left == 0 && temp->right == 0)
+                    {
+                        if (temp->parent == 0)
+                            root = 0;
+                        else
+                        {
+                            if (temp->parent->left == temp)
+                                temp->parent->left = 0;
+                            else if (temp->parent->right == temp)
+                                temp->parent->right = 0;
+                            temp->parent->rebalance();
+                            while (root->parent != 0)
+                                root = root->parent;
+                        }
+                        delete temp;
+                    }
+                    // 자식노드(왼쪽) 하나만 있는 경우
+                    else if (temp->left != 0 && temp->right == 0)
+                    {
+                        if (temp->parent == 0)
+                        {
+                            temp->left->parent = temp->parent;
+                            root = temp->left;
+                        }
+                        else{
+                            if (temp->parent->left == temp)
+                                temp->parent->left = temp->left;
+                            else if (temp->parent->right == temp)
+                                temp->parent->right = temp->left;
+                            temp->left->parent = temp->parent;
+                            temp->parent->rebalance();
+                            while (root->parent != 0)
+                                root = root->parent;
+                        }
+                        delete temp;
+                    }
+                    // 자식노드(오른쪽) 하나만 있는 경우
+                    else if (temp->left == 0 && temp->right != 0)
+                    {
+                        if (temp->parent == 0)
+                        {
+                            temp->right->parent = temp->parent;
+                            root = temp->right;
+                        }
+                        else{
+                            if (temp->parent->left == temp)
+                                temp->parent->left = temp->right;
+                            else if (temp->parent->right == temp)
+                                temp->parent->right = temp->right;
+                            temp->right->parent = temp->parent;
+                            temp->parent->rebalance();
+                            while (root->parent != 0)
+                                root = root->parent;
+                        }
+                        delete temp;
+                    }
+                    // 자식노드가 둘 다 있는 경우
+                    else
+                    {
+                        ft::tree<value_type>   *temp_next;
+                        ft::tree<value_type>   *test;
+                        
+                        it++;
+                        temp_next = it.getPtr();
+                        test = temp_next->parent;
+                        if (temp->parent == 0)
+                        {
+                            if (temp_next->parent == temp)
+                            {
+                                temp_next->left = temp->left;
+                                temp->left->parent = temp_next;
+                                temp_next->parent = temp->parent;
+                                root = temp_next;
+                                temp_next->rebalance();
+                            }
+                            else
+                            {
+                                if (temp_next->parent->left == temp_next)
+                                    temp_next->parent->left = temp_next->right;
+                                else if (temp_next->parent->right == temp_next)
+                                    temp_next->parent->right = temp_next->right;
+                                if (temp_next->right != 0)
+                                    temp_next->right->parent = temp_next->parent;
+                                temp_next->left = temp->left;
+                                temp->left->parent = temp_next;
+                                temp_next->right = temp->right;
+                                temp->right->parent = temp_next;
+                                temp_next->parent = temp->parent;
+                                root = temp_next;
+                                test->rebalance();
+                            }
+                        }
+                        else
+                        {
+                            if (temp_next->parent == temp)
+                            {
+                                temp_next->left = temp->left;
+                                temp->left->parent = temp_next;
+                                temp_next->parent = temp->parent;
+                                if (temp->parent->left == temp)
+                                    temp->parent->left = temp_next;
+                                if (temp->parent->right == temp)
+                                    temp->parent->right = temp_next;
+                                temp_next->rebalance();
+                                while (root->parent != 0)
+                                    root = root->parent;
+                            }
+                            else
+                            {
+                                if (temp_next->parent->left == temp_next)
+                                    temp_next->parent->left = temp_next->right;
+                                else if (temp_next->parent->right == temp_next)
+                                    temp_next->parent->right = temp_next->right;
+                                if (temp_next->right != 0)
+                                    temp_next->right->parent = temp_next->parent;
+                                temp_next->left = temp->left;
+                                temp->left->parent = temp_next;
+                                temp_next->right = temp->right;
+                                temp->right->parent = temp_next;
+                                temp_next->parent = temp->parent;
+                                if (temp->parent->left == temp)
+                                    temp->parent->left = temp_next;
+                                if (temp->parent->right == temp)
+                                    temp->parent->right = temp_next;
+                                test->rebalance();
+                                while (root->parent != 0)
+                                    root = root->parent;
+                            }
+                        }
+                        delete temp;
+                    }
+                    _size--;
+                }
             }
 
             size_type erase(const key_type &k){
-                iterator    it = find(k);
-                ft::tree<value_type>   *temp;
+                size_type ret = count(k);
 
-                if (it == end())
-                    return (0);
-                temp = it.getPtr();
-                // 자식노드가 없는 경우
-                if (temp->left == 0 && temp->right == 0)
-                {
-                    if (temp->parent == 0)
-                        root = 0;
-                    else
-                    {
-                        if (temp->parent->left == temp)
-                            temp->parent->left = 0;
-                        else if (temp->parent->right == temp)
-                            temp->parent->right = 0;
-                        temp->parent->rebalance();
-                        while (root->parent != 0)
-                            root = root->parent;
-                    }
-                    delete temp;
-                }
-                // 자식노드(왼쪽) 하나만 있는 경우
-                else if (temp->left != 0 && temp->right == 0)
-                {
-                    if (temp->parent == 0)
-                    {
-                        temp->left->parent = temp->parent;
-                        root = temp->left;
-                    }
-                    else{
-                        if (temp->parent->left == temp)
-                            temp->parent->left = temp->left;
-                        else if (temp->parent->right == temp)
-                            temp->parent->right = temp->left;
-                        temp->left->parent = temp->parent;
-                        temp->parent->rebalance();
-                        while (root->parent != 0)
-                            root = root->parent;
-                    }
-                    delete temp;
-                }
-                // 자식노드(오른쪽) 하나만 있는 경우
-                else if (temp->left == 0 && temp->right != 0)
-                {
-                    if (temp->parent == 0)
-                    {
-                        temp->right->parent = temp->parent;
-                        root = temp->right;
-                    }
-                    else{
-                        if (temp->parent->left == temp)
-                            temp->parent->left = temp->right;
-                        else if (temp->parent->right == temp)
-                            temp->parent->right = temp->right;
-                        temp->right->parent = temp->parent;
-                        temp->parent->rebalance();
-                        while (root->parent != 0)
-                            root = root->parent;
-                    }
-                    delete temp;
-                }
-                // 자식노드가 둘 다 있는 경우
-                else
-                {
-                    ft::tree<value_type>   *temp_next;
-                    ft::tree<value_type>   *test;
-                    
-                    it++;
-                    temp_next = it.getPtr();
-                    test = temp_next->parent;
-                    if (temp->parent == 0)
-                    {
-                        if (temp_next->parent == temp)
-                        {
-                            temp_next->left = temp->left;
-                            temp->left->parent = temp_next;
-                            temp_next->parent = temp->parent;
-                            root = temp_next;
-                            temp_next->rebalance();
-                        }
-                        else
-                        {
-                            if (temp_next->parent->left == temp_next)
-                                temp_next->parent->left = temp_next->right;
-                            else if (temp_next->parent->right == temp_next)
-                                temp_next->parent->right = temp_next->right;
-                            if (temp_next->right != 0)
-                                temp_next->right->parent = temp_next->parent;
-                            temp_next->left = temp->left;
-                            temp->left->parent = temp_next;
-                            temp_next->right = temp->right;
-                            temp->right->parent = temp_next;
-                            temp_next->parent = temp->parent;
-                            root = temp_next;
-                            test->rebalance();
-                        }
-                    }
-                    else
-                    {
-                        if (temp_next->parent == temp)
-                        {
-                            temp_next->left = temp->left;
-                            temp->left->parent = temp_next;
-                            temp_next->parent = temp->parent;
-                            if (temp->parent->left == temp)
-                                temp->parent->left = temp_next;
-                            if (temp->parent->right == temp)
-                                temp->parent->right = temp_next;
-                            temp_next->rebalance();
-                            while (root->parent != 0)
-                                root = root->parent;
-                        }
-                        else
-                        {
-                            if (temp_next->parent->left == temp_next)
-                                temp_next->parent->left = temp_next->right;
-                            else if (temp_next->parent->right == temp_next)
-                                temp_next->parent->right = temp_next->right;
-                            if (temp_next->right != 0)
-                                temp_next->right->parent = temp_next->parent;
-                            temp_next->left = temp->left;
-                            temp->left->parent = temp_next;
-                            temp_next->right = temp->right;
-                            temp->right->parent = temp_next;
-                            temp_next->parent = temp->parent;
-                            if (temp->parent->left == temp)
-                                temp->parent->left = temp_next;
-                            if (temp->parent->right == temp)
-                                temp->parent->right = temp_next;
-                            test->rebalance();
-                            while (root->parent != 0)
-                                root = root->parent;
-                        }
-                    }
-                    delete temp;
-                }
-                _size--;
-                return (1);
+                while (find(k) != end())
+                    erase(find(k));
+                return (ret);
             }
 
             void erase(iterator first, iterator last)
@@ -368,7 +369,7 @@ namespace ft{
                 }
             }
 
-            void swap(map &x){
+            void swap(multimap &x){
                 ft::tree<value_type> *r = root;
                 size_type s = _size;
 
@@ -398,8 +399,13 @@ namespace ft{
                 while (temp != 0)
                 {
                     if (temp->val.first == k)
-                        break ;
-                    if (cmp(temp->val.first, k) == true)
+                    {
+                        if (temp->left != 0 && temp->left->val.first == k)
+                            temp = temp->left;
+                        else
+                            break ;
+                    }
+                    else if (cmp(temp->val.first, k) == true)
                         temp = temp->right;
                     else
                         temp = temp->left;
@@ -416,8 +422,13 @@ namespace ft{
                 while (temp != 0)
                 {
                     if (temp->val.first == k)
-                        break ;
-                    if (cmp(temp->val.first, k) == true)
+                    {
+                        if (temp->left != 0 && temp->left->val.first == k)
+                            temp = temp->left;
+                        else
+                            break ;
+                    }
+                    else if (cmp(temp->val.first, k) == true)
                         temp = temp->right;
                     else
                         temp = temp->left;
@@ -428,9 +439,17 @@ namespace ft{
             }
 
             size_type count(const key_type &k) const{
-                if (find(k) != end())
-                    return (1);
-                return (0);
+                const_iterator it = find(k);
+                size_type ret = 0;
+
+                if (it == end())
+                    return (ret);
+                while (it->first == k && it != end())
+                {
+                    it++;
+                    ret++;
+                }
+                return (ret);
             }
 
             iterator lower_bound(const key_type &k){
@@ -532,10 +551,10 @@ namespace ft{
 
     // [Non-member function overloads]
 	template <typename Key, typename T, typename Compare, typename Alloc>
-    bool operator==(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
+    bool operator==(const multimap<Key, T, Compare, Alloc> &lhs, const multimap<Key, T, Compare, Alloc> &rhs)
 	{
-        typename ft::map<Key, T>::const_iterator left = lhs.begin();
-        typename ft::map<Key, T>::const_iterator right = rhs.begin();
+        typename ft::multimap<Key, T>::const_iterator left = lhs.begin();
+        typename ft::multimap<Key, T>::const_iterator right = rhs.begin();
 
 		if (lhs.size() != rhs.size())
 		    return (false);
@@ -552,13 +571,13 @@ namespace ft{
 	}
 
     template <typename Key, typename T, typename Compare, typename Alloc>
-	bool operator!=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs) { return (!(lhs == rhs)); }
+	bool operator!=(const multimap<Key, T, Compare, Alloc> &lhs, const multimap<Key, T, Compare, Alloc> &rhs) { return (!(lhs == rhs)); }
 	
 	template <typename Key, typename T, typename Compare, typename Alloc>
-	bool operator<(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
+	bool operator<(const multimap<Key, T, Compare, Alloc> &lhs, const multimap<Key, T, Compare, Alloc> &rhs)
 	{
-        typename ft::map<Key, T>::const_iterator left = lhs.begin();
-        typename ft::map<Key, T>::const_iterator right = rhs.begin();
+        typename ft::multimap<Key, T>::const_iterator left = lhs.begin();
+        typename ft::multimap<Key, T>::const_iterator right = rhs.begin();
 
         while (left != lhs.end() && right != rhs.end())
         {
@@ -575,16 +594,16 @@ namespace ft{
 	}
 	
 	template <typename Key, typename T, typename Compare, typename Alloc>
-    bool operator<=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs) { return (!(rhs < lhs)); }
+    bool operator<=(const multimap<Key, T, Compare, Alloc> &lhs, const multimap<Key, T, Compare, Alloc> &rhs) { return (!(rhs < lhs)); }
 
 	template <typename Key, typename T, typename Compare, typename Alloc>
-    bool operator>(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs) { return (rhs < lhs); }
+    bool operator>(const multimap<Key, T, Compare, Alloc> &lhs, const multimap<Key, T, Compare, Alloc> &rhs) { return (rhs < lhs); }
 
 	template <typename Key, typename T, typename Compare, typename Alloc>
-    bool operator>=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs) { return (!(lhs < rhs)); }
+    bool operator>=(const multimap<Key, T, Compare, Alloc> &lhs, const multimap<Key, T, Compare, Alloc> &rhs) { return (!(lhs < rhs)); }
 
 	template <typename Key, typename T, typename Compare, typename Alloc>
-	void swap(map<Key, T, Compare, Alloc> &x, map<Key, T, Compare, Alloc> &y) { x.swap(y); }
+	void swap(multimap<Key, T, Compare, Alloc> &x, multimap<Key, T, Compare, Alloc> &y) { x.swap(y); }
 }
 
 #endif
