@@ -260,7 +260,6 @@ namespace ft{
                     // 자식노드가 둘 다 있는 경우
                     else
                     {  
-
                         ft::tree<value_type>   *temp_next;
                         ft::tree<value_type>   *test;
                         
@@ -424,7 +423,7 @@ namespace ft{
             }
 
             size_type count(const key_type &k) const{
-                iterator it = find(k);
+                const_iterator it = find(k);
                 size_type ret = 0;
 
                 if (it == end())
