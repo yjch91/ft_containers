@@ -33,34 +33,46 @@ namespace ft{
         public:
             // empty constructor
             explicit multiset(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()){
+                typename Alloc::template rebind<ft::tree<value_type> >::other   _alloc;
+
                 (void)comp;
                 (void)alloc;
                 root = 0;
-                leaf = new ft::tree<value_type>(value_type());
+                leaf = _alloc.allocate(1);
+                _alloc.construct(leaf, value_type());
                 _size = 0;
             }
             
             // destructor
             ~multiset(){
+                typename Alloc::template rebind<ft::tree<value_type> >::other   alloc;
+
                 clear();
-                delete leaf;
+                alloc.destroy(leaf);
+                alloc.deallocate(leaf, 1);
             }
 
             // range constructor
             template <typename InputIterator>
             multiset(InputIterator first, InputIterator last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()){
+                typename Alloc::template rebind<ft::tree<value_type> >::other   _alloc;
+
                 (void)comp;
                 (void)alloc;
                 root = 0;
-                leaf = new ft::tree<value_type>(value_type());
+                leaf = _alloc.allocate(1);
+                _alloc.construct(leaf, value_type());
                 _size = 0;
                 insert(first, last);
             }
 
             // copy constructor
             multiset(const multiset &x){
+                typename Alloc::template rebind<ft::tree<value_type> >::other   alloc;
+
                 root = 0;
-                leaf = new ft::tree<value_type>(value_type());
+                leaf = alloc.allocate(1);
+                alloc.construct(leaf, value_type());
                 _size = 0;
                 insert(x.begin(), x.end());
             }
@@ -126,13 +138,15 @@ namespace ft{
             // [Modifiers]
             // single element insert
             iterator insert(const value_type &val){
+                typename Alloc::template rebind<ft::tree<value_type> >::other   alloc;
                 ft::tree<value_type>   *temp = root;
                 ft::tree<value_type>   *new_node;
                 key_compare cmp;
                 size_type c;
                 iterator ret;
 
-                new_node = new ft::tree<value_type>(val);
+                new_node = alloc.allocate(1);
+                alloc.construct(new_node, val);
                 if (root == 0)
                     root = new_node;
                 else
@@ -194,6 +208,7 @@ namespace ft{
 
             void erase(iterator position)
             {
+                typename Alloc::template rebind<ft::tree<value_type> >::other   alloc;
                 iterator    it = position;
                 ft::tree<value_type>   *temp;
 
@@ -215,7 +230,8 @@ namespace ft{
                             while (root->parent != 0)
                                 root = root->parent;
                         }
-                        delete temp;
+                        alloc.destroy(temp);
+                        alloc.deallocate(temp, 1);
                     }
                     // 자식노드(왼쪽) 하나만 있는 경우
                     else if (temp->left != 0 && temp->right == 0)
@@ -235,7 +251,8 @@ namespace ft{
                             while (root->parent != 0)
                                 root = root->parent;
                         }
-                        delete temp;
+                        alloc.destroy(temp);
+                        alloc.deallocate(temp, 1);
                     }
                     // 자식노드(오른쪽) 하나만 있는 경우
                     else if (temp->left == 0 && temp->right != 0)
@@ -255,7 +272,8 @@ namespace ft{
                             while (root->parent != 0)
                                 root = root->parent;
                         }
-                        delete temp;
+                        alloc.destroy(temp);
+                        alloc.deallocate(temp, 1);
                     }
                     // 자식노드가 둘 다 있는 경우
                     else
@@ -330,7 +348,8 @@ namespace ft{
                                     root = root->parent;
                             }
                         }
-                        delete temp;
+                        alloc.destroy(temp);
+                        alloc.deallocate(temp, 1);
                     }
                     _size--;
                 }

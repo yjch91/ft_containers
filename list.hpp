@@ -13,6 +13,8 @@ namespace ft{
         T val;
         node *prev;
         node *next;
+
+        node(T value) : val(value), prev(0), next(0) { }
     };
     
     template <typename T>
@@ -301,9 +303,11 @@ namespace ft{
         public:
             // default constructor
             explicit list(const allocator_type &alloc = allocator_type()){
+                typename Alloc::template rebind<ft::node<T> >::other    _alloc;
+
                 (void)alloc;
-                node = new ft::node<T>;
-                node->val = value_type();
+                node = _alloc.allocate(1);
+                _alloc.construct(node, value_type());
                 node->prev = node;
                 node->next = node;
                 _size = 0;
@@ -311,23 +315,20 @@ namespace ft{
 
             // destructor
             ~list(){
-                ft::node<T> *end_node = node;
-                ft::node<T> *temp = node->next;
+                typename Alloc::template rebind<ft::node<T> >::other    alloc;
 
-                while (temp != end_node)
-                {
-                    node = temp->next;
-                    delete temp;
-                    temp = node;
-                }
-                delete temp;
+                clear();
+                alloc.destroy(node);
+                alloc.deallocate(node, 1);
             }
 
             // fill constructor
             explicit list(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()){
+                typename Alloc::template rebind<ft::node<T> >::other    _alloc;
+
                 (void)alloc;
-                node = new ft::node<T>;
-                node->val = value_type();
+                node = _alloc.allocate(1);
+                _alloc.construct(node, value_type());
                 node->prev = node;
                 node->next = node;
                 _size = 0;
@@ -339,10 +340,12 @@ namespace ft{
             template <class InputIterator>
             list(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type(),
                             typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type type = 0){
+                typename Alloc::template rebind<ft::node<T> >::other    _alloc;
+
                 (void)alloc;
                 (void)type;
-                node = new ft::node<T>;
-                node->val = value_type();
+                node = _alloc.allocate(1);
+                _alloc.construct(node, value_type());
                 node->prev = node;
                 node->next = node;
                 _size = 0;
@@ -352,10 +355,11 @@ namespace ft{
 
             // copy constructor
             list(const list &x){
+                typename Alloc::template rebind<ft::node<T> >::other    alloc;
                 ft::node<T> *temp = 0;
 
-                node = new ft::node<T>;
-                node->val = value_type();
+                node = alloc.allocate(1);
+                alloc.construct(node, value_type());
                 node->prev = node;
                 node->next = node;
                 _size = 0;
@@ -432,9 +436,10 @@ namespace ft{
             }
 
             void push_front(const value_type &val){
-                ft::node<T> *new_node = new ft::node<T>;
+                typename Alloc::template rebind<ft::node<T> >::other    alloc;
+                ft::node<T> *new_node = alloc.allocate(1);
 
-                new_node->val = val;
+                alloc.construct(new_node, val);
                 node->next->prev = new_node;
                 new_node->next = node->next;
                 node->next = new_node;
@@ -443,18 +448,21 @@ namespace ft{
             }
 
             void pop_front(){
+                typename Alloc::template rebind<ft::node<T> >::other    alloc;
                 ft::node<T> *temp = node->next;
 
                 node->next->next->prev = node;
                 node->next = node->next->next;
-                delete temp;
+                alloc.destroy(temp);
+                alloc.deallocate(temp, 1);
                 _size--;
             }
 
             void push_back(const value_type &val){
-                ft::node<T> *new_node = new ft::node<T>;
+                typename Alloc::template rebind<ft::node<T> >::other    alloc;
+                ft::node<T> *new_node = alloc.allocate(1);
 
-                new_node->val = val;
+                alloc.construct(new_node, val);
                 node->prev->next = new_node;
                 new_node->prev = node->prev;
                 node->prev = new_node;
@@ -463,20 +471,23 @@ namespace ft{
             }
 
             void pop_back(){
+                typename Alloc::template rebind<ft::node<T> >::other    alloc;
                 ft::node<T> *temp = node->prev;
 
                 node->prev->prev->next = node;
                 node->prev = node->prev->prev;
-                delete temp;
+                alloc.destroy(temp);
+                alloc.deallocate(temp, 1);
                 _size--;
             }
 
             // single element insert
             iterator insert(iterator position, const value_type &val){
-                ft::node<T> *new_node = new ft::node<T>;
+                typename Alloc::template rebind<ft::node<T> >::other    alloc;
+                ft::node<T> *new_node = alloc.allocate(1);
                 ft::node<T> *pos = position.getPtr();
 
-                new_node->val = val;
+                alloc.construct(new_node, val);
                 pos->prev->next = new_node;
                 new_node->prev = pos->prev;
                 new_node->next = pos;
@@ -487,6 +498,7 @@ namespace ft{
 
             // fill insert
             void insert(iterator position, size_type n, const value_type &val){
+                typename Alloc::template rebind<ft::node<T> >::other    alloc;
                 ft::node<T> *left_node = 0;
                 ft::node<T> *right_node = 0;
                 ft::node<T> *pos = position.getPtr();
@@ -495,16 +507,16 @@ namespace ft{
                 {
                     if (i == 0)
                     {
-                        left_node = new ft::node<T>;
-                        left_node->val = val;
+                        left_node = alloc.allocate(1);
+                        alloc.construct(left_node, val);
                         left_node->prev = 0;
                         left_node->next = 0;
                         right_node = left_node;
                     }
                     else{
-                        ft::node<T> *new_node = new ft::node<T>;
+                        ft::node<T> *new_node = alloc.allocate(1);
 
-                        new_node->val = val;
+                        alloc.construct(new_node, val);
                         right_node->next = new_node;
                         new_node->prev = right_node;
                         new_node->next = 0;
@@ -525,6 +537,7 @@ namespace ft{
             template <class InputIterator>
             void insert(iterator position, InputIterator first, InputIterator last,
                             typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type type = 0){
+                typename Alloc::template rebind<ft::node<T> >::other    alloc;
                 ft::node<T> *left_node = 0;
                 ft::node<T> *right_node = 0;
                 ft::node<T> *pos = position.getPtr();
@@ -535,16 +548,16 @@ namespace ft{
                 {
                     if (i == first)
                     {
-                        left_node = new ft::node<T>;
-                        left_node->val = *i;
+                        left_node = alloc.allocate(1);
+                        alloc.construct(left_node, *i);
                         left_node->prev = 0;
                         left_node->next = 0;
                         right_node = left_node;
                     }
                     else{
-                        ft::node<T> *new_node = new ft::node<T>;
+                        ft::node<T> *new_node = alloc.allocate(1);
 
-                        new_node->val = *i;
+                        alloc.construct(new_node, *i);
                         right_node->next = new_node;
                         new_node->prev = right_node;
                         new_node->next = 0;
@@ -564,18 +577,21 @@ namespace ft{
 
             iterator erase(iterator position)
             {
+                typename Alloc::template rebind<ft::node<T> >::other    alloc;
                 ft::node<T> *pos = position.getPtr();
                 ft::node<T> *ret = pos->next;
 
                 pos->prev->next = pos->next;
                 pos->next->prev = pos->prev;
-                delete pos;
+                alloc.destroy(pos);
+                alloc.deallocate(pos, 1);
                 _size--;
                 return (iterator(ret));
             }
 
             iterator erase(iterator first, iterator last)
             {
+                typename Alloc::template rebind<ft::node<T> >::other    alloc;
                 ft::node<T> *left = first.getPtr();
                 ft::node<T> *right = last.getPtr();
                 ft::node<T> *temp = 0;
@@ -586,7 +602,8 @@ namespace ft{
                 while (temp != right)
                 {
                     left = left->next;
-                    delete temp;
+                    alloc.destroy(temp);
+                    alloc.deallocate(temp, 1);
                     temp = left;
                     _size--;
                 }
@@ -639,13 +656,15 @@ namespace ft{
             }
 
             void clear(){
+                typename Alloc::template rebind<ft::node<T> >::other    alloc;
                 ft::node<T> *end_node = node;
                 ft::node<T> *temp = node->next;
 
                 while (temp != end_node)
                 {
                     node = temp->next;
-                    delete temp;
+                    alloc.destroy(temp);
+                    alloc.deallocate(temp, 1);
                     temp = node;
                 }
                 node->prev = node;

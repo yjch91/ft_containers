@@ -245,11 +245,11 @@ namespace ft{
                 else if (h1 < -1)
                     h2 = temp->right->getBalanceFactor();
 
-                if (h1 > 1 && h2 > 0) // LLrotation(3, 2, 1)
+                if (h1 > 1 && h2 >= 0) // LLrotation(3, 2, 1)
                 {
                     temp->LLrotation();
                 }
-                else if (h1 < -1 && h2 < 0) // RRrotation(1, 2, 3)
+                else if (h1 < -1 && h2 <= 0) // RRrotation(1, 2, 3)
                 {
                     temp->RRrotation();
                 }
