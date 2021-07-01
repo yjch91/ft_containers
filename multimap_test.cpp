@@ -47,7 +47,7 @@ void multimap_test()
     for (it_std = mmap_std2.begin(); it_std != mmap_std2.end(); it_std++)
         std::cout << "key : " << it_std->first << " value : " << it_std->second << std::endl;
     std::cout << "mmap_std3\n";
-    std::cout << "size() : " << mmap_std2.size() << "\n";
+    std::cout << "size() : " << mmap_std3.size() << "\n";
     for (rit_std = mmap_std3.rbegin(); rit_std != mmap_std3.rend(); rit_std++)
         std::cout << "key : " << rit_std->first << " value : " << rit_std->second << std::endl;
     std::cout << "\n";
@@ -66,9 +66,8 @@ void multimap_test()
     std::cout << "\n";
 
     mmap_std.insert(std::pair<int, int>(777, 77));
-    mmap_std.insert(std::pair<int, int>(777, 777));
+    mmap_std.insert(std::pair<int, int>(777, 7777));
     mmap_std.insert(++mmap_std.begin(), std::pair<int, int>(42, 42));
-    mmap_std.insert(++mmap_std.begin(), std::pair<int, int>(42, 4242));
     it_std = mmap_std3.begin();
     it_std++;
     it_std++;
@@ -78,14 +77,13 @@ void multimap_test()
     mmap_ft.insert(ft::pair<int, int>(777, 77));
     mmap_ft.insert(ft::pair<int, int>(777, 7777));
     mmap_ft.insert(++mmap_ft.begin(), ft::pair<int, int>(42, 42));
-    mmap_ft.insert(++mmap_ft.begin(), ft::pair<int, int>(42, 4242));
     it_ft = mmap_ft3.begin();
     it_ft++;
     it_ft++;
     it_ft++;
     mmap_ft.insert(mmap_ft3.begin(), it_ft);
 
-    std::cout << "\033[32mmmap.insert(777, 77) mmap.insert(777, 7777) mmap.insert(++mmap.begin(), (42, 42) mmap.insert(++mmap.begin(), (42, 4242)" << std::endl;
+    std::cout << "\033[32mmmap.insert(777, 77) mmap.insert(777, 7777) mmap.insert(++mmap.begin(), (42, 42) " << std::endl;
     std::cout << "mmap.insert(mmap3.begin(), mmap3.begin() + 3)\033[0m\n";
     std::cout << "mmap_std\n";
     std::cout << "size() : " << mmap_std.size() << "\n";
